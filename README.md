@@ -64,7 +64,7 @@ For more information, see [Using Private Dependendies with Vercel](https://verce
 
 3. Add to the footer near the "Cookie Settings" button:
 
-    - `<button id="do-not-share" onclick="OneTrust.ToggleInfoDisplay()">Your Privacy Choices</button>`
+    - `<button id="do-not-share">Your Privacy Choices</button>`
     - Add the "opt out" icon here next to the text: https://oag.ca.gov/privacy/ccpa/icons-download
 
 4. In footer.scss, add the `#do-not-share` to the `#ot-sdk-btn` rule to style "Your Privacy Choices" button the same way as "Cookie Settings". For example:
@@ -97,7 +97,7 @@ For more information, see [Using Private Dependendies with Vercel](https://verce
 4. Add near the "Cookie Settings" button:
 
 ```
-    <button id="do-not-share" onClick={() => OneTrust.ToggleInfoDisplay()}>
+    <button id="do-not-share">
 ```
 
 5. Add `#do-not-share` to the existing `#ot-sdk-btn` rule to style the "Do Not Share..." text:
