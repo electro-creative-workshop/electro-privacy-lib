@@ -6,6 +6,8 @@ import {getLanguageString} from "./language-support";
 // Define variables
 let otDataSubjectId;
 let dnsUI = false;
+let isSubmitting = false; // Prevent duplicate submissions
+const MAX_EMAIL_LENGTH = 254; // RFC 5321 maximum email length
 
 // Collection Point Information
 let url = 'https://privacyportal.onetrust.com/request/v1/consentreceipts';
@@ -46,12 +48,75 @@ function setPreferences(otDataSubjectId) {
     // preferences = '"purposes":[{"Id":' + purpose1 + ',"TransactionType": "OPT_OUT"}]';
     // preferences = '"purposes": [{"Id": "528de150-b5f3-467d-be11-757756601224","TransactionType": "WITHDRAWN"}]';
 
-    const body = `{"identifier":"${otDataSubjectId}","requestInformation":${token},${preferences}}`;
+    // Sanitize email input - trim whitespace and ensure it's a string
+    const sanitizedEmail = String(otDataSubjectId).trim();
+    
+    // Validate email again before sending (defense in depth)
+    if (!sanitizedEmail || !validateEmail(sanitizedEmail)) {
+        console.error('Invalid email format before API call');
+        showErrorMessage();
+        isSubmitting = false;
+        return;
+    }
+
+    // Use JSON.stringify to prevent JSON injection attacks
+    // The token and preferences are stored as JSON strings that need to be parsed
+    // Token is stored as a quoted JSON string, preferences is a partial JSON object
+    let requestInformation;
+    let purposes;
+    
+    try {
+        // Token is stored as '"...' so we need to parse it as a JSON string
+        requestInformation = JSON.parse(token);
+        // Preferences is stored as '"purposes": [...]' so we wrap it in braces to make valid JSON
+        purposes = JSON.parse(`{${preferences}}`).purposes;
+    } catch (e) {
+        console.error('Error parsing token or preferences:', e);
+        showErrorMessage();
+        isSubmitting = false;
+        return;
+    }
+
+    // Build the request body using JSON.stringify to safely escape the email
+    // This prevents JSON injection attacks
+    const body = JSON.stringify({
+        identifier: sanitizedEmail,
+        requestInformation: requestInformation,
+        purposes: purposes
+    });
+
     const xhr = new XMLHttpRequest();
     xhr.open('POST', url);
     xhr.setRequestHeader('Content-Type', 'application/json');
+    
+    // Add error handling
+    xhr.onerror = function() {
+        console.error('Network error occurred during API call');
+        showErrorMessage();
+        isSubmitting = false;
+        // Re-enable form on error
+        const textInput = document.getElementById('ot-email');
+        const submitBtn = document.getElementById('ot-dns-submit');
+        if (textInput) textInput.disabled = false;
+        if (submitBtn) submitBtn.disabled = false;
+    };
+    
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            // Success - form already disabled in inputValidation
+        } else {
+            console.error('API call failed with status:', xhr.status);
+            showErrorMessage();
+            isSubmitting = false;
+            // Re-enable form on error
+            const textInput = document.getElementById('ot-email');
+            const submitBtn = document.getElementById('ot-dns-submit');
+            if (textInput) textInput.disabled = false;
+            if (submitBtn) submitBtn.disabled = false;
+        }
+    };
+    
     xhr.send(body);
-    //console.log(body);
 }
 
 const re =
@@ -59,25 +124,101 @@ const re =
 
 // email format validation
 function validateEmail(email) {
-    return re.test(String(email).toLowerCase());
+    if (!email || typeof email !== 'string') {
+        return false;
+    }
+    
+    // Trim and check length
+    const trimmedEmail = email.trim();
+    if (trimmedEmail.length === 0 || trimmedEmail.length > MAX_EMAIL_LENGTH) {
+        return false;
+    }
+    
+    // Validate format with regex
+    return re.test(trimmedEmail.toLowerCase());
+}
+
+// Show error message to user
+function showErrorMessage() {
+    const errorText = getLanguageString('An error occurred. Please try again.');
+    const existingError = document.getElementById('ot-submit-error');
+    const existingSuccess = document.getElementById('ot-submit-text');
+    
+    // Remove existing messages
+    if (existingError) existingError.remove();
+    if (existingSuccess) existingSuccess.remove();
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.id = 'ot-submit-error';
+    errorDiv.setAttribute('style', 'display: inline; margin-left: 10px !important; color: red;');
+    errorDiv.textContent = errorText;
+    
+    const otEmailSubmit = document.querySelectorAll('#ot-email-submit #ot-dns-submit')[0];
+    if (otEmailSubmit) {
+        otEmailSubmit.insertAdjacentElement('afterend', errorDiv);
+    }
 }
 
 // if email input is valid, trigger submitPreferences function and disable text input field and submit button
 function inputValidation() {
+    // Prevent duplicate submissions
+    if (isSubmitting) {
+        return;
+    }
+    
     const textInput = document.getElementById('ot-email');
-    if (textInput && validateEmail(textInput.value)) {
-        // console.log(`email returned valid; emailInputValue = ${emailInputValue}`);
-        submitPreferences();
+    const submitBtn = document.getElementById('ot-dns-submit');
+    
+    if (!textInput || !submitBtn) {
+        return;
+    }
+    
+    // Sanitize input - trim whitespace
+    const emailValue = textInput.value.trim();
+    
+    // Validate email
+    if (validateEmail(emailValue)) {
+        // Set submitting flag
+        isSubmitting = true;
+        
+        // Disable form to prevent duplicate submissions
         textInput.disabled = true;
-        document.getElementById('ot-dns-submit').disabled = true;
-
-        const confirmSubmit =
-            '<div id="ot-submit-text" style="display: inline; margin-left: 10px !important;">Successfully Submitted!</div>';
+        submitBtn.disabled = true;
+        
+        // Remove any existing error messages
+        const existingError = document.getElementById('ot-submit-error');
+        if (existingError) existingError.remove();
+        
+        // Show success message
+        const confirmSubmit = document.createElement('div');
+        confirmSubmit.id = 'ot-submit-text';
+        confirmSubmit.setAttribute('style', 'display: inline; margin-left: 10px !important; color: green;');
+        confirmSubmit.textContent = getLanguageString('Successfully Submitted!');
+        
         const otEmailSubmit = document.querySelectorAll('#ot-email-submit #ot-dns-submit')[0];
-        otEmailSubmit.insertAdjacentHTML('afterend', confirmSubmit);
+        if (otEmailSubmit) {
+            otEmailSubmit.insertAdjacentElement('afterend', confirmSubmit);
+        }
+        
+        // Submit with sanitized email
+        submitPreferences();
     } else {
-        //console.log(`function returned false; emailInputValue = ${emailInputValue}`);
-        //console.log('invalid email');
+        // Show validation error
+        const existingError = document.getElementById('ot-submit-error');
+        const existingSuccess = document.getElementById('ot-submit-text');
+        
+        if (existingError) existingError.remove();
+        if (existingSuccess) existingSuccess.remove();
+        
+        const errorDiv = document.createElement('div');
+        errorDiv.id = 'ot-submit-error';
+        errorDiv.setAttribute('style', 'display: inline; margin-left: 10px !important; color: red;');
+        errorDiv.textContent = getLanguageString('Please enter a valid email.');
+        
+        const otEmailSubmit = document.querySelectorAll('#ot-email-submit #ot-dns-submit')[0];
+        if (otEmailSubmit) {
+            otEmailSubmit.insertAdjacentElement('afterend', errorDiv);
+        }
     }
 }
 
@@ -89,14 +230,32 @@ function submitPreferences() {
 
     if (!textInput || textInput.value === '') {
         console.error('Identifier Not Set');
+        isSubmitting = false;
+        // Re-enable form
+        textInput.disabled = false;
+        const submitBtn = document.getElementById('ot-dns-submit');
+        if (submitBtn) submitBtn.disabled = false;
+        return;
     }
+    
+    // Sanitize and validate email before sending
+    const emailValue = textInput.value.trim();
+    if (!validateEmail(emailValue)) {
+        console.error('Invalid email format in submitPreferences');
+        isSubmitting = false;
+        // Re-enable form
+        textInput.disabled = false;
+        const submitBtn = document.getElementById('ot-dns-submit');
+        if (submitBtn) submitBtn.disabled = false;
+        return;
+    }
+    
     // else if(OnetrustActiveGroups === ",," && saveButtonClicked === false){
     //    console.warn("New Preferences Set")
     //    setTimeout(setPreferences,100);
     // }
-    else {
-        setTimeout(setPreferences(textInput.value), 100);
-    }
+    // Use sanitized email value
+    setTimeout(() => setPreferences(emailValue), 100);
 }
 
 // when clicking on "Do Not Share" footer link:
