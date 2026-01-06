@@ -52,22 +52,22 @@ function getLanguageString(strName)
 
 /***/ },
 
-/***/ 286
-(module) {
+/***/ 286:
+/***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"emailTextBlock":"You may have previously provided your email address to us. In some cases, we may use email addresses or other non-cookie personal information to deliver behavioral advertising to consumers via third parties such as Amazon, Facebook, Google, Omnicom, and Walmart. To request that your personal information is not shared for these purposes, please enter your email address below:","deletionTextBlock1":"If you are a U.S. consumer and would like to submit other privacy requests, please visit our <a target=\\"_blank\\" href=\\"//privacyportal.onetrust.com/webform/65ca6b46-70b1-4ee1-9074-7a63e800ea4c/7baf0e2e-4724-44fe-af48-4138faca9d23\\">U.S. Data Subject Request</a> page.","deletionTextBlock2":"For more information about additional privacy practices and choices available to you, please visit our <a target=\\"_blank\\" href=\\"//thecloroxcompany.com/privacy/\\">Privacy Policy</a>.","targetedAdsTextBlock":"Under some state laws you have the right to opt out of the selling or sharing of your information for cross-context behavioral advertising and/or certain types of targeted advertising (“behavioral advertising”).<br><br>To turn off the  behavioral advertising cookies and trackers on this website, toggle “Targeting / Advertising Cookies” to “off” and click “Save Settings.” If the toggle is already set to “off” - you may have already updated your cookie settings, or the Global Privacy Control (“GPC”) signal may be enabled in your browser.<br><br>In most cases, your opt-out preference will be tracked via a cookie, which means your selection is limited to the specific device and browser you are using during this visit to our website. If you visit this website from a different device or browser, change your browser settings, or if you clear your cookies, you may need to opt out again.<br><br>If you would like to update other cookie-related preferences visit the \\"Cookie Settings\\" link in the footer of this webpage.<br /><br />Additionally, you may have the right to obtain a list of specific third parties (as defined under applicable law) to which we may have disclosed personal information. That information can be found below.","Privacy Choices":"Privacy Choices","Please enter a valid email.":"Please enter a valid email.","On":"On","Off":"Off","Behavioral Advertising Linked To Your Email Address:":"Behavioral Advertising Linked To Your Email Address:","Email:":"Email:","Submit":"Submit","Once you have made all of your elections, click “Save Settings” to save your settings and close the window.":"Once you have made all of your elections, click “Save Settings” to save your settings and close the window.","Deletion, Access, Or Correction Requests":"Deletion, Access, Correction, or Portability Requests","Do Not Sell or Share for Targeted Advertising":"Do Not Sell or Share for Targeted Advertising"}');
+module.exports = /*#__PURE__*/JSON.parse('{"emailTextBlock":"You may have previously provided your email address to us. In some cases, we may use email addresses or other non-cookie personal information to deliver behavioral advertising to consumers via third parties such as Amazon, Facebook, Google, Omnicom, and Walmart. To request that your personal information is not shared for these purposes, please enter your email address below:","deletionTextBlock1":"If you are a U.S. consumer and would like to submit other privacy requests, please visit our <a target=\\"_blank\\" href=\\"//privacyportal.onetrust.com/webform/65ca6b46-70b1-4ee1-9074-7a63e800ea4c/7baf0e2e-4724-44fe-af48-4138faca9d23\\">U.S. Data Subject Request</a> page.","deletionTextBlock2":"For more information about additional privacy practices and choices available to you, please visit our <a target=\\"_blank\\" href=\\"//thecloroxcompany.com/privacy/\\">Privacy Policy</a>.","targetedAdsTextBlock":"Under some state laws you have the right to opt out of the selling or sharing of your information for cross-context behavioral advertising and/or certain types of targeted advertising (“behavioral advertising”).<br><br>To turn off the  behavioral advertising cookies and trackers on this website, toggle “Targeting / Advertising Cookies” to “off” and click “Save Settings.” If the toggle is already set to “off” - you may have already updated your cookie settings, or the Global Privacy Control (“GPC”) signal may be enabled in your browser.<br><br>In most cases, your opt-out preference will be tracked via a cookie, which means your selection is limited to the specific device and browser you are using during this visit to our website. If you visit this website from a different device or browser, change your browser settings, or if you clear your cookies, you may need to opt out again.<br><br>If you would like to update other cookie-related preferences visit the \\"Cookie Settings\\" link in the footer of this webpage.<br /><br />Additionally, you may have the right to obtain a list of specific third parties (as defined under applicable law) to which we may have disclosed personal information. That information can be found below.","Privacy Choices":"Privacy Choices","Please enter a valid email.":"Please enter a valid email.","On":"On","Off":"Off","Behavioral Advertising Linked To Your Email Address:":"Behavioral Advertising Linked To Your Email Address:","Email:":"Email:","Submit":"Submit","Once you have made all of your elections, click “Save Settings” to save your settings and close the window.":"Once you have made all of your elections, click “Save Settings” to save your settings and close the window.","Deletion, Access, Or Correction Requests":"Deletion, Access, Correction, or Portability Requests","Do Not Sell or Share for Targeted Advertising":"Do Not Sell or Share for Targeted Advertising","Successfully Submitted!":"Successfully Submitted!","An error occurred. Please try again.":"An error occurred. Please try again."}');
 
-/***/ },
+/***/ }),
 
-/***/ 331
-(module) {
+/***/ 331:
+/***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"emailTextBlock":"Es posible que nos haya proporcionado previamente su dirección de correo electrónico. En algunos casos, utilizamos direcciones de correo electrónico u otra información personal que no sea de cookies para entregar publicidad conductual a los consumidores en plataformas de terceros como Amazon, Facebook, Google, Omnicom y Walmart. Para solicitar que su información personal no se comparta para estos fines, ingrese su dirección de correo electrónico a continuación:","deletionTextBlock1":"Si usted es un consumidor estadounidense y desea enviar otras solicitudes de privacidad, como una solicitud de eliminación, acceso o corrección, visite nuestra página de <a target=\\"_blank\\" href=\\"//privacyportal.onetrust.com/webform/65ca6b46-70b1-4ee1-9074-7a63e800ea4c/7baf0e2e-4724-44fe-af48-4138faca9d23\\">Solicitud del sujeto de datos de EE. UU.</a>","deletionTextBlock2":"Para obtener más información sobre las prácticas de privacidad adicionales y las opciones disponibles para usted, visite nuestra <a target=\\"_blank\\" href=\\"//thecloroxcompany.com/privacy/es-privacy/\\">Política de privacidad.</a>","targetedAdsTextBlock":"En virtud de algunas leyes estatales, usted tiene derecho a excluirse de la venta o el intercambio de su información para publicidad conductual entre contextos y/o ciertos tipos de publicidad dirigida (“publicidad conductual”).<br><br>Para desactivar las cookies de publicidad conductual y los rastreadores en este sitio web, cambie “Cookies de publicidad/dirigidas” a “desactivado” y haga clic en “Guardar configuración”. Si el conmutador ya está configurado en “desactivado”, es posible que ya haya actualizado su configuración de cookies o que la señal de Control de Privacidad Global (Global Privacy Control, “GPC”) esté habilitada en su navegador.<br><br>En la mayoría de los casos, se hará un seguimiento de su preferencia de exclusión mediante una cookie, lo que significa que su selección se limita al dispositivo y navegador específicos que está utilizando durante esta visita a nuestro sitio web. Si visita este sitio web desde un dispositivo o navegador diferente, cambia la configuración de su navegador o si borra sus cookies, es posible que deba excluirse nuevamente.<br><br>Si desea actualizar otras preferencias relacionadas con cookies, visite el enlace \\"Configuración de cookies\\" en el pie de página de esta página web.<br /><br />Adicionalmente, es posible que tenga derecho a obtener una lista de terceros específicos (según se define en la ley aplicable) a los que pudimos haber revelado información personal. Esa información se puede encontrar a continuación.","Privacy Choices":"Sus opciones de privacidad","Please enter a valid email.":"Ingrese un correo electrónico válido","On":"Habilitadas","Off":"Deshabilitadas","Behavioral Advertising Linked To Your Email Address:":"Publicidad conductual vinculada a su dirección de correo electrónico:","Email:":"Correo electrónico:","Submit":"Enviar","Once you have made all of your elections, click “Save Settings” to save your settings and close the window.":"Una vez que haya realizado todas sus elecciones, haga clic en “Guardar configuración” para guardar su configuración y cerrar la ventana.","Deletion, Access, Or Correction Requests":"Solicitudes de eliminación, acceso o corrección o portabilidad","Do Not Sell or Share for Targeted Advertising":"No vender ni compartir para publicidad dirigida"}');
+module.exports = /*#__PURE__*/JSON.parse('{"emailTextBlock":"Es posible que nos haya proporcionado previamente su dirección de correo electrónico. En algunos casos, utilizamos direcciones de correo electrónico u otra información personal que no sea de cookies para entregar publicidad conductual a los consumidores en plataformas de terceros como Amazon, Facebook, Google, Omnicom y Walmart. Para solicitar que su información personal no se comparta para estos fines, ingrese su dirección de correo electrónico a continuación:","deletionTextBlock1":"Si usted es un consumidor estadounidense y desea enviar otras solicitudes de privacidad, como una solicitud de eliminación, acceso o corrección, visite nuestra página de <a target=\\"_blank\\" href=\\"//privacyportal.onetrust.com/webform/65ca6b46-70b1-4ee1-9074-7a63e800ea4c/7baf0e2e-4724-44fe-af48-4138faca9d23\\">Solicitud del sujeto de datos de EE. UU.</a>","deletionTextBlock2":"Para obtener más información sobre las prácticas de privacidad adicionales y las opciones disponibles para usted, visite nuestra <a target=\\"_blank\\" href=\\"//thecloroxcompany.com/privacy/es-privacy/\\">Política de privacidad.</a>","targetedAdsTextBlock":"En virtud de algunas leyes estatales, usted tiene derecho a excluirse de la venta o el intercambio de su información para publicidad conductual entre contextos y/o ciertos tipos de publicidad dirigida (“publicidad conductual”).<br><br>Para desactivar las cookies de publicidad conductual y los rastreadores en este sitio web, cambie “Cookies de publicidad/dirigidas” a “desactivado” y haga clic en “Guardar configuración”. Si el conmutador ya está configurado en “desactivado”, es posible que ya haya actualizado su configuración de cookies o que la señal de Control de Privacidad Global (Global Privacy Control, “GPC”) esté habilitada en su navegador.<br><br>En la mayoría de los casos, se hará un seguimiento de su preferencia de exclusión mediante una cookie, lo que significa que su selección se limita al dispositivo y navegador específicos que está utilizando durante esta visita a nuestro sitio web. Si visita este sitio web desde un dispositivo o navegador diferente, cambia la configuración de su navegador o si borra sus cookies, es posible que deba excluirse nuevamente.<br><br>Si desea actualizar otras preferencias relacionadas con cookies, visite el enlace \\"Configuración de cookies\\" en el pie de página de esta página web.<br /><br />Adicionalmente, es posible que tenga derecho a obtener una lista de terceros específicos (según se define en la ley aplicable) a los que pudimos haber revelado información personal. Esa información se puede encontrar a continuación.","Privacy Choices":"Sus opciones de privacidad","Please enter a valid email.":"Ingrese un correo electrónico válido","On":"Habilitadas","Off":"Deshabilitadas","Behavioral Advertising Linked To Your Email Address:":"Publicidad conductual vinculada a su dirección de correo electrónico:","Email:":"Correo electrónico:","Submit":"Enviar","Once you have made all of your elections, click “Save Settings” to save your settings and close the window.":"Una vez que haya realizado todas sus elecciones, haga clic en “Guardar configuración” para guardar su configuración y cerrar la ventana.","Deletion, Access, Or Correction Requests":"Solicitudes de eliminación, acceso o corrección o portabilidad","Do Not Sell or Share for Targeted Advertising":"No vender ni compartir para publicidad dirigida","Successfully Submitted!":"¡Enviado con éxito!","An error occurred. Please try again.":"Ocurrió un error. Por favor, inténtelo de nuevo."}');
 
-/***/ },
+/***/ }),
 
-/***/ 478
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+/***/ 478:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _language_support__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(132);
@@ -79,6 +79,8 @@ __webpack_require__.r(__webpack_exports__);
 // Define variables
 let otDataSubjectId;
 let dnsUI = false;
+let isSubmitting = false; // Prevent duplicate submissions
+const MAX_EMAIL_LENGTH = 254; // RFC 5321 maximum email length
 
 // Collection Point Information
 let url = 'https://privacyportal.onetrust.com/request/v1/consentreceipts';
@@ -119,12 +121,75 @@ function setPreferences(otDataSubjectId) {
     // preferences = '"purposes":[{"Id":' + purpose1 + ',"TransactionType": "OPT_OUT"}]';
     // preferences = '"purposes": [{"Id": "528de150-b5f3-467d-be11-757756601224","TransactionType": "WITHDRAWN"}]';
 
-    const body = `{"identifier":"${otDataSubjectId}","requestInformation":${t},${preferences}}`;
+    // Sanitize email input - trim whitespace and ensure it's a string
+    const sanitizedEmail = String(otDataSubjectId).trim();
+    
+    // Validate email again before sending (defense in depth)
+    if (!sanitizedEmail || !validateEmail(sanitizedEmail)) {
+        console.error('Invalid email format before API call');
+        showErrorMessage();
+        isSubmitting = false;
+        return;
+    }
+
+    // Use JSON.stringify to prevent JSON injection attacks
+    // The token and preferences are stored as JSON strings that need to be parsed
+    // Token is stored as a quoted JSON string, preferences is a partial JSON object
+    let requestInformation;
+    let purposes;
+    
+    try {
+        // Token is stored as '"...' so we need to parse it as a JSON string
+        requestInformation = JSON.parse(token);
+        // Preferences is stored as '"purposes": [...]' so we wrap it in braces to make valid JSON
+        purposes = JSON.parse(`{${preferences}}`).purposes;
+    } catch (e) {
+        console.error('Error parsing token or preferences:', e);
+        showErrorMessage();
+        isSubmitting = false;
+        return;
+    }
+
+    // Build the request body using JSON.stringify to safely escape the email
+    // This prevents JSON injection attacks
+    const body = JSON.stringify({
+        identifier: sanitizedEmail,
+        requestInformation: requestInformation,
+        purposes: purposes
+    });
+
     const xhr = new XMLHttpRequest();
     xhr.open('POST', url);
     xhr.setRequestHeader('Content-Type', 'application/json');
+    
+    // Add error handling
+    xhr.onerror = function() {
+        console.error('Network error occurred during API call');
+        showErrorMessage();
+        isSubmitting = false;
+        // Re-enable form on error
+        const textInput = document.getElementById('ot-email');
+        const submitBtn = document.getElementById('ot-dns-submit');
+        if (textInput) textInput.disabled = false;
+        if (submitBtn) submitBtn.disabled = false;
+    };
+    
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            // Success - form already disabled in inputValidation
+        } else {
+            console.error('API call failed with status:', xhr.status);
+            showErrorMessage();
+            isSubmitting = false;
+            // Re-enable form on error
+            const textInput = document.getElementById('ot-email');
+            const submitBtn = document.getElementById('ot-dns-submit');
+            if (textInput) textInput.disabled = false;
+            if (submitBtn) submitBtn.disabled = false;
+        }
+    };
+    
     xhr.send(body);
-    //console.log(body);
 }
 
 const re =
@@ -132,25 +197,101 @@ const re =
 
 // email format validation
 function validateEmail(email) {
-    return re.test(String(email).toLowerCase());
+    if (!email || typeof email !== 'string') {
+        return false;
+    }
+    
+    // Trim and check length
+    const trimmedEmail = email.trim();
+    if (trimmedEmail.length === 0 || trimmedEmail.length > MAX_EMAIL_LENGTH) {
+        return false;
+    }
+    
+    // Validate format with regex
+    return re.test(trimmedEmail.toLowerCase());
+}
+
+// Show error message to user
+function showErrorMessage() {
+    const errorText = (0,_language_support__WEBPACK_IMPORTED_MODULE_0__/* .getLanguageString */ .M)('An error occurred. Please try again.');
+    const existingError = document.getElementById('ot-submit-error');
+    const existingSuccess = document.getElementById('ot-submit-text');
+    
+    // Remove existing messages
+    if (existingError) existingError.remove();
+    if (existingSuccess) existingSuccess.remove();
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.id = 'ot-submit-error';
+    errorDiv.setAttribute('style', 'display: inline; margin-left: 10px !important; color: red;');
+    errorDiv.textContent = errorText;
+    
+    const otEmailSubmit = document.querySelectorAll('#ot-email-submit #ot-dns-submit')[0];
+    if (otEmailSubmit) {
+        otEmailSubmit.insertAdjacentElement('afterend', errorDiv);
+    }
 }
 
 // if email input is valid, trigger submitPreferences function and disable text input field and submit button
 function inputValidation() {
+    // Prevent duplicate submissions
+    if (isSubmitting) {
+        return;
+    }
+    
     const textInput = document.getElementById('ot-email');
-    if (textInput && validateEmail(textInput.value)) {
-        // console.log(`email returned valid; emailInputValue = ${emailInputValue}`);
-        submitPreferences();
+    const submitBtn = document.getElementById('ot-dns-submit');
+    
+    if (!textInput || !submitBtn) {
+        return;
+    }
+    
+    // Sanitize input - trim whitespace
+    const emailValue = textInput.value.trim();
+    
+    // Validate email
+    if (validateEmail(emailValue)) {
+        // Set submitting flag
+        isSubmitting = true;
+        
+        // Disable form to prevent duplicate submissions
         textInput.disabled = true;
-        document.getElementById('ot-dns-submit').disabled = true;
-
-        const confirmSubmit =
-            '<div id="ot-submit-text" style="display: inline; margin-left: 10px !important;">Successfully Submitted!</div>';
+        submitBtn.disabled = true;
+        
+        // Remove any existing error messages
+        const existingError = document.getElementById('ot-submit-error');
+        if (existingError) existingError.remove();
+        
+        // Show success message
+        const confirmSubmit = document.createElement('div');
+        confirmSubmit.id = 'ot-submit-text';
+        confirmSubmit.setAttribute('style', 'display: inline; margin-left: 10px !important; color: green;');
+        confirmSubmit.textContent = (0,_language_support__WEBPACK_IMPORTED_MODULE_0__/* .getLanguageString */ .M)('Successfully Submitted!');
+        
         const otEmailSubmit = document.querySelectorAll('#ot-email-submit #ot-dns-submit')[0];
-        otEmailSubmit.insertAdjacentHTML('afterend', confirmSubmit);
+        if (otEmailSubmit) {
+            otEmailSubmit.insertAdjacentElement('afterend', confirmSubmit);
+        }
+        
+        // Submit with sanitized email
+        submitPreferences();
     } else {
-        //console.log(`function returned false; emailInputValue = ${emailInputValue}`);
-        //console.log('invalid email');
+        // Show validation error
+        const existingError = document.getElementById('ot-submit-error');
+        const existingSuccess = document.getElementById('ot-submit-text');
+        
+        if (existingError) existingError.remove();
+        if (existingSuccess) existingSuccess.remove();
+        
+        const errorDiv = document.createElement('div');
+        errorDiv.id = 'ot-submit-error';
+        errorDiv.setAttribute('style', 'display: inline; margin-left: 10px !important; color: red;');
+        errorDiv.textContent = (0,_language_support__WEBPACK_IMPORTED_MODULE_0__/* .getLanguageString */ .M)('Please enter a valid email.');
+        
+        const otEmailSubmit = document.querySelectorAll('#ot-email-submit #ot-dns-submit')[0];
+        if (otEmailSubmit) {
+            otEmailSubmit.insertAdjacentElement('afterend', errorDiv);
+        }
     }
 }
 
@@ -162,14 +303,32 @@ function submitPreferences() {
 
     if (!textInput || textInput.value === '') {
         console.error('Identifier Not Set');
+        isSubmitting = false;
+        // Re-enable form
+        textInput.disabled = false;
+        const submitBtn = document.getElementById('ot-dns-submit');
+        if (submitBtn) submitBtn.disabled = false;
+        return;
     }
+    
+    // Sanitize and validate email before sending
+    const emailValue = textInput.value.trim();
+    if (!validateEmail(emailValue)) {
+        console.error('Invalid email format in submitPreferences');
+        isSubmitting = false;
+        // Re-enable form
+        textInput.disabled = false;
+        const submitBtn = document.getElementById('ot-dns-submit');
+        if (submitBtn) submitBtn.disabled = false;
+        return;
+    }
+    
     // else if(OnetrustActiveGroups === ",," && saveButtonClicked === false){
     //    console.warn("New Preferences Set")
     //    setTimeout(setPreferences,100);
     // }
-    else {
-        setTimeout(setPreferences(textInput.value), 100);
-    }
+    // Use sanitized email value
+    setTimeout(() => setPreferences(emailValue), 100);
 }
 
 // when clicking on "Do Not Share" footer link:
@@ -333,7 +492,7 @@ function dnsCheck() {
 }
 
 
-/***/ }
+/***/ })
 
 /******/ 	});
 /************************************************************************/
@@ -422,7 +581,7 @@ async function OptanonWrapperLocal() {
                 <p>${emailBlock}</p>
                 <form id="ot-email-submit" style="padding-top: 20px;" onsubmit="return false;">
                     <label for="ot-email">${emailLabel}
-                        <input type="email" style="border: 1px solid #000 !important;" id="ot-email" name="ot-email" required>
+                        <input type="email" style="border: 1px solid #000 !important;" id="ot-email" name="ot-email" required maxlength="254" autocomplete="email">
                         <input type="submit" style="border-radius: 4px; padding: 7px; border: 1px solid #000 !important;" id="ot-dns-submit" value="${submit}">
                     </label>
                 </form>

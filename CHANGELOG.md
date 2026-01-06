@@ -98,3 +98,13 @@
 - Add source map for Sentry debugging
 - Update dependencies
 - Defensive programming
+
+## 1.5.1 security improvements - Jan 2026
+- **Security: Fix JSON injection vulnerability** - Use JSON.stringify() instead of template literals when constructing API request body to prevent malicious email values from breaking JSON structure
+- **Security: Add input sanitization** - Trim whitespace, validate email length (max 254 chars per RFC 5321), and add maxlength attribute to email input field
+- **Security: Prevent duplicate submissions** - Add submission throttling flag to prevent race conditions and multiple simultaneous API calls
+- **Security: Enhanced error handling** - Add comprehensive error handling for network errors and API failures with user-friendly feedback
+- **Security: Defense in depth** - Validate email at multiple points (client-side validation, before API call) and sanitize input throughout the submission flow
+- **UX: Improved error messages** - Add localized error messages for all supported languages (English, Spanish, Arabic)
+- **UX: Form state management** - Form re-enables on error to allow users to retry submissions
+- **Code quality: Best practices** - Use textContent instead of innerHTML where possible, proper error handling that doesn't expose system details
