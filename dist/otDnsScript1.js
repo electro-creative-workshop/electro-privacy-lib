@@ -555,6 +555,11 @@ var __webpack_exports__ = {};
 // load language support & determine lang based on url
 
 
+// Version is injected by webpack DefinePlugin
+// Accessible via: window.electroPrivacyVersion in browser console
+if (typeof window !== 'undefined') {
+    window.electroPrivacyVersion = "1.5.1";
+}
 
 let dsIdSet = false;
 async function OptanonWrapperLocal() {
