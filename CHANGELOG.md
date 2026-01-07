@@ -108,3 +108,4 @@
 - **UX: Improved error messages** - Add localized error messages for all supported languages (English, Spanish, Arabic)
 - **UX: Form state management** - Form re-enables on error to allow users to retry submissions
 - **Code quality: Best practices** - Use textContent instead of innerHTML where possible, proper error handling that doesn't expose system details
+- **Version detection** - Version number is now accessible via `window.electroPrivacyVersion` in the browser console. To check the version on any site, open the browser console and type: `window.electroPrivacyVersion`
