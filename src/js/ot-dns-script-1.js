@@ -1,6 +1,11 @@
 // load language support & determine lang based on url
 import {getLanguageString} from "./language-support";
 
+// Version is injected by webpack DefinePlugin
+// Accessible via: window.electroPrivacyVersion in browser console
+if (typeof window !== 'undefined') {
+    window.electroPrivacyVersion = ELECTRO_PRIVACY_VERSION;
+}
 
 let dsIdSet = false;
 async function OptanonWrapperLocal() {
