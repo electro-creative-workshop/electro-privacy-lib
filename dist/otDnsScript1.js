@@ -132,31 +132,22 @@ function setPreferences(otDataSubjectId) {
         return;
     }
 
-    // Use JSON.stringify to prevent JSON injection attacks
-    // The token and preferences are stored as JSON strings that need to be parsed
-    // Token is stored as a quoted JSON string, preferences is a partial JSON object
-    let requestInformation;
-    let purposes;
+    // Build the request body safely to prevent JSON injection attacks
+    // Token and preferences are pre-formatted partial JSON strings that need to be concatenated
+    // Use JSON.stringify only on the user-provided email to safely escape it
+    // Token is stored as '"eyJ..."' (a quoted JSON string value)
+    // Preferences is stored as '"purposes": [...]' (a partial JSON property)
+    const body = `{"identifier":${JSON.stringify(sanitizedEmail)},"requestInformation":${token},${preferences}}`;
     
+    // Validate the constructed JSON is valid before sending
     try {
-        // Token is stored as '"...' so we need to parse it as a JSON string
-        requestInformation = JSON.parse(token);
-        // Preferences is stored as '"purposes": [...]' so we wrap it in braces to make valid JSON
-        purposes = JSON.parse(`{${preferences}}`).purposes;
+        JSON.parse(body);
     } catch (e) {
-        console.error('Error parsing token or preferences:', e);
+        console.error('Error: Constructed JSON is invalid:', e);
         showErrorMessage();
         isSubmitting = false;
         return;
     }
-
-    // Build the request body using JSON.stringify to safely escape the email
-    // This prevents JSON injection attacks
-    const body = JSON.stringify({
-        identifier: sanitizedEmail,
-        requestInformation: requestInformation,
-        purposes: purposes
-    });
 
     const xhr = new XMLHttpRequest();
     xhr.open('POST', url);
@@ -176,7 +167,28 @@ function setPreferences(otDataSubjectId) {
     
     xhr.onload = function() {
         if (xhr.status >= 200 && xhr.status < 300) {
-            // Success - form already disabled in inputValidation
+            // Success - show success message
+            const existingError = document.getElementById('ot-submit-error');
+            const existingSuccess = document.getElementById('ot-submit-text');
+            
+            // Remove any existing messages
+            if (existingError) existingError.remove();
+            if (existingSuccess) existingSuccess.remove();
+            
+            // Show success message with icon and accessibility attributes
+            const confirmSubmit = document.createElement('div');
+            confirmSubmit.id = 'ot-submit-text';
+            confirmSubmit.setAttribute('style', 'display: inline; margin-left: 10px !important; color: green; font-weight: bold;');
+            confirmSubmit.setAttribute('role', 'status');
+            confirmSubmit.setAttribute('aria-live', 'polite');
+            confirmSubmit.setAttribute('aria-atomic', 'true');
+            // Use checkmark icon (✓) for visual distinction beyond color
+            confirmSubmit.textContent = `✓ ${(0,_language_support__WEBPACK_IMPORTED_MODULE_0__/* .getLanguageString */ .M)('Successfully Submitted!')}`;
+            
+            const otEmailSubmit = document.querySelectorAll('#ot-email-submit #ot-dns-submit')[0];
+            if (otEmailSubmit) {
+                otEmailSubmit.insertAdjacentElement('afterend', confirmSubmit);
+            }
         } else {
             console.error('API call failed with status:', xhr.status);
             showErrorMessage();
@@ -223,8 +235,12 @@ function showErrorMessage() {
     
     const errorDiv = document.createElement('div');
     errorDiv.id = 'ot-submit-error';
-    errorDiv.setAttribute('style', 'display: inline; margin-left: 10px !important; color: red;');
-    errorDiv.textContent = errorText;
+    errorDiv.setAttribute('style', 'display: inline; margin-left: 10px !important; color: red; font-weight: bold;');
+    errorDiv.setAttribute('role', 'alert');
+    errorDiv.setAttribute('aria-live', 'assertive');
+    errorDiv.setAttribute('aria-atomic', 'true');
+    // Use warning icon (⚠) for visual distinction beyond color
+    errorDiv.textContent = `⚠ ${errorText}`;
     
     const otEmailSubmit = document.querySelectorAll('#ot-email-submit #ot-dns-submit')[0];
     if (otEmailSubmit) {
@@ -258,22 +274,14 @@ function inputValidation() {
         textInput.disabled = true;
         submitBtn.disabled = true;
         
-        // Remove any existing error messages
+        // Remove any existing messages
         const existingError = document.getElementById('ot-submit-error');
+        const existingSuccess = document.getElementById('ot-submit-text');
         if (existingError) existingError.remove();
-        
-        // Show success message
-        const confirmSubmit = document.createElement('div');
-        confirmSubmit.id = 'ot-submit-text';
-        confirmSubmit.setAttribute('style', 'display: inline; margin-left: 10px !important; color: green;');
-        confirmSubmit.textContent = (0,_language_support__WEBPACK_IMPORTED_MODULE_0__/* .getLanguageString */ .M)('Successfully Submitted!');
-        
-        const otEmailSubmit = document.querySelectorAll('#ot-email-submit #ot-dns-submit')[0];
-        if (otEmailSubmit) {
-            otEmailSubmit.insertAdjacentElement('afterend', confirmSubmit);
-        }
+        if (existingSuccess) existingSuccess.remove();
         
         // Submit with sanitized email
+        // Success message will be shown after API call succeeds
         submitPreferences();
     } else {
         // Show validation error
@@ -285,8 +293,12 @@ function inputValidation() {
         
         const errorDiv = document.createElement('div');
         errorDiv.id = 'ot-submit-error';
-        errorDiv.setAttribute('style', 'display: inline; margin-left: 10px !important; color: red;');
-        errorDiv.textContent = (0,_language_support__WEBPACK_IMPORTED_MODULE_0__/* .getLanguageString */ .M)('Please enter a valid email.');
+        errorDiv.setAttribute('style', 'display: inline; margin-left: 10px !important; color: red; font-weight: bold;');
+        errorDiv.setAttribute('role', 'alert');
+        errorDiv.setAttribute('aria-live', 'assertive');
+        errorDiv.setAttribute('aria-atomic', 'true');
+        // Use warning icon (⚠) for visual distinction beyond color
+        errorDiv.textContent = `⚠ ${(0,_language_support__WEBPACK_IMPORTED_MODULE_0__/* .getLanguageString */ .M)('Please enter a valid email.')}`;
         
         const otEmailSubmit = document.querySelectorAll('#ot-email-submit #ot-dns-submit')[0];
         if (otEmailSubmit) {
@@ -304,8 +316,8 @@ function submitPreferences() {
     if (!textInput || textInput.value === '') {
         console.error('Identifier Not Set');
         isSubmitting = false;
-        // Re-enable form
-        textInput.disabled = false;
+        // Re-enable form if elements exist
+        if (textInput) textInput.disabled = false;
         const submitBtn = document.getElementById('ot-dns-submit');
         if (submitBtn) submitBtn.disabled = false;
         return;
@@ -316,8 +328,8 @@ function submitPreferences() {
     if (!validateEmail(emailValue)) {
         console.error('Invalid email format in submitPreferences');
         isSubmitting = false;
-        // Re-enable form
-        textInput.disabled = false;
+        // Re-enable form if elements exist
+        if (textInput) textInput.disabled = false;
         const submitBtn = document.getElementById('ot-dns-submit');
         if (submitBtn) submitBtn.disabled = false;
         return;
@@ -558,7 +570,7 @@ var __webpack_exports__ = {};
 // Version is injected by webpack DefinePlugin
 // Accessible via: window.electroPrivacyVersion in browser console
 if (typeof window !== 'undefined') {
-    window.electroPrivacyVersion = "1.5.1";
+    window.electroPrivacyVersion =  true ? "1.5.1" : 0;
 }
 
 let dsIdSet = false;
