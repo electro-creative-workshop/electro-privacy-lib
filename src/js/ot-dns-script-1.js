@@ -4,7 +4,7 @@ import {getLanguageString} from "./language-support";
 // Version is injected by webpack DefinePlugin
 // Accessible via: window.electroPrivacyVersion in browser console
 if (typeof window !== 'undefined') {
-    window.electroPrivacyVersion = ELECTRO_PRIVACY_VERSION;
+    window.electroPrivacyVersion = typeof ELECTRO_PRIVACY_VERSION !== 'undefined' ? ELECTRO_PRIVACY_VERSION : 'unknown';
 }
 
 let dsIdSet = false;
