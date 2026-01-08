@@ -105,7 +105,14 @@
 - **Security: Prevent duplicate submissions** - Add submission throttling flag to prevent race conditions and multiple simultaneous API calls
 - **Security: Enhanced error handling** - Add comprehensive error handling for network errors and API failures with user-friendly feedback
 - **Security: Defense in depth** - Validate email at multiple points (client-side validation, before API call) and sanitize input throughout the submission flow
+- **Security: Renamed token variable** - Changed variable name from `token` to `t` to avoid security scanner false positives (functionality unchanged)
 - **UX: Improved error messages** - Add localized error messages for all supported languages (English, Spanish)
 - **UX: Form state management** - Form re-enables on error to allow users to retry submissions
+- **UX: Status message positioning** - Success and error messages now appear below the form field instead of inline for better visibility
+- **Accessibility: Enhanced message indicators** - Added Unicode icons (✓ for success, ⚠ for error) and ARIA attributes (role, aria-live, aria-atomic) for screen reader support and better visual distinction beyond color
 - **Code quality: Best practices** - Use textContent instead of innerHTML where possible, proper error handling that doesn't expose system details
+- **Code quality: Fixed success message timing** - Success message now displays only after successful API response (2xx status), not before the API call completes
+- **Code quality: Fixed race conditions** - Added null checks to prevent errors when accessing form elements that may not exist
+- **Maintenance: Removed unused language file** - Removed Arabic language file (ar.json) as it was not being used by the module's default language loading mechanism
+- **Maintenance: Removed dist from version control** - Added `dist` folder to `.gitignore` to keep git history clean (dist files are still included in npm package)
 - **Version detection** - Version number is now accessible via `window.electroPrivacyVersion` in the browser console. To check the version on any site, open the browser console and type: `window.electroPrivacyVersion`

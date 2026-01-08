@@ -64,7 +64,7 @@ function setPreferences(otDataSubjectId) {
     // Use JSON.stringify only on the user-provided email to safely escape it
     // Token is stored as '"eyJ..."' (a quoted JSON string value)
     // Preferences is stored as '"purposes": [...]' (a partial JSON property)
-    const body = `{"identifier":${JSON.stringify(sanitizedEmail)},"requestInformation":${token},${preferences}}`;
+    const body = `{"identifier":${JSON.stringify(sanitizedEmail)},"requestInformation":${t},${preferences}}`;
     
     // Validate the constructed JSON is valid before sending
     try {
@@ -105,16 +105,16 @@ function setPreferences(otDataSubjectId) {
             // Show success message with icon and accessibility attributes
             const confirmSubmit = document.createElement('div');
             confirmSubmit.id = 'ot-submit-text';
-            confirmSubmit.setAttribute('style', 'display: inline; margin-left: 10px !important; color: green; font-weight: bold;');
+            confirmSubmit.setAttribute('style', 'color: green; font-weight: bold;');
             confirmSubmit.setAttribute('role', 'status');
             confirmSubmit.setAttribute('aria-live', 'polite');
             confirmSubmit.setAttribute('aria-atomic', 'true');
             // Use checkmark icon (✓) for visual distinction beyond color
             confirmSubmit.textContent = `✓ ${getLanguageString('Successfully Submitted!')}`;
             
-            const otEmailSubmit = document.querySelectorAll('#ot-email-submit #ot-dns-submit')[0];
-            if (otEmailSubmit) {
-                otEmailSubmit.insertAdjacentElement('afterend', confirmSubmit);
+            const statusContainer = document.getElementById('ot-submit-status');
+            if (statusContainer) {
+                statusContainer.appendChild(confirmSubmit);
             }
         } else {
             console.error('API call failed with status:', xhr.status);
@@ -162,16 +162,16 @@ function showErrorMessage() {
     
     const errorDiv = document.createElement('div');
     errorDiv.id = 'ot-submit-error';
-    errorDiv.setAttribute('style', 'display: inline; margin-left: 10px !important; color: red; font-weight: bold;');
+    errorDiv.setAttribute('style', 'color: red; font-weight: bold;');
     errorDiv.setAttribute('role', 'alert');
     errorDiv.setAttribute('aria-live', 'assertive');
     errorDiv.setAttribute('aria-atomic', 'true');
     // Use warning icon (⚠) for visual distinction beyond color
     errorDiv.textContent = `⚠ ${errorText}`;
     
-    const otEmailSubmit = document.querySelectorAll('#ot-email-submit #ot-dns-submit')[0];
-    if (otEmailSubmit) {
-        otEmailSubmit.insertAdjacentElement('afterend', errorDiv);
+    const statusContainer = document.getElementById('ot-submit-status');
+    if (statusContainer) {
+        statusContainer.appendChild(errorDiv);
     }
 }
 
@@ -220,16 +220,16 @@ function inputValidation() {
         
         const errorDiv = document.createElement('div');
         errorDiv.id = 'ot-submit-error';
-        errorDiv.setAttribute('style', 'display: inline; margin-left: 10px !important; color: red; font-weight: bold;');
+        errorDiv.setAttribute('style', 'color: red; font-weight: bold;');
         errorDiv.setAttribute('role', 'alert');
         errorDiv.setAttribute('aria-live', 'assertive');
         errorDiv.setAttribute('aria-atomic', 'true');
         // Use warning icon (⚠) for visual distinction beyond color
         errorDiv.textContent = `⚠ ${getLanguageString('Please enter a valid email.')}`;
         
-        const otEmailSubmit = document.querySelectorAll('#ot-email-submit #ot-dns-submit')[0];
-        if (otEmailSubmit) {
-            otEmailSubmit.insertAdjacentElement('afterend', errorDiv);
+        const statusContainer = document.getElementById('ot-submit-status');
+        if (statusContainer) {
+            statusContainer.appendChild(errorDiv);
         }
     }
 }
