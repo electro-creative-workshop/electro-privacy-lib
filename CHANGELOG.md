@@ -99,7 +99,7 @@
 - Update dependencies
 - Defensive programming
 
-## 1.5.1 security improvements - Jan 2026
+## 1.6.0 security improvements and package fix - Jan 2026
 - **Security: Fix JSON injection vulnerability** - Use JSON.stringify() instead of template literals when constructing API request body to prevent malicious email values from breaking JSON structure
 - **Security: Add input sanitization** - Trim whitespace, validate email length (max 254 chars per RFC 5321), and add maxlength attribute to email input field
 - **Security: Prevent duplicate submissions** - Add submission throttling flag to prevent race conditions and multiple simultaneous API calls
@@ -117,4 +117,5 @@
 - **Maintenance: Removed dist from version control** - Added `dist` folder to `.gitignore` to keep git history clean (dist files are still included in npm package via `files` field in package.json)
 - **Maintenance: Added prepublishOnly script** - Automatically builds `dist` folder before publishing to npm, ensuring published packages always have the latest built files
 - **Maintenance: Explicit package files** - Added `files` field to package.json to explicitly include `dist`, `README.md`, and `CHANGELOG.md` in published npm packages
+- **Fix: Include dist folder in npm package** - Added `files` field to package.json to ensure `dist` folder (containing all JavaScript, CSS, and language files) is included when the package is installed from npm. Previous versions were missing the `dist` folder due to `.gitignore` exclusion. This version includes all necessary files for the package to function correctly.
 - **Version detection** - Version number is now accessible via `window.electroPrivacyVersion` in the browser console. To check the version on any site, open the browser console and type: `window.electroPrivacyVersion`
