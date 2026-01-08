@@ -29,7 +29,8 @@
         "build:webpack": "webpack --progress --config webpack.config.js",
         "build:scss": "sass --no-source-map --style=compressed src/scss/privacy.scss dist/electro-privacy.css",
         "build": "npm run build:webpack && npm run build:scss",
-        "prepublishOnly": "npm run build"
+        "prepublishOnly": "npm run build",
+        "postinstall": "npm run build"
     },
     "dependencies": {
         "webpack-version-file": "^0.1.7"
