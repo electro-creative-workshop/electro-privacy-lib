@@ -29,7 +29,7 @@
         "build:css": "cp src/css/privacy.css dist/electro-privacy.css",
         "build": "npm run build:webpack && npm run build:css",
         "prepublishOnly": "npm run build",
-        "postinstall": "node scripts/postinstall.js"
+        "postinstall": "npm run build || echo 'Build skipped: devDependencies not installed (this is normal when installing as a dependency)'"
     },
     "dependencies": {
         "webpack-version-file": "^0.1.7"
