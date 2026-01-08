@@ -121,3 +121,5 @@
 - **Fix: Include dist folder in npm package** - Added `files` field to package.json to ensure `dist` folder (containing all JavaScript, CSS, and language files) is included when the package is installed from npm. When installing from GitHub, `dist` is built automatically via `postinstall` script
 - **Version detection** - Version number is now accessible via `window.electroPrivacyVersion` in the browser console. To check the version on any site, open the browser console and type: `window.electroPrivacyVersion`
 - **Maintenance: Converted SCSS to CSS** - Converted `src/scss/privacy.scss` to plain CSS (`src/css/privacy.css`) and removed sass dependency to simplify the build process and reduce dependencies
+- **UX: Improved focus outline behavior** - Removed focus outline for mouse clicks while preserving keyboard navigation focus indicators using `:focus-visible` pseudo-class for better accessibility
+- **UX: Clear email input on modal close** - Email input field and status messages are now automatically cleared when the modal is closed (via Escape key or close button), ensuring a clean state when reopening the modal

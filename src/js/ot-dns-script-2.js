@@ -362,6 +362,21 @@ function hideDnsUI() {
         closeBtn.style.display = 'block';
         pcCatTitle.style.display = 'block';
         catDescription.style.display = 'block';
+        
+        // Clear email input and status messages when modal closes
+        const emailField = document.getElementById('ot-email');
+        if (emailField) {
+            emailField.value = '';
+            emailField.disabled = false;
+        }
+        const submitBtn = document.getElementById('ot-dns-submit');
+        if (submitBtn) {
+            submitBtn.disabled = false;
+        }
+        const existingError = document.getElementById('ot-submit-error');
+        const existingSuccess = document.getElementById('ot-submit-text');
+        if (existingError) existingError.remove();
+        if (existingSuccess) existingSuccess.remove();
     }
 
     dnsUI = false;
@@ -407,6 +422,16 @@ function dnsCheck() {
             //  v202304.1.0 - which can remove keyboard handler when cookies popup closes
             document.addEventListener('keydown', function (e) {
                 if ('Escape' === e.code) {
+                    // Clear email input and status messages before closing
+                    const emailInput = document.getElementById('ot-email');
+                    if (emailInput) {
+                        emailInput.value = '';
+                    }
+                    const existingError = document.getElementById('ot-submit-error');
+                    const existingSuccess = document.getElementById('ot-submit-text');
+                    if (existingError) existingError.remove();
+                    if (existingSuccess) existingSuccess.remove();
+                    
                     // click dialog close button
                     const close = document.getElementById('close-pc-btn-handler');
                     if (close) {
