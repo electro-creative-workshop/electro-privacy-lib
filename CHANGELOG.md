@@ -119,3 +119,4 @@
 - **Maintenance: Explicit package files** - Added `files` field to package.json to explicitly include `dist`, `README.md`, and `CHANGELOG.md` in published npm packages
 - **Fix: Include dist folder in npm package** - Added `files` field to package.json to ensure `dist` folder (containing all JavaScript, CSS, and language files) is included when the package is installed from npm. Previous versions were missing the `dist` folder due to `.gitignore` exclusion. This version includes all necessary files for the package to function correctly.
 - **Version detection** - Version number is now accessible via `window.electroPrivacyVersion` in the browser console. To check the version on any site, open the browser console and type: `window.electroPrivacyVersion`
+- **Maintenance: Converted SCSS to CSS** - Converted `src/scss/privacy.scss` to plain CSS (`src/css/privacy.css`) and removed sass dependency to simplify the build process and reduce dependencies
