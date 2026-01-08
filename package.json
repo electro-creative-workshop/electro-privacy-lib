@@ -20,17 +20,16 @@
     "devDependencies": {
         "copy-webpack-plugin": "^12.0.2",
         "prettier": "3.5.2",
-        "sass": "^1.85.0",
         "webpack": "^5.98.0",
         "webpack-cli": "^6.0.1"
     },
     "scripts": {
         "prettier": "prettier -w .",
         "build:webpack": "webpack --progress --config webpack.config.js",
-        "build:scss": "sass --no-source-map --style=compressed src/scss/privacy.scss dist/electro-privacy.css",
-        "build": "npm run build:webpack && npm run build:scss",
+        "build:css": "cp src/css/privacy.css dist/electro-privacy.css",
+        "build": "npm run build:webpack && npm run build:css",
         "prepublishOnly": "npm run build",
-        "postinstall": "npm run build"
+        "postinstall": "node scripts/postinstall.js"
     },
     "dependencies": {
         "webpack-version-file": "^0.1.7"
