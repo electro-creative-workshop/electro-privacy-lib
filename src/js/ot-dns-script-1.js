@@ -36,6 +36,7 @@ async function OptanonWrapperLocal() {
                         <input type="submit" style="border-radius: 4px; padding: 7px; border: 1px solid #000 !important;" id="ot-dns-submit" value="${submit}">
                     </label>
                 </form>
+                <div id="ot-submit-status" style="padding-top: 10px;"></div>
                 <br/>
                 <p>${emailInstructions}</p>
                  <br/><br/>
