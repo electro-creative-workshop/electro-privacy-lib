@@ -318,6 +318,22 @@ function doNotShareUI() {
     trackingCat.dispatchEvent(new Event('change'))
     checkboxStatus.style.display = 'position: relative; top: -5px; display: inline-block; margin-left: 5px;';
 
+    // Ensure email input and submit button are enabled when modal opens
+    const emailField = document.getElementById('ot-email');
+    const submitBtn = document.getElementById('ot-dns-submit');
+    if (emailField) {
+        emailField.disabled = false;
+    }
+    if (submitBtn) {
+        submitBtn.disabled = false;
+    }
+    
+    // Clear any existing status messages
+    const existingError = document.getElementById('ot-submit-error');
+    const existingSuccess = document.getElementById('ot-submit-text');
+    if (existingError) existingError.remove();
+    if (existingSuccess) existingSuccess.remove();
+
     dnsUI = true;
 }
 
