@@ -114,5 +114,7 @@
 - **Code quality: Fixed success message timing** - Success message now displays only after successful API response (2xx status), not before the API call completes
 - **Code quality: Fixed race conditions** - Added null checks to prevent errors when accessing form elements that may not exist
 - **Maintenance: Removed unused language file** - Removed Arabic language file (ar.json) as it was not being used by the module's default language loading mechanism
-- **Maintenance: Removed dist from version control** - Added `dist` folder to `.gitignore` to keep git history clean (dist files are still included in npm package)
+- **Maintenance: Removed dist from version control** - Added `dist` folder to `.gitignore` to keep git history clean (dist files are still included in npm package via `files` field in package.json)
+- **Maintenance: Added prepublishOnly script** - Automatically builds `dist` folder before publishing to npm, ensuring published packages always have the latest built files
+- **Maintenance: Explicit package files** - Added `files` field to package.json to explicitly include `dist`, `README.md`, and `CHANGELOG.md` in published npm packages
 - **Version detection** - Version number is now accessible via `window.electroPrivacyVersion` in the browser console. To check the version on any site, open the browser console and type: `window.electroPrivacyVersion`
