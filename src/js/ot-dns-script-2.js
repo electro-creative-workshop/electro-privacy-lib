@@ -48,7 +48,16 @@ function initializeToken() {
                 ? window.ELECTRO_PRIVACY_TOKEN_STAGING 
                 : `"${window.ELECTRO_PRIVACY_TOKEN_STAGING}"`;
         } else {
-            console.error('electro-privacy: ELECTRO_PRIVACY_TOKEN_STAGING is required but not set. Please set window.ELECTRO_PRIVACY_TOKEN_STAGING before using this module.');
+            // Enhanced error message with debugging info
+            console.error('electro-privacy: ELECTRO_PRIVACY_TOKEN_STAGING is required but not set.');
+            console.error('  Environment detected: STAGING (hostname: ' + location.host + ')');
+            console.error('  Required: window.ELECTRO_PRIVACY_TOKEN_STAGING');
+            console.error('  For Next.js/Vercel: Set NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN_STAGING in Vercel environment variables, then set window.ELECTRO_PRIVACY_TOKEN_STAGING in your _app.js');
+            console.error('  Current window variables:', {
+                ELECTRO_PRIVACY_TOKEN: typeof window !== 'undefined' && window.ELECTRO_PRIVACY_TOKEN ? 'SET' : 'NOT SET',
+                ELECTRO_PRIVACY_TOKEN_STAGING: typeof window !== 'undefined' && window.ELECTRO_PRIVACY_TOKEN_STAGING ? 'SET' : 'NOT SET',
+                electroPrivacyStaging: typeof window !== 'undefined' ? window.electroPrivacyStaging : 'N/A'
+            });
             t = null;
         }
     } else {
@@ -58,7 +67,16 @@ function initializeToken() {
                 ? window.ELECTRO_PRIVACY_TOKEN 
                 : `"${window.ELECTRO_PRIVACY_TOKEN}"`;
         } else {
-            console.error('electro-privacy: ELECTRO_PRIVACY_TOKEN is required but not set. Please set window.ELECTRO_PRIVACY_TOKEN before using this module.');
+            // Enhanced error message with debugging info
+            console.error('electro-privacy: ELECTRO_PRIVACY_TOKEN is required but not set.');
+            console.error('  Environment detected: PRODUCTION (hostname: ' + location.host + ')');
+            console.error('  Required: window.ELECTRO_PRIVACY_TOKEN');
+            console.error('  For Next.js/Vercel: Set NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN in Vercel environment variables, then set window.ELECTRO_PRIVACY_TOKEN in your _app.js');
+            console.error('  Current window variables:', {
+                ELECTRO_PRIVACY_TOKEN: typeof window !== 'undefined' && window.ELECTRO_PRIVACY_TOKEN ? 'SET' : 'NOT SET',
+                ELECTRO_PRIVACY_TOKEN_STAGING: typeof window !== 'undefined' && window.ELECTRO_PRIVACY_TOKEN_STAGING ? 'SET' : 'NOT SET',
+                electroPrivacyStaging: typeof window !== 'undefined' ? window.electroPrivacyStaging : 'N/A'
+            });
             t = null;
         }
     }
