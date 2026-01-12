@@ -116,7 +116,7 @@ For more information, see [Using Private Dependendies with Vercel](https://verce
 
 ### Required Setup
 
-The module requires `window.ELECTRO_PRIVACY_TOKEN` (production) or `window.ELECTRO_PRIVACY_TOKEN_STAGING` (staging) to be set before importing. If the token is not set, the module will log an error and API calls will fail.
+The module requires `window.ELECTRO_PRIVACY_TOKEN` (production) or `window.ELECTRO_PRIVACY_TOKEN_STAGING` (staging) to be set before the user opens the "Your Privacy Choices" modal. The token is checked lazily when the modal opens, not at module load time, which allows more flexibility in when you set the window variable. If the token is not set when the modal opens, the module will log an error and API calls will fail.
 
 #### For Next.js Sites (Vercel):
 
@@ -127,7 +127,7 @@ The module requires `window.ELECTRO_PRIVACY_TOKEN` (production) or `window.ELECT
    - Add `NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN` with your production token value
    - Add `NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN_STAGING` with your staging token value (if needed)
 
-2. **Set the window variable before importing the module:**
+2. **Set the window variable (can be set before or after importing the module):**
 
    In `src/pages/_app.js` (or similar):
 
@@ -136,8 +136,9 @@ The module requires `window.ELECTRO_PRIVACY_TOKEN` (production) or `window.ELECT
 
    export default function App({ Component, pageProps }) {
        useEffect(() => {
-           // Set token from environment variable before importing
-           // IMPORTANT: This must happen BEFORE the import statement
+           // Set token from environment variable
+           // NOTE: Token is checked lazily when the modal opens, so you can set it
+           // before or after importing the module, as long as it's set before the user opens the modal
            if (typeof window !== 'undefined') {
                // Always set production token
                if (process.env.NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN) {
@@ -155,7 +156,7 @@ The module requires `window.ELECTRO_PRIVACY_TOKEN` (production) or `window.ELECT
                //     window.electroPrivacyStaging = true;
                // }
            }
-           // Now import the module
+           // Import the module (token can be set before or after this)
            import('electro-privacy');
        }, [])
        
@@ -163,9 +164,9 @@ The module requires `window.ELECTRO_PRIVACY_TOKEN` (production) or `window.ELECT
    }
    ```
 
-   **Troubleshooting**: If you see "Token is not configured" error:
+   **Troubleshooting**: If you see "Token is not configured" error when opening the modal:
    - Verify environment variables are set in Vercel (check all environments: Production, Preview, Development)
-   - Make sure the window variable is set BEFORE the import statement
+   - Make sure the window variable is set before the user opens the "Your Privacy Choices" modal
    - For Vercel preview domains, the module automatically uses staging mode, so ensure `NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN_STAGING` is set
    - Check browser console to see which token it's looking for (production vs staging)
 
@@ -179,7 +180,7 @@ The module requires `window.ELECTRO_PRIVACY_TOKEN` (production) or `window.ELECT
    - Add `ELECTRO_PRIVACY_TOKEN_STAGING` with your staging token value (if needed)
    - Make sure to set these for all environments (Dev, Test, Live) as needed
 
-2. **Set the window variable in your theme before the module loads:**
+2. **Set the window variable in your theme (can be set before or after the module loads):**
 
    In your theme's `functions.php` or a custom plugin:
 
@@ -201,22 +202,22 @@ The module requires `window.ELECTRO_PRIVACY_TOKEN` (production) or `window.ELECT
            <?php
        }
    }
-   add_action('wp_head', 'set_electro_privacy_token', 1); // Priority 1 to run before other scripts
+   add_action('wp_head', 'set_electro_privacy_token', 1); // Priority 1 to run early, but token is checked lazily when modal opens
    ```
 
-   **Note**: The token value should be the JWT token string (with or without surrounding quotes - the module will handle both). This is **REQUIRED** - the module will not function without it.
+   **Note**: The token value should be the JWT token string (with or without surrounding quotes - the module will handle both). This is **REQUIRED** - the module will not function without it. The token is checked when the user opens the "Your Privacy Choices" modal, not at page load.
 
 #### For WordPress Sites (Other Hosting):
 
-**REQUIRED**: Set the token in your theme's JavaScript before the module loads:
+**REQUIRED**: Set the token in your theme's JavaScript (can be set before or after the module loads, as long as it's set before the user opens the modal):
 
 ```javascript
-// REQUIRED: Set token before importing
+// REQUIRED: Set token (can be set before or after module loads)
 window.ELECTRO_PRIVACY_TOKEN = 'your-production-token-here';
 // Then load electro-privacy
 ```
 
-**Note**: The token is **REQUIRED**. The module will not function without it.
+**Note**: The token is **REQUIRED**. The module will not function without it. The token is checked when the user opens the "Your Privacy Choices" modal, not at page load.
 
 ## UAT Values
 

@@ -14,40 +14,56 @@ const MAX_EMAIL_LENGTH = 254; // RFC 5321 maximum email length
 // Set window.ELECTRO_PRIVACY_TOKEN (production) or window.ELECTRO_PRIVACY_TOKEN_STAGING (staging)
 // before importing this module. See README.md for setup instructions.
 
-let url = 'https://privacyportal.onetrust.com/request/v1/consentreceipts';
+// Configuration variables - initialized lazily when modal opens
+let url = null;
 let t = null; // Token must be set via environment variable - no hardcoded fallback
-let preferences = '"purposes": [{"Id": "528de150-b5f3-467d-be11-757756601224","TransactionType": "WITHDRAWN"}]';
+let preferences = null;
 
-// Check if we're in staging/UAT mode
-const isStaging = window.electroPrivacyStaging || isNonProduction();
-
-if (isStaging) {
-    url = ' https://privacyportaluat.onetrust.com/request/v1/consentreceipts';
-    preferences = '"purposes": [{"Id": "9cb76b94-6766-4f51-8f4b-1f518acdd165","TransactionType": "WITHDRAWN"}]';
-}
-
-// Token must be provided via window.ELECTRO_PRIVACY_TOKEN or window.ELECTRO_PRIVACY_TOKEN_STAGING
-// This is REQUIRED - no fallback to hardcoded values for security reasons
-if (isStaging) {
-    if (typeof window !== 'undefined' && window.ELECTRO_PRIVACY_TOKEN_STAGING) {
-        // Ensure token is wrapped in quotes if not already
-        t = window.ELECTRO_PRIVACY_TOKEN_STAGING.startsWith('"') 
-            ? window.ELECTRO_PRIVACY_TOKEN_STAGING 
-            : `"${window.ELECTRO_PRIVACY_TOKEN_STAGING}"`;
-    } else {
-        console.error('electro-privacy: ELECTRO_PRIVACY_TOKEN_STAGING is required but not set. Please set window.ELECTRO_PRIVACY_TOKEN_STAGING before importing the module.');
-        t = null;
+// Token and configuration initialization function - called lazily when modal opens
+// This allows the window variable to be set after module load, as long as it's set before the user opens the modal
+function initializeToken() {
+    // Only initialize once
+    if (t !== null && url !== null && preferences !== null) {
+        return t;
     }
-} else {
-    if (typeof window !== 'undefined' && window.ELECTRO_PRIVACY_TOKEN) {
-        // Ensure token is wrapped in quotes if not already
-        t = window.ELECTRO_PRIVACY_TOKEN.startsWith('"') 
-            ? window.ELECTRO_PRIVACY_TOKEN 
-            : `"${window.ELECTRO_PRIVACY_TOKEN}"`;
+    
+    // Re-check staging status in case window.electroPrivacyStaging was set after module load
+    const currentIsStaging = window.electroPrivacyStaging || isNonProduction();
+    
+    // Set URL and preferences based on staging status
+    if (currentIsStaging) {
+        url = ' https://privacyportaluat.onetrust.com/request/v1/consentreceipts';
+        preferences = '"purposes": [{"Id": "9cb76b94-6766-4f51-8f4b-1f518acdd165","TransactionType": "WITHDRAWN"}]';
     } else {
-        console.error('electro-privacy: ELECTRO_PRIVACY_TOKEN is required but not set. Please set window.ELECTRO_PRIVACY_TOKEN before importing the module.');
-        t = null;
+        url = 'https://privacyportal.onetrust.com/request/v1/consentreceipts';
+        preferences = '"purposes": [{"Id": "528de150-b5f3-467d-be11-757756601224","TransactionType": "WITHDRAWN"}]';
     }
+    
+    // Token must be provided via window.ELECTRO_PRIVACY_TOKEN or window.ELECTRO_PRIVACY_TOKEN_STAGING
+    // This is REQUIRED - no fallback to hardcoded values for security reasons
+    if (currentIsStaging) {
+        if (typeof window !== 'undefined' && window.ELECTRO_PRIVACY_TOKEN_STAGING) {
+            // Ensure token is wrapped in quotes if not already
+            t = window.ELECTRO_PRIVACY_TOKEN_STAGING.startsWith('"') 
+                ? window.ELECTRO_PRIVACY_TOKEN_STAGING 
+                : `"${window.ELECTRO_PRIVACY_TOKEN_STAGING}"`;
+        } else {
+            console.error('electro-privacy: ELECTRO_PRIVACY_TOKEN_STAGING is required but not set. Please set window.ELECTRO_PRIVACY_TOKEN_STAGING before using this module.');
+            t = null;
+        }
+    } else {
+        if (typeof window !== 'undefined' && window.ELECTRO_PRIVACY_TOKEN) {
+            // Ensure token is wrapped in quotes if not already
+            t = window.ELECTRO_PRIVACY_TOKEN.startsWith('"') 
+                ? window.ELECTRO_PRIVACY_TOKEN 
+                : `"${window.ELECTRO_PRIVACY_TOKEN}"`;
+        } else {
+            console.error('electro-privacy: ELECTRO_PRIVACY_TOKEN is required but not set. Please set window.ELECTRO_PRIVACY_TOKEN before using this module.');
+            t = null;
+        }
+    }
+    
+    return t;
 }
 
 // check url against known list of non-production environments
@@ -93,6 +109,9 @@ function isNonProduction()
 
 // make POST call to hit collection point
 function setPreferences(otDataSubjectId) {
+    // Initialize token (lazy loading - checks when actually needed)
+    initializeToken();
+    
     // Validate token is set - required for security
     if (!t || t === null) {
         console.error('electro-privacy: Token is not configured. Please set window.ELECTRO_PRIVACY_TOKEN or window.ELECTRO_PRIVACY_TOKEN_STAGING before using this module.');
@@ -328,6 +347,10 @@ function submitPreferences() {
 // - show email input DIV
 // - simulate click on Targeting to toggle off (may be removed depending on Clorox decision about UX)
 function doNotShareUI() {
+    // Initialize token and configuration when modal opens (lazy loading)
+    // This allows window variables to be set after module load
+    initializeToken();
+    
     // let stockText = document.getElementById("stock-text");
     const stockText = document.getElementById('ot-pc-desc');
     const dnsText = document.getElementById('dns-custom-text');
