@@ -120,6 +120,8 @@ The module requires `window.ELECTRO_PRIVACY_TOKEN` (production) or `window.ELECT
 
 #### For Next.js Sites (Vercel):
 
+**Note**: The `NEXT_PUBLIC_` prefix is required because this module runs in the browser and needs client-side access to the token. In Next.js, only environment variables prefixed with `NEXT_PUBLIC_` are exposed to client-side code. Be aware that `NEXT_PUBLIC_` variables are bundled into the client JavaScript and will be visible in the browser.
+
 1. **Add environment variables in Vercel:**
    - Go to your Vercel project settings → Environment Variables
    - Add `NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN` with your production token value
@@ -135,13 +137,23 @@ The module requires `window.ELECTRO_PRIVACY_TOKEN` (production) or `window.ELECT
    export default function App({ Component, pageProps }) {
        useEffect(() => {
            // Set token from environment variable before importing
+           // IMPORTANT: This must happen BEFORE the import statement
            if (typeof window !== 'undefined') {
+               // Always set production token
                if (process.env.NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN) {
                    window.ELECTRO_PRIVACY_TOKEN = process.env.NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN;
                }
+               // Set staging token if available (for preview/dev deployments)
                if (process.env.NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN_STAGING) {
                    window.ELECTRO_PRIVACY_TOKEN_STAGING = process.env.NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN_STAGING;
                }
+               
+               // Optional: Set staging mode for preview deployments
+               // Vercel preview domains (vercel.app) are automatically detected as staging
+               // But you can also manually set it:
+               // if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview') {
+               //     window.electroPrivacyStaging = true;
+               // }
            }
            // Now import the module
            import('electro-privacy');
@@ -150,6 +162,12 @@ The module requires `window.ELECTRO_PRIVACY_TOKEN` (production) or `window.ELECT
        return <Component {...pageProps} />
    }
    ```
+
+   **Troubleshooting**: If you see "Token is not configured" error:
+   - Verify environment variables are set in Vercel (check all environments: Production, Preview, Development)
+   - Make sure the window variable is set BEFORE the import statement
+   - For Vercel preview domains, the module automatically uses staging mode, so ensure `NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN_STAGING` is set
+   - Check browser console to see which token it's looking for (production vs staging)
 
    **Note**: The token value should be the JWT token string (with or without surrounding quotes - the module will handle both). This is **REQUIRED** - the module will not function without it.
 
