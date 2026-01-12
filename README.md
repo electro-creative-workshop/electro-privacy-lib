@@ -110,6 +110,96 @@ For more information, see [Using Private Dependendies with Vercel](https://verce
   color: #133d8d !important;
 ```
 
+## Token Configuration (Required)
+
+**IMPORTANT**: The OneTrust token **MUST** be configured via environment variables. There are no hardcoded tokens in the module for security reasons.
+
+### Required Setup
+
+The module requires `window.ELECTRO_PRIVACY_TOKEN` (production) or `window.ELECTRO_PRIVACY_TOKEN_STAGING` (staging) to be set before importing. If the token is not set, the module will log an error and API calls will fail.
+
+#### For Next.js Sites (Vercel):
+
+1. **Add environment variables in Vercel:**
+   - Go to your Vercel project settings → Environment Variables
+   - Add `NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN` with your production token value
+   - Add `NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN_STAGING` with your staging token value (if needed)
+
+2. **Set the window variable before importing the module:**
+
+   In `src/pages/_app.js` (or similar):
+
+   ```javascript
+   import { useEffect } from 'react'
+
+   export default function App({ Component, pageProps }) {
+       useEffect(() => {
+           // Set token from environment variable before importing
+           if (typeof window !== 'undefined') {
+               if (process.env.NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN) {
+                   window.ELECTRO_PRIVACY_TOKEN = process.env.NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN;
+               }
+               if (process.env.NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN_STAGING) {
+                   window.ELECTRO_PRIVACY_TOKEN_STAGING = process.env.NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN_STAGING;
+               }
+           }
+           // Now import the module
+           import('electro-privacy');
+       }, [])
+       
+       return <Component {...pageProps} />
+   }
+   ```
+
+   **Note**: The token value should be the JWT token string (with or without surrounding quotes - the module will handle both). This is **REQUIRED** - the module will not function without it.
+
+#### For WordPress Sites on Pantheon:
+
+1. **Add environment variables in Pantheon:**
+   - Go to your Pantheon site dashboard → Settings → Environment Variables
+   - Add `ELECTRO_PRIVACY_TOKEN` with your production token value
+   - Add `ELECTRO_PRIVACY_TOKEN_STAGING` with your staging token value (if needed)
+   - Make sure to set these for all environments (Dev, Test, Live) as needed
+
+2. **Set the window variable in your theme before the module loads:**
+
+   In your theme's `functions.php` or a custom plugin:
+
+   ```php
+   function set_electro_privacy_token() {
+       $token = getenv('ELECTRO_PRIVACY_TOKEN');
+       $staging_token = getenv('ELECTRO_PRIVACY_TOKEN_STAGING');
+       
+       if ($token || $staging_token) {
+           ?>
+           <script>
+               <?php if ($token): ?>
+               window.ELECTRO_PRIVACY_TOKEN = <?php echo json_encode($token); ?>;
+               <?php endif; ?>
+               <?php if ($staging_token): ?>
+               window.ELECTRO_PRIVACY_TOKEN_STAGING = <?php echo json_encode($staging_token); ?>;
+               <?php endif; ?>
+           </script>
+           <?php
+       }
+   }
+   add_action('wp_head', 'set_electro_privacy_token', 1); // Priority 1 to run before other scripts
+   ```
+
+   **Note**: The token value should be the JWT token string (with or without surrounding quotes - the module will handle both). This is **REQUIRED** - the module will not function without it.
+
+#### For WordPress Sites (Other Hosting):
+
+**REQUIRED**: Set the token in your theme's JavaScript before the module loads:
+
+```javascript
+// REQUIRED: Set token before importing
+window.ELECTRO_PRIVACY_TOKEN = 'your-production-token-here';
+// Then load electro-privacy
+```
+
+**Note**: The token is **REQUIRED**. The module will not function without it.
+
 ## UAT Values
 
 The current production version sends entries to the live OneTrust collection point by default. If you need to support UAT, set this variable before importing electro-privacy:
@@ -119,8 +209,10 @@ The current production version sends entries to the live OneTrust collection poi
 This will change the following values to the non-production values:
 
 -   url
--   token
+-   token (uses `window.ELECTRO_PRIVACY_TOKEN_STAGING` - **REQUIRED**)
 -   ID
+
+**Note**: When using staging mode, you **MUST** set `window.ELECTRO_PRIVACY_TOKEN_STAGING` before importing the module.
 
 
 ## Language Support

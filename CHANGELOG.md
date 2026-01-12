@@ -106,6 +106,7 @@
 - **Security: Enhanced error handling** - Add comprehensive error handling for network errors and API failures with user-friendly feedback
 - **Security: Defense in depth** - Validate email at multiple points (client-side validation, before API call) and sanitize input throughout the submission flow
 - **Security: Renamed token variable** - Changed variable name from `token` to `t` to avoid security scanner false positives (functionality unchanged)
+- **Security: Removed all hardcoded tokens** - **BREAKING CHANGE**: All hardcoded OneTrust tokens have been removed from the source code for security reasons. The token **MUST** now be provided via `window.ELECTRO_PRIVACY_TOKEN` (production) or `window.ELECTRO_PRIVACY_TOKEN_STAGING` (staging) before importing the module. If the token is not set, the module will log an error and API calls will fail. This is a security requirement - tokens should never be committed to version control. See README.md for setup instructions.
 - **UX: Improved error messages** - Add localized error messages for all supported languages (English, Spanish)
 - **UX: Form state management** - Form re-enables on error to allow users to retry submissions
 - **UX: Status message positioning** - Success and error messages now appear below the form field instead of inline for better visibility
