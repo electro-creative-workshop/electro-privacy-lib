@@ -10,78 +10,16 @@ let isSubmitting = false; // Prevent duplicate submissions
 const MAX_EMAIL_LENGTH = 254; // RFC 5321 maximum email length
 
 // Collection Point Information
-// SECURITY: Token must be provided via environment variable - no hardcoded tokens allowed
-// Set window.ELECTRO_PRIVACY_TOKEN (production) or window.ELECTRO_PRIVACY_TOKEN_STAGING (staging)
-// before importing this module. See README.md for setup instructions.
+let url = 'https://privacyportal.onetrust.com/request/v1/consentreceipts';
+let t =
+    '"eyJhbGciOiJSUzUxMiJ9.eyJvdEp3dFZlcnNpb24iOjEsInByb2Nlc3NJZCI6ImUxNDMwZTBkLWUzNTgtNGQ4NC1hNGViLTVmMjI3OTRmZGQwZCIsInByb2Nlc3NWZXJzaW9uIjoxLCJpYXQiOiIyMDIyLTEyLTA5VDE3OjQxOjAxLjg4IiwibW9jIjoiQVBJIiwicG9saWN5X3VyaSI6bnVsbCwic3ViIjoiRW1haWwiLCJpc3MiOm51bGwsInRlbmFudElkIjoiNjVjYTZiNDYtNzBiMS00ZWUxLTkwNzQtN2E2M2U4MDBlYTRjIiwiZGVzY3JpcHRpb24iOiJFbmRwb2ludCBmb3Igd2ViIG1vZGFscyIsImNvbnNlbnRUeXBlIjoiQ09ORElUSU9OQUxUUklHR0VSIiwiYWxsb3dOb3RHaXZlbkNvbnNlbnRzIjpmYWxzZSwiZG91YmxlT3B0SW4iOmZhbHNlLCJwdXJwb3NlcyI6W3siaWQiOiI1MjhkZTE1MC1iNWYzLTQ2N2QtYmUxMS03NTc3NTY2MDEyMjQiLCJ2ZXJzaW9uIjoxLCJwYXJlbnRJZCI6bnVsbCwidG9waWNzIjpbXSwiY3VzdG9tUHJlZmVyZW5jZXMiOltdLCJlbmFibGVHZW9sb2NhdGlvbiI6ZmFsc2V9XSwibm90aWNlcyI6W10sImRzRGF0YUVsZW1lbnRzIjpbXSwiYXV0aGVudGljYXRpb25SZXF1aXJlZCI6ZmFsc2UsInJlY29uZmlybUFjdGl2ZVB1cnBvc2UiOmZhbHNlLCJvdmVycmlkZUFjdGl2ZVB1cnBvc2UiOnRydWUsImR5bmFtaWNDb2xsZWN0aW9uUG9pbnQiOmZhbHNlLCJhZGRpdGlvbmFsSWRlbnRpZmllcnMiOltdLCJtdWx0aXBsZUlkZW50aWZpZXJUeXBlcyI6ZmFsc2UsImVuYWJsZVBhcmVudFByaW1hcnlJZGVudGlmaWVycyI6ZmFsc2UsInBhcmVudFByaW1hcnlJZGVudGlmaWVyc1R5cGUiOm51bGwsImFkZGl0aW9uYWxQYXJlbnRJZGVudGlmaWVyVHlwZXMiOltdLCJlbmFibGVHZW9sb2NhdGlvbiI6ZmFsc2V9.g2zafM0cd3qCeVZEXR1AzZfFL6n277n8xPRxGaIUi5oIRoyeDH5ESKvbXT1b4wN1pVzTXZJIl2TKXfHOxzhszfA7oX0gUoYsV6xw_GQIUkF4m8Qly_Pv8r_A0XK4QgvH5iCKcfTmNxOBXRF8vcPj8kT5Rh8G7RsuR6o1rfWBg4IaLPfG3ip7xMo8p2Z4elL3hcTi8dsEJkdSbxyugVOyqydo7Djibq5AtX4l4tI5cWRlf1eG5F1Gr9yBcCzeHl3O-mPx3j344PGgz-AYixQpWhztFUJa13NaD4gycCqNiDbeHqQ16U-696E8lM7uUJ3921qDQQoSAqV6uDnELYHuCi27VDYM8RCzaq9zloWs8G5bSRPSbHIP-YvJUKdHrzjT8_B7ZDBG1efnqMcrqMrQHErG2yDVD_DhlDBLwpokkWpmt3ryYvn9jd4Tk615J73Mxpxu2NpaXnuaothZSXRXIxL7BYUP-PS5y2edp18SKS7eXOWrU0ahEPXKKWhIfXVE7t_PSER8ZO-E-8oLtzMHfbK2bRIS44N37yUGEpmd8Th6ovZiQvTtxBkC0dJbd0FGM4su7NRXyoNY_8dHbXGc9GC1M9P54Ke4pyFfVKrcD4spavrSj2wxiqToTPFpaeFxK8XJn9xENM3_ATJhGpW19CayJm2sesiqaambsymutsk"';
+let preferences = '"purposes": [{"Id": "528de150-b5f3-467d-be11-757756601224","TransactionType": "WITHDRAWN"}]';
 
-// Configuration variables - initialized lazily when modal opens
-let url = null;
-let t = null; // Token must be set via environment variable - no hardcoded fallback
-let preferences = null;
-
-// Token and configuration initialization function - called lazily when modal opens
-// This allows the window variable to be set after module load, as long as it's set before the user opens the modal
-function initializeToken() {
-    // Only initialize once
-    if (t !== null && url !== null && preferences !== null) {
-        return t;
-    }
-    
-    // Re-check staging status in case window.electroPrivacyStaging was set after module load
-    const currentIsStaging = window.electroPrivacyStaging || isNonProduction();
-    
-    // Set URL and preferences based on staging status
-    if (currentIsStaging) {
-        url = ' https://privacyportaluat.onetrust.com/request/v1/consentreceipts';
-        preferences = '"purposes": [{"Id": "9cb76b94-6766-4f51-8f4b-1f518acdd165","TransactionType": "WITHDRAWN"}]';
-    } else {
-        url = 'https://privacyportal.onetrust.com/request/v1/consentreceipts';
-        preferences = '"purposes": [{"Id": "528de150-b5f3-467d-be11-757756601224","TransactionType": "WITHDRAWN"}]';
-    }
-    
-    // Token must be provided via window.ELECTRO_PRIVACY_TOKEN or window.ELECTRO_PRIVACY_TOKEN_STAGING
-    // This is REQUIRED - no fallback to hardcoded values for security reasons
-    if (currentIsStaging) {
-        if (typeof window !== 'undefined' && window.ELECTRO_PRIVACY_TOKEN_STAGING) {
-            // Ensure token is wrapped in quotes if not already
-            t = window.ELECTRO_PRIVACY_TOKEN_STAGING.startsWith('"') 
-                ? window.ELECTRO_PRIVACY_TOKEN_STAGING 
-                : `"${window.ELECTRO_PRIVACY_TOKEN_STAGING}"`;
-        } else {
-            // Enhanced error message with debugging info
-            console.error('electro-privacy: ELECTRO_PRIVACY_TOKEN_STAGING is required but not set.');
-            console.error('  Environment detected: STAGING (hostname: ' + location.host + ')');
-            console.error('  Required: window.ELECTRO_PRIVACY_TOKEN_STAGING');
-            console.error('  For Next.js/Vercel: Set NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN_STAGING in Vercel environment variables, then set window.ELECTRO_PRIVACY_TOKEN_STAGING in your _app.js');
-            console.error('  Current window variables:', {
-                ELECTRO_PRIVACY_TOKEN: typeof window !== 'undefined' && window.ELECTRO_PRIVACY_TOKEN ? 'SET' : 'NOT SET',
-                ELECTRO_PRIVACY_TOKEN_STAGING: typeof window !== 'undefined' && window.ELECTRO_PRIVACY_TOKEN_STAGING ? 'SET' : 'NOT SET',
-                electroPrivacyStaging: typeof window !== 'undefined' ? window.electroPrivacyStaging : 'N/A'
-            });
-            t = null;
-        }
-    } else {
-        if (typeof window !== 'undefined' && window.ELECTRO_PRIVACY_TOKEN) {
-            // Ensure token is wrapped in quotes if not already
-            t = window.ELECTRO_PRIVACY_TOKEN.startsWith('"') 
-                ? window.ELECTRO_PRIVACY_TOKEN 
-                : `"${window.ELECTRO_PRIVACY_TOKEN}"`;
-        } else {
-            // Enhanced error message with debugging info
-            console.error('electro-privacy: ELECTRO_PRIVACY_TOKEN is required but not set.');
-            console.error('  Environment detected: PRODUCTION (hostname: ' + location.host + ')');
-            console.error('  Required: window.ELECTRO_PRIVACY_TOKEN');
-            console.error('  For Next.js/Vercel: Set NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN in Vercel environment variables, then set window.ELECTRO_PRIVACY_TOKEN in your _app.js');
-            console.error('  Current window variables:', {
-                ELECTRO_PRIVACY_TOKEN: typeof window !== 'undefined' && window.ELECTRO_PRIVACY_TOKEN ? 'SET' : 'NOT SET',
-                ELECTRO_PRIVACY_TOKEN_STAGING: typeof window !== 'undefined' && window.ELECTRO_PRIVACY_TOKEN_STAGING ? 'SET' : 'NOT SET',
-                electroPrivacyStaging: typeof window !== 'undefined' ? window.electroPrivacyStaging : 'N/A'
-            });
-            t = null;
-        }
-    }
-    
-    return t;
+if (window.electroPrivacyStaging || isNonProduction()) {
+    url = ' https://privacyportaluat.onetrust.com/request/v1/consentreceipts';
+    t =
+        '"eyJhbGciOiJSUzUxMiJ9.eyJvdEp3dFZlcnNpb24iOjEsInByb2Nlc3NJZCI6IjBkZjc2NTAwLWRmNWEtNGQzMC1hOTFhLWFjZmMyMzAyZTFhNyIsInByb2Nlc3NWZXJzaW9uIjoxLCJpYXQiOiIyMDIyLTA5LTI2VDAzOjMyOjIxLjE2NyIsIm1vYyI6IkFQSSIsInBvbGljeV91cmkiOm51bGwsInN1YiI6IkVtYWlsIiwiaXNzIjpudWxsLCJ0ZW5hbnRJZCI6ImM1NzQ2ZTQzLWQyMjItNGI3ZS04ZjRkLTJiNzkzYjViZmFjZiIsImRlc2NyaXB0aW9uIjoiTi9BIiwiY29uc2VudFR5cGUiOiJDT05ESVRJT05BTFRSSUdHRVIiLCJhbGxvd05vdEdpdmVuQ29uc2VudHMiOmZhbHNlLCJkb3VibGVPcHRJbiI6ZmFsc2UsInB1cnBvc2VzIjpbeyJpZCI6IjljYjc2Yjk0LTY3NjYtNGY1MS04ZjRiLTFmNTE4YWNkZDE2NSIsInZlcnNpb24iOjIsInBhcmVudElkIjpudWxsLCJ0b3BpY3MiOltdLCJjdXN0b21QcmVmZXJlbmNlcyI6W10sImVuYWJsZUdlb2xvY2F0aW9uIjpmYWxzZX1dLCJub3RpY2VzIjpbXSwiZHNEYXRhRWxlbWVudHMiOltdLCJhdXRoZW50aWNhdGlvblJlcXVpcmVkIjpmYWxzZSwicmVjb25maXJtQWN0aXZlUHVycG9zZSI6ZmFsc2UsIm92ZXJyaWRlQWN0aXZlUHVycG9zZSI6dHJ1ZSwiZHluYW1pY0NvbGxlY3Rpb25Qb2ludCI6ZmFsc2UsImFkZGl0aW9uYWxJZGVudGlmaWVycyI6W10sIm11bHRpcGxlSWRlbnRpZmllclR5cGVzIjpmYWxzZSwiZW5hYmxlUGFyZW50UHJpbWFyeUlkZW50aWZpZXJzIjpmYWxzZSwicGFyZW50UHJpbWFyeUlkZW50aWZpZXJzVHlwZSI6bnVsbCwiYWRkaXRpb25hbFBhcmVudElkZW50aWZpZXJUeXBlcyI6W10sImVuYWJsZUdlb2xvY2F0aW9uIjpmYWxzZX0.MsM-CdCqBswZHRwR4N_E-RxcHlu368mLb9hIMUJTZ3U5FJMtdIQGr_AmqR5ik6Bx9RedlEZ87Kq8P9-dvPprz0OlHRPZeq-I56khj-C6lvB348mdM_Zr0V-nsBiX72wv6piNWqDJ6cogQRO_92QXZgjrbZYTHKrN5g2VxXqkJrKTQP9OfbIwfnTuK8W37jeLVcWh5KFVGtSC0Wgq64B1VnzwUpn3OGDmWLPp0rjqbE57kqy6eY6fX4d8mulZUpFH8lEqZ8i-xACXmze8lMBuijN26UI2PY6CL1KKfksNIXa9I4I43NBj5AIiaWDioUaQzAZZrqkxKRJGyY7mYbEcxFji5w8kPSfbMBnoRDHF9djVQdQ-gIcFwD_xn1m6NvgmWqeo-vZABn5s7Kg24nS_2Bb7TKk-b5-mrydpE5jMt85kawRCH7tue4F94Y--84ug64FU0cHafB9Byobw-ZCDQQ7Ua8AZVHIIqxDVzK-QZQSSF3OgBoDfhu1-1cM0yTGFDAkCXC7z1aEg2dTyQkG1jF-JEE2pF-jpDSi9hN9A5BRtG8Wh42E4MEj3Xo97y-8Xdnd0V61WDWaLSgVPUclMYdOyTBp_6_QESXqwEraMP6MGubqV_-Br4lbUVkkggvBARx6k46wPke-0u3NrWwgks627GS1DoO349dlVw2YT-YA"';
+    preferences = '"purposes": [{"Id": "9cb76b94-6766-4f51-8f4b-1f518acdd165","TransactionType": "WITHDRAWN"}]';
 }
 
 // check url against known list of non-production environments
@@ -127,17 +65,6 @@ function isNonProduction()
 
 // make POST call to hit collection point
 function setPreferences(otDataSubjectId) {
-    // Initialize token (lazy loading - checks when actually needed)
-    initializeToken();
-    
-    // Validate token is set - required for security
-    if (!t || t === null) {
-        console.error('electro-privacy: Token is not configured. Please set window.ELECTRO_PRIVACY_TOKEN or window.ELECTRO_PRIVACY_TOKEN_STAGING before using this module.');
-        showErrorMessage();
-        isSubmitting = false;
-        return;
-    }
-
     // Sanitize email input - trim whitespace and ensure it's a string
     const sanitizedEmail = String(otDataSubjectId).trim();
     
@@ -365,10 +292,6 @@ function submitPreferences() {
 // - show email input DIV
 // - simulate click on Targeting to toggle off (may be removed depending on Clorox decision about UX)
 function doNotShareUI() {
-    // Initialize token and configuration when modal opens (lazy loading)
-    // This allows window variables to be set after module load
-    initializeToken();
-    
     // let stockText = document.getElementById("stock-text");
     const stockText = document.getElementById('ot-pc-desc');
     const dnsText = document.getElementById('dns-custom-text');
