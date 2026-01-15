@@ -110,114 +110,9 @@ For more information, see [Using Private Dependendies with Vercel](https://verce
   color: #133d8d !important;
 ```
 
-## Token Configuration (Required)
+## Token Configuration
 
-**IMPORTANT**: The OneTrust token **MUST** be configured via environment variables. There are no hardcoded tokens in the module for security reasons.
-
-### Required Setup
-
-The module requires `window.ELECTRO_PRIVACY_TOKEN` (production) or `window.ELECTRO_PRIVACY_TOKEN_STAGING` (staging) to be set before the user opens the "Your Privacy Choices" modal. The token is checked lazily when the modal opens, not at module load time, which allows more flexibility in when you set the window variable. If the token is not set when the modal opens, the module will log an error and API calls will fail.
-
-#### For Next.js Sites (Vercel):
-
-**Note**: The `NEXT_PUBLIC_` prefix is required because this module runs in the browser and needs client-side access to the token. In Next.js, only environment variables prefixed with `NEXT_PUBLIC_` are exposed to client-side code. Be aware that `NEXT_PUBLIC_` variables are bundled into the client JavaScript and will be visible in the browser.
-
-1. **Add environment variables in Vercel:**
-   - Go to your Vercel project settings → Environment Variables
-   - Add `NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN` with your production token value
-   - Add `NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN_STAGING` with your staging token value (if needed)
-
-2. **Set the window variable (can be set before or after importing the module):**
-
-   In `src/pages/_app.js` (or similar):
-
-   ```javascript
-   import { useEffect } from 'react'
-
-   export default function App({ Component, pageProps }) {
-       useEffect(() => {
-           // Set token from environment variable
-           // NOTE: Token is checked lazily when the modal opens, so you can set it
-           // before or after importing the module, as long as it's set before the user opens the modal
-           if (typeof window !== 'undefined') {
-               // Always set production token
-               if (process.env.NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN) {
-                   window.ELECTRO_PRIVACY_TOKEN = process.env.NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN;
-               }
-               // Set staging token if available (for preview/dev deployments)
-               if (process.env.NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN_STAGING) {
-                   window.ELECTRO_PRIVACY_TOKEN_STAGING = process.env.NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN_STAGING;
-               }
-               
-               // Optional: Set staging mode for preview deployments
-               // Vercel preview domains (vercel.app) are automatically detected as staging
-               // But you can also manually set it:
-               // if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview') {
-               //     window.electroPrivacyStaging = true;
-               // }
-           }
-           // Import the module (token can be set before or after this)
-           import('electro-privacy');
-       }, [])
-       
-       return <Component {...pageProps} />
-   }
-   ```
-
-   **Troubleshooting**: If you see "Token is not configured" error when opening the modal:
-   - Verify environment variables are set in Vercel (check all environments: Production, Preview, Development)
-   - Make sure the window variable is set before the user opens the "Your Privacy Choices" modal
-   - For Vercel preview domains, the module automatically uses staging mode, so ensure `NEXT_PUBLIC_ELECTRO_PRIVACY_TOKEN_STAGING` is set
-   - Check browser console to see which token it's looking for (production vs staging)
-
-   **Note**: The token value should be the JWT token string (with or without surrounding quotes - the module will handle both). This is **REQUIRED** - the module will not function without it.
-
-#### For WordPress Sites on Pantheon:
-
-1. **Add environment variables in Pantheon:**
-   - Go to your Pantheon site dashboard → Settings → Environment Variables
-   - Add `ELECTRO_PRIVACY_TOKEN` with your production token value
-   - Add `ELECTRO_PRIVACY_TOKEN_STAGING` with your staging token value (if needed)
-   - Make sure to set these for all environments (Dev, Test, Live) as needed
-
-2. **Set the window variable in your theme (can be set before or after the module loads):**
-
-   In your theme's `functions.php` or a custom plugin:
-
-   ```php
-   function set_electro_privacy_token() {
-       $token = getenv('ELECTRO_PRIVACY_TOKEN');
-       $staging_token = getenv('ELECTRO_PRIVACY_TOKEN_STAGING');
-       
-       if ($token || $staging_token) {
-           ?>
-           <script>
-               <?php if ($token): ?>
-               window.ELECTRO_PRIVACY_TOKEN = <?php echo json_encode($token); ?>;
-               <?php endif; ?>
-               <?php if ($staging_token): ?>
-               window.ELECTRO_PRIVACY_TOKEN_STAGING = <?php echo json_encode($staging_token); ?>;
-               <?php endif; ?>
-           </script>
-           <?php
-       }
-   }
-   add_action('wp_head', 'set_electro_privacy_token', 1); // Priority 1 to run early, but token is checked lazily when modal opens
-   ```
-
-   **Note**: The token value should be the JWT token string (with or without surrounding quotes - the module will handle both). This is **REQUIRED** - the module will not function without it. The token is checked when the user opens the "Your Privacy Choices" modal, not at page load.
-
-#### For WordPress Sites (Other Hosting):
-
-**REQUIRED**: Set the token in your theme's JavaScript (can be set before or after the module loads, as long as it's set before the user opens the modal):
-
-```javascript
-// REQUIRED: Set token (can be set before or after module loads)
-window.ELECTRO_PRIVACY_TOKEN = 'your-production-token-here';
-// Then load electro-privacy
-```
-
-**Note**: The token is **REQUIRED**. The module will not function without it. The token is checked when the user opens the "Your Privacy Choices" modal, not at page load.
+The OneTrust tokens are hardcoded in the module. The module automatically uses the appropriate token (production or staging) based on the environment detection. No configuration is required.
 
 ## UAT Values
 
@@ -228,10 +123,10 @@ The current production version sends entries to the live OneTrust collection poi
 This will change the following values to the non-production values:
 
 -   url
--   token (uses `window.ELECTRO_PRIVACY_TOKEN_STAGING` - **REQUIRED**)
+-   token (hardcoded staging token)
 -   ID
 
-**Note**: When using staging mode, you **MUST** set `window.ELECTRO_PRIVACY_TOKEN_STAGING` before importing the module.
+Alternatively, the module automatically detects non-production environments based on the hostname (e.g., `vercel.app`, `staging`, `dev`, `qa`, `local`, `lndo.site`, `pantheonsite`).
 
 
 ## Language Support
