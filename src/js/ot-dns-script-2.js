@@ -29,28 +29,19 @@ function isNonProduction()
         'lndo.site',
         'pantheonsite',
         'staging',
-        'qa',
-        'dev',
-        'local',
-        'vercel.app', // Vercel preview and development deployments
+        'dev'
     ];
     const serverName = location.host;
     
     // Check if hostname matches any non-production patterns
     if (testList.some(testString => serverName.includes(testString))) {
-        // Special case: Only treat vercel.app as staging if it's NOT a production domain
-        // Production Vercel deployments typically use custom domains, not vercel.app
-        // Preview and development deployments use vercel.app subdomains
-        if (serverName.includes('vercel.app')) {
-            // If it's a vercel.app domain, it's likely a preview/dev deployment
-            // Production sites on Vercel typically use custom domains
-            return true;
-        }
         return true;
     }
     
-    // Also check for Vercel environment variable if available (set by Next.js)
+    // Check for Vercel environment variable if available (set by Next.js)
     // This is more reliable than hostname checking
+    // Note: Vercel preview URLs (vercel.app) are NOT automatically treated as staging
+    // They will use production unless window.VERCEL_ENV indicates preview/development
     if (typeof window !== 'undefined' && window.VERCEL_ENV) {
         // Vercel sets this to 'preview' or 'development' for non-production
         if (window.VERCEL_ENV === 'preview' || window.VERCEL_ENV === 'development') {
