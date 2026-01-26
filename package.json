@@ -18,10 +18,10 @@
     },
     "homepage": "https://github.com/electro-creative-workshop/electro-privacy/issues#readme",
     "devDependencies": {
-        "copy-webpack-plugin": "^12.0.2",
-        "prettier": "3.5.2",
-        "sass": "^1.85.0",
-        "webpack": "^5.98.0",
+        "copy-webpack-plugin": "^13.0.1",
+        "prettier": "3.8.1",
+        "sass": "^1.97.3",
+        "webpack": "^5.104.1",
         "webpack-cli": "^6.0.1"
     },
     "scripts": {
