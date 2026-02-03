@@ -350,10 +350,11 @@ function doNotShareUI() {
     trackingCat.dispatchEvent(new Event('change'))
     checkboxStatus.style.display = 'position: relative; top: -5px; display: inline-block; margin-left: 5px;';
 
-    // Ensure email input and submit button are enabled when modal opens
+    // Ensure email input and submit button are enabled when modal opens, and clear email so each open starts fresh
     const emailField = document.getElementById('ot-email');
     const submitBtn = document.getElementById('ot-dns-submit');
     if (emailField) {
+        emailField.value = '';
         emailField.disabled = false;
     }
     if (submitBtn) {
