@@ -48,9 +48,7 @@ function isNonProduction()
     }
     
     // Check for Vercel environment variable if available (set by Next.js)
-    // This is more reliable than hostname checking
-    // Note: Vercel preview URLs (vercel.app) are NOT automatically treated as staging
-    // They will use production unless window.VERCEL_ENV indicates preview/development
+    // Handles cases where hostname is not vercel.app (e.g. custom domain) but we're still in preview/dev
     if (typeof window !== 'undefined' && window.VERCEL_ENV) {
         // Vercel sets this to 'preview' or 'development' for non-production
         if (window.VERCEL_ENV === 'preview' || window.VERCEL_ENV === 'development') {
@@ -100,11 +98,14 @@ function setPreferences(otDataSubjectId) {
         return;
     }
 
-    // Debug logging
-    console.log('electro-privacy: Submitting to URL:', url);
-    console.log('electro-privacy: Environment:', window.electroPrivacyStaging || isNonProduction() ? 'STAGING' : 'PRODUCTION');
-    console.log('electro-privacy: Request body:', body);
-    
+    // Debug logging (opt-in via window.electroPrivacyDebug; never logs request body to avoid PII/token leakage)
+    if (typeof window !== 'undefined' && window.electroPrivacyDebug) {
+        // eslint-disable-next-line no-console -- allowed when debug flag is set
+        console.log('electro-privacy: Submitting to URL:', url);
+        // eslint-disable-next-line no-console -- allowed when debug flag is set
+        console.log('electro-privacy: Environment:', window.electroPrivacyStaging || isNonProduction() ? 'STAGING' : 'PRODUCTION');
+    }
+
     const xhr = new XMLHttpRequest();
     xhr.open('POST', url);
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -123,7 +124,13 @@ function setPreferences(otDataSubjectId) {
     
     xhr.onload = function() {
         if (xhr.status >= 200 && xhr.status < 300) {
-            // Success - show success message
+            // Success - show success message and allow follow-up submissions
+            isSubmitting = false;
+            const textInput = document.getElementById('ot-email');
+            const submitBtn = document.getElementById('ot-dns-submit');
+            if (textInput) textInput.disabled = false;
+            if (submitBtn) submitBtn.disabled = false;
+
             const existingError = document.getElementById('ot-submit-error');
             const existingSuccess = document.getElementById('ot-submit-text');
             
