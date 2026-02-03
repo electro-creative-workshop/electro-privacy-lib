@@ -153,7 +153,7 @@ Other languages will be supported as needed, but the using site will need to loa
       /node_modules/electro-privacy/dist/lang/zz-US.json'),
     };
 
-NOE: This needs to be setup before electro-privacy is included by the client. The mapping needs to the lang value for the html tag for the site.
+**Note:** This needs to be set up before electro-privacy is included by the client. The mapping key must match the `lang` value on the site's `<html>` tag.
 
 ## Publishing a new version
 
