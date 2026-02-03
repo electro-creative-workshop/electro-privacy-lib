@@ -15,6 +15,7 @@ let t =
     '"eyJhbGciOiJSUzUxMiJ9.eyJvdEp3dFZlcnNpb24iOjEsInByb2Nlc3NJZCI6ImUxNDMwZTBkLWUzNTgtNGQ4NC1hNGViLTVmMjI3OTRmZGQwZCIsInByb2Nlc3NWZXJzaW9uIjoxLCJpYXQiOiIyMDIyLTEyLTA5VDE3OjQxOjAxLjg4IiwibW9jIjoiQVBJIiwicG9saWN5X3VyaSI6bnVsbCwic3ViIjoiRW1haWwiLCJpc3MiOm51bGwsInRlbmFudElkIjoiNjVjYTZiNDYtNzBiMS00ZWUxLTkwNzQtN2E2M2U4MDBlYTRjIiwiZGVzY3JpcHRpb24iOiJFbmRwb2ludCBmb3Igd2ViIG1vZGFscyIsImNvbnNlbnRUeXBlIjoiQ09ORElUSU9OQUxUUklHR0VSIiwiYWxsb3dOb3RHaXZlbkNvbnNlbnRzIjpmYWxzZSwiZG91YmxlT3B0SW4iOmZhbHNlLCJwdXJwb3NlcyI6W3siaWQiOiI1MjhkZTE1MC1iNWYzLTQ2N2QtYmUxMS03NTc3NTY2MDEyMjQiLCJ2ZXJzaW9uIjoxLCJwYXJlbnRJZCI6bnVsbCwidG9waWNzIjpbXSwiY3VzdG9tUHJlZmVyZW5jZXMiOltdLCJlbmFibGVHZW9sb2NhdGlvbiI6ZmFsc2V9XSwibm90aWNlcyI6W10sImRzRGF0YUVsZW1lbnRzIjpbXSwiYXV0aGVudGljYXRpb25SZXF1aXJlZCI6ZmFsc2UsInJlY29uZmlybUFjdGl2ZVB1cnBvc2UiOmZhbHNlLCJvdmVycmlkZUFjdGl2ZVB1cnBvc2UiOnRydWUsImR5bmFtaWNDb2xsZWN0aW9uUG9pbnQiOmZhbHNlLCJhZGRpdGlvbmFsSWRlbnRpZmllcnMiOltdLCJtdWx0aXBsZUlkZW50aWZpZXJUeXBlcyI6ZmFsc2UsImVuYWJsZVBhcmVudFByaW1hcnlJZGVudGlmaWVycyI6ZmFsc2UsInBhcmVudFByaW1hcnlJZGVudGlmaWVyc1R5cGUiOm51bGwsImFkZGl0aW9uYWxQYXJlbnRJZGVudGlmaWVyVHlwZXMiOltdLCJlbmFibGVHZW9sb2NhdGlvbiI6ZmFsc2V9.g2zafM0cd3qCeVZEXR1AzZfFL6n277n8xPRxGaIUi5oIRoyeDH5ESKvbXT1b4wN1pVzTXZJIl2TKXfHOxzhszfA7oX0gUoYsV6xw_GQIUkF4m8Qly_Pv8r_A0XK4QgvH5iCKcfTmNxOBXRF8vcPj8kT5Rh8G7RsuR6o1rfWBg4IaLPfG3ip7xMo8p2Z4elL3hcTi8dsEJkdSbxyugVOyqydo7Djibq5AtX4l4tI5cWRlf1eG5F1Gr9yBcCzeHl3O-mPx3j344PGgz-AYixQpWhztFUJa13NaD4gycCqNiDbeHqQ16U-696E8lM7uUJ3921qDQQoSAqV6uDnELYHuCi27VDYM8RCzaq9zloWs8G5bSRPSbHIP-YvJUKdHrzjT8_B7ZDBG1efnqMcrqMrQHErG2yDVD_DhlDBLwpokkWpmt3ryYvn9jd4Tk615J73Mxpxu2NpaXnuaothZSXRXIxL7BYUP-PS5y2edp18SKS7eXOWrU0ahEPXKKWhIfXVE7t_PSER8ZO-E-8oLtzMHfbK2bRIS44N37yUGEpmd8Th6ovZiQvTtxBkC0dJbd0FGM4su7NRXyoNY_8dHbXGc9GC1M9P54Ke4pyFfVKrcD4spavrSj2wxiqToTPFpaeFxK8XJn9xENM3_ATJhGpW19CayJm2sesiqaambsymutsk"';
 let preferences = '"purposes": [{"Id": "528de150-b5f3-467d-be11-757756601224","TransactionType": "WITHDRAWN"}]';
 
+// Use staging/UAT when testing; production endpoint only on production
 if (window.electroPrivacyStaging || isNonProduction()) {
     url = 'https://privacyportaluat.onetrust.com/request/v1/consentreceipts';
     t =
@@ -29,12 +30,19 @@ function isNonProduction()
         'lndo.site',
         'pantheonsite',
         'staging',
-        'dev'
+        'dev',
+        'qa',
     ];
     const serverName = location.host;
     
     // Check if hostname matches any non-production patterns
     if (testList.some(testString => serverName.includes(testString))) {
+        return true;
+    }
+    
+    // Check specifically for Vercel preview/dev domains (vercel.app)
+    // Production Vercel sites use custom domains, not vercel.app subdomains
+    if (serverName.includes('vercel.app')) {
         return true;
     }
     
@@ -62,6 +70,13 @@ function setPreferences(otDataSubjectId) {
     // Validate email again before sending (defense in depth)
     if (!sanitizedEmail || !validateEmail(sanitizedEmail)) {
         console.error('Invalid email format before API call');
+        const emailField = document.getElementById('ot-email');
+        if (emailField) {
+            emailField.value = '';
+            emailField.disabled = false;
+        }
+        const submitBtn = document.getElementById('ot-dns-submit');
+        if (submitBtn) submitBtn.disabled = false;
         showErrorMessage();
         isSubmitting = false;
         return;
@@ -224,12 +239,14 @@ function inputValidation() {
         // Success message will be shown after API call succeeds
         submitPreferences();
     } else {
-        // Show validation error
+        // Show validation error and clear partial/invalid email so user can start fresh
         const existingError = document.getElementById('ot-submit-error');
         const existingSuccess = document.getElementById('ot-submit-text');
         
         if (existingError) existingError.remove();
         if (existingSuccess) existingSuccess.remove();
+        
+        textInput.value = '';
         
         const errorDiv = document.createElement('div');
         errorDiv.id = 'ot-submit-error';
@@ -268,8 +285,10 @@ function submitPreferences() {
     if (!validateEmail(emailValue)) {
         console.error('Invalid email format in submitPreferences');
         isSubmitting = false;
-        // Re-enable form if elements exist
-        if (textInput) textInput.disabled = false;
+        if (textInput) {
+            textInput.value = '';
+            textInput.disabled = false;
+        }
         const submitBtn = document.getElementById('ot-dns-submit');
         if (submitBtn) submitBtn.disabled = false;
         return;
