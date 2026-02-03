@@ -2,12 +2,12 @@
 //  Do Not Share script part two
 // / /////////////////////////////////////////////
 import {getLanguageString} from "./language-support";
+import { validateEmail, re } from "./validateEmail.js";
 
 // Define variables
 let otDataSubjectId;
 let dnsUI = false;
 let isSubmitting = false; // Prevent duplicate submissions
-const MAX_EMAIL_LENGTH = 254; // RFC 5321 maximum email length
 
 // Collection Point Information
 let url = 'https://privacyportal.onetrust.com/request/v1/consentreceipts';
@@ -32,6 +32,7 @@ function isNonProduction()
         'staging',
         'dev',
         'qa',
+        'local',
     ];
     const serverName = location.host;
     
@@ -157,25 +158,6 @@ function setPreferences(otDataSubjectId) {
     };
     
     xhr.send(body);
-}
-
-const re =
-    /^(([^<>\(\)\[\]\\.,;:\s@"]+(\.[^<>\(\)\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-// email format validation
-function validateEmail(email) {
-    if (!email || typeof email !== 'string') {
-        return false;
-    }
-    
-    // Trim and check length
-    const trimmedEmail = email.trim();
-    if (trimmedEmail.length === 0 || trimmedEmail.length > MAX_EMAIL_LENGTH) {
-        return false;
-    }
-    
-    // Validate format with regex
-    return re.test(trimmedEmail.toLowerCase());
 }
 
 // Show error message to user

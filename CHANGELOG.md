@@ -99,7 +99,7 @@
 - Update dependencies
 - Defensive programming
 
-## 1.6.0 security improvements and package fix - Jan 2026
+## 1.6.0 security improvements and package fix - Feb 2026
 - **Security: Fix JSON injection vulnerability** - Use JSON.stringify() instead of template literals when constructing API request body to prevent malicious email values from breaking JSON structure
 - **Security: Add input sanitization** - Trim whitespace, validate email length (max 254 chars per RFC 5321), and add maxlength attribute to email input field
 - **Security: Prevent duplicate submissions** - Add submission throttling flag to prevent race conditions and multiple simultaneous API calls
@@ -130,3 +130,4 @@
 - **Fix: Improved Vercel environment detection** - Made Vercel environment detection more specific to only match `vercel.app` domains (preview/dev deployments) rather than any domain containing "vercel". This prevents false positives on production sites that might have "vercel" in their custom domain name
 - **Environment detection: Added QA support** - Added 'qa' back to non-production environment detection list so QA sites use staging/UAT endpoints
 - **UX: Clear email on invalid submit or modal close** - When the user clicks "Save Settings" with a partially entered or invalid email address, the email field is now cleared so they can start fresh. The email field is also cleared when the user hits Escape to close the modal (existing behavior, now documented here)
+- **Development: Extracted validateEmail module** - Email validation (regex, MAX_EMAIL_LENGTH, validateEmail) was moved from ot-dns-script-2.js into a dedicated `src/js/validateEmail.js` module with no DOM or side effects. This allows the Vitest suite to run real assertions against validateEmail without loading the full script (which would hang tests due to setInterval). ot-dns-script-2.js imports and uses the shared module; runtime behavior is unchanged
