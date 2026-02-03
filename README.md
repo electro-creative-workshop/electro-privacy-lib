@@ -128,6 +128,13 @@ This will change the following values to the non-production values:
 
 Alternatively, the module automatically detects non-production environments based on the hostname (e.g., `vercel.app`, `staging`, `dev`, `qa`, `local`, `lndo.site`, `pantheonsite`).
 
+## Debug logging
+
+To log the API URL and environment (production vs staging) to the browser console when submitting, set this before loading electro-privacy:
+
+`window.electroPrivacyDebug = true;`
+
+The request body (email, token) is never logged to avoid PII and token leakage. Debug logging is off by default.
 
 ## Language Support
 
