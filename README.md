@@ -1,28 +1,26 @@
 # Clorox OneTrust "Your Privacy Choices" Integration
 
-This code is to simplify the integration of the second OneTrust modal into WordPress and NextJS sites.
+This code is to simplify the integration of the second OneTrust modal into WordPress and NextJS sites. It is published as an npm package to **GitHub Packages** under the scope `@electro-creative-workshop/electro-privacy`.
 
 ## Adding the dependency
 
 There are two options.
 
-1. Legacy Github: Pull from git directly, in which case you must add a line to your package.json.
-`"electro-privacy": "github:electro-creative-workshop/electro-privacy#semver:^x.x.x",`
-where x.x.x is the exact version desired. 
+1. **Legacy GitHub:** Pull from git directly. Add a line to your `package.json`:
+   ```json
+   "electro-privacy": "github:electro-creative-workshop/electro-privacy#semver:^x.x.x"
+   ```
+   Replace `x.x.x` with the exact version desired. To update the version, edit `package.json` by hand.
 
-To update the version, edit package.json file by hand.
+   Load required JS & CSS from this package:
+   - In `main.js`: `import 'electro-privacy'`
+   - In `scss/decoration/index.scss`: `@use '../../../node_modules/electro-privacy/dist/electro-privacy';`
 
-Load required JS & CSS from this package
-
-    - in `main.js`:
-        - `import 'electro-privacy'`
-    - in `scss/decoration/index.scss`
-        - `@use '../../../node_modules/electro-privacy/dist/electro-privacy';`
-
-2. NPM Install: Use Github's npm repo.
-`npm install @electro-creative-workshop/electro-privacy-module`
-which gives you the most recent version and will update later as new versions
-are released.
+2. **npm (GitHub Packages):** Install the package from the GitHub npm registry. This gives you the published version and standard npm updates.
+   ```bash
+   npm install @electro-creative-workshop/electro-privacy
+   ```
+   You must be logged in to GitHub Packages (see below) and have access to the `@electro-creative-workshop` scope.
 
 change your import from:
 
