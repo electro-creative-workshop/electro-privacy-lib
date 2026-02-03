@@ -1,35 +1,35 @@
 import { describe, it, expect } from 'vitest';
+import { validateEmail } from '../validateEmail.js';
 
-// Note: This is an example test file. Since validateEmail is not exported,
-// you would need to either:
-// 1. Export the function from ot-dns-script-2.js, or
-// 2. Test it indirectly through the public API
-
-// Example test structure for when functions are exported:
-describe('Email Validation', () => {
+describe('validateEmail', () => {
     it('should validate correct email addresses', () => {
-        // Example: expect(validateEmail('test@example.com')).toBe(true);
+        expect(validateEmail('test@example.com')).toBe(true);
+        expect(validateEmail('user.name@domain.co')).toBe(true);
     });
 
     it('should reject invalid email addresses', () => {
-        // Example: expect(validateEmail('invalid')).toBe(false);
+        expect(validateEmail('invalid')).toBe(false);
+        expect(validateEmail('missing@')).toBe(false);
+        expect(validateEmail('@nodomain.com')).toBe(false);
     });
 
     it('should handle empty strings', () => {
-        // Example: expect(validateEmail('')).toBe(false);
+        expect(validateEmail('')).toBe(false);
     });
 
     it('should handle null/undefined', () => {
-        // Example: expect(validateEmail(null)).toBe(false);
+        expect(validateEmail(null)).toBe(false);
+        expect(validateEmail(undefined)).toBe(false);
     });
 
     it('should trim whitespace', () => {
-        // Example: expect(validateEmail('  test@example.com  ')).toBe(true);
+        expect(validateEmail('  test@example.com  ')).toBe(true);
     });
 
-    it('should enforce maximum email length', () => {
-        // Example: expect(validateEmail('a'.repeat(255) + '@example.com')).toBe(false);
+    it('should enforce maximum email length (254 chars)', () => {
+        const longLocal = 'a'.repeat(255) + '@example.com';
+        expect(validateEmail(longLocal)).toBe(false);
+        const atLimit = 'a'.repeat(244) + '@test.co';
+        expect(validateEmail(atLimit)).toBe(true);
     });
 });
-
-
