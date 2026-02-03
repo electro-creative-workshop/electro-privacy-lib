@@ -29,7 +29,7 @@ describe('validateEmail', () => {
     it('should enforce maximum email length (254 chars)', () => {
         const longLocal = 'a'.repeat(255) + '@example.com';
         expect(validateEmail(longLocal)).toBe(false);
-        const atLimit = 'a'.repeat(244) + '@test.co';
+        const atLimit = 'a'.repeat(245) + '@test.co';
         expect(validateEmail(atLimit)).toBe(true);
     });
 });

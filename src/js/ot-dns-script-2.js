@@ -131,27 +131,7 @@ function setPreferences(otDataSubjectId) {
             if (textInput) textInput.disabled = false;
             if (submitBtn) submitBtn.disabled = false;
 
-            const existingError = document.getElementById('ot-submit-error');
-            const existingSuccess = document.getElementById('ot-submit-text');
-            
-            // Remove any existing messages
-            if (existingError) existingError.remove();
-            if (existingSuccess) existingSuccess.remove();
-            
-            // Show success message with icon and accessibility attributes
-            const confirmSubmit = document.createElement('div');
-            confirmSubmit.id = 'ot-submit-text';
-            confirmSubmit.setAttribute('style', 'color: green; font-weight: bold;');
-            confirmSubmit.setAttribute('role', 'status');
-            confirmSubmit.setAttribute('aria-live', 'polite');
-            confirmSubmit.setAttribute('aria-atomic', 'true');
-            // Use checkmark icon (✓) for visual distinction beyond color
-            confirmSubmit.textContent = `✓ ${getLanguageString('Successfully Submitted!')}`;
-            
-            const statusContainer = document.getElementById('ot-submit-status');
-            if (statusContainer) {
-                statusContainer.appendChild(confirmSubmit);
-            }
+            showStatusMessage('success', getLanguageString('Successfully Submitted!'));
         } else {
             console.error('API call failed with status:', xhr.status);
             showErrorMessage();
@@ -167,29 +147,31 @@ function setPreferences(otDataSubjectId) {
     xhr.send(body);
 }
 
-// Show error message to user
-function showErrorMessage() {
-    const errorText = getLanguageString('An error occurred. Please try again.');
+// Show status message in the form area (success or error). Reusable to avoid duplication.
+function showStatusMessage(type, message) {
     const existingError = document.getElementById('ot-submit-error');
     const existingSuccess = document.getElementById('ot-submit-text');
-    
-    // Remove existing messages
     if (existingError) existingError.remove();
     if (existingSuccess) existingSuccess.remove();
-    
-    const errorDiv = document.createElement('div');
-    errorDiv.id = 'ot-submit-error';
-    errorDiv.setAttribute('style', 'color: red; font-weight: bold;');
-    errorDiv.setAttribute('role', 'alert');
-    errorDiv.setAttribute('aria-live', 'assertive');
-    errorDiv.setAttribute('aria-atomic', 'true');
-    // Use warning icon (⚠) for visual distinction beyond color
-    errorDiv.textContent = `⚠ ${errorText}`;
-    
+
+    const isSuccess = type === 'success';
+    const div = document.createElement('div');
+    div.id = isSuccess ? 'ot-submit-text' : 'ot-submit-error';
+    div.setAttribute('style', isSuccess ? 'color: green; font-weight: bold;' : 'color: red; font-weight: bold;');
+    div.setAttribute('role', isSuccess ? 'status' : 'alert');
+    div.setAttribute('aria-live', isSuccess ? 'polite' : 'assertive');
+    div.setAttribute('aria-atomic', 'true');
+    div.textContent = isSuccess ? `✓ ${message}` : `⚠ ${message}`;
+
     const statusContainer = document.getElementById('ot-submit-status');
     if (statusContainer) {
-        statusContainer.appendChild(errorDiv);
+        statusContainer.appendChild(div);
     }
+}
+
+// Show error message to user
+function showErrorMessage() {
+    showStatusMessage('error', getLanguageString('An error occurred. Please try again.'));
 }
 
 // if email input is valid, trigger submitPreferences function and disable text input field and submit button
@@ -229,27 +211,8 @@ function inputValidation() {
         submitPreferences();
     } else {
         // Show validation error and clear partial/invalid email so user can start fresh
-        const existingError = document.getElementById('ot-submit-error');
-        const existingSuccess = document.getElementById('ot-submit-text');
-        
-        if (existingError) existingError.remove();
-        if (existingSuccess) existingSuccess.remove();
-        
         textInput.value = '';
-        
-        const errorDiv = document.createElement('div');
-        errorDiv.id = 'ot-submit-error';
-        errorDiv.setAttribute('style', 'color: red; font-weight: bold;');
-        errorDiv.setAttribute('role', 'alert');
-        errorDiv.setAttribute('aria-live', 'assertive');
-        errorDiv.setAttribute('aria-atomic', 'true');
-        // Use warning icon (⚠) for visual distinction beyond color
-        errorDiv.textContent = `⚠ ${getLanguageString('Please enter a valid email.')}`;
-        
-        const statusContainer = document.getElementById('ot-submit-status');
-        if (statusContainer) {
-            statusContainer.appendChild(errorDiv);
-        }
+        showStatusMessage('error', getLanguageString('Please enter a valid email.'));
     }
 }
 
@@ -283,12 +246,8 @@ function submitPreferences() {
         return;
     }
     
-    // else if(OnetrustActiveGroups === ",," && saveButtonClicked === false){
-    //    console.warn("New Preferences Set")
-    //    setTimeout(setPreferences,100);
-    // }
-    // Use sanitized email value
-    setTimeout(() => setPreferences(emailValue), 100);
+    // Call API with sanitized email (no delay needed; form is already disabled and validated)
+    setPreferences(emailValue);
 }
 
 // when clicking on "Do Not Share" footer link:
