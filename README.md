@@ -1,6 +1,6 @@
 # Clorox OneTrust "Your Privacy Choices" Integration
 
-This code is to simplify the integration of the second OneTrust modal into WordPress and NextJS sites. It is published as an npm package to **GitHub Packages** under the scope `@electro-creative-workshop/electro-privacy`.
+This code is to simplify the integration of the second OneTrust modal into WordPress and NextJS sites. It is published as an npm package to **NPM** under the scope `@electro-creative-workshop/electro-privacy`.
 
 ## Adding the dependency
 
@@ -14,7 +14,7 @@ There are two options.
 
    Load required JS & CSS from this package:
    - In `main.js`: `import 'electro-privacy'`
-   - In `scss/decoration/index.scss`: `@use '../../../node_modules/electro-privacy/dist/electro-privacy';`
+   - In your main CSS file: `@import '../../../node_modules/electro-privacy/dist/electro-privacy.css';`
 
 2. **npm (GitHub Packages):** Install the package from the GitHub npm registry. This gives you the published version and standard npm updates.
    ```bash
@@ -32,7 +32,7 @@ to
 
 You will probably need to reimport your css like so, but sites may vary. Be sure to do an `npm run build` to troubleshoot.
 
-`@use '~@electro-creative-workshop/electro-privacy/dist/electro-privacy' as *;`
+`@import '~@electro-creative-workshop/electro-privacy/dist/electro-privacy.css';`
 
 You may have to add a file in `types` called `electro-privacy.d.ts` that declares the module:
 
@@ -58,14 +58,12 @@ For more information, see [Using Private Dependendies with Vercel](https://verce
 
 1. Add this package as a project dependency in `package.json`
 
-
-
-3. Add to the footer near the "Cookie Settings" button:
+2. Add to the footer near the "Cookie Settings" button:
 
     - `<button id="do-not-share">Your Privacy Choices</button>`
     - Add the "opt out" icon here next to the text: https://oag.ca.gov/privacy/ccpa/icons-download
 
-4. In footer.scss, add the `#do-not-share` to the `#ot-sdk-btn` rule to style "Your Privacy Choices" button the same way as "Cookie Settings". For example:
+3. In your footer styles (e.g. footer.css or footer.scss), add the `#do-not-share` to the `#ot-sdk-btn` rule to style "Your Privacy Choices" button the same way as "Cookie Settings". For example:
 
     ```
     #ot-sdk-btn, #do-not-share {
@@ -88,9 +86,9 @@ For more information, see [Using Private Dependendies with Vercel](https://verce
     - `import { useEffect } from 'react'`
     - in `export default function App({ Component, pageProps }) {` or something similar, add: - `useEffect(() => { import('electro-privacy'); }, [])`
 
-3. in `src/styles/global.scss`
+3. in your global styles (e.g. `src/styles/global.css`)
 
-    - `@import '../../node_modules/electro-privacy/dist/electro-privacy';`
+    - `@import '../../node_modules/electro-privacy/dist/electro-privacy.css';`
 
 4. Add near the "Cookie Settings" button:
 

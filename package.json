@@ -1,6 +1,6 @@
 {
     "name": "@electro-creative-workshop/electro-privacy",
-    "version": "1.6.0",
+    "version": "1.6.1",
     "description": "Loads OneTrust Do Not Share JavaScript and CSS",
     "main": "dist/otDnsScript1.js",
     "repository": {
@@ -20,17 +20,15 @@
     "devDependencies": {
         "copy-webpack-plugin": "^13.0.1",
         "prettier": "3.8.1",
-        "sass": "^1.97.3",
         "webpack": "^5.104.1",
         "webpack-cli": "^6.0.1"
     },
     "scripts": {
         "prettier": "prettier -w .",
         "build:webpack": "webpack --progress --config webpack.config.js",
-        "build:scss": "sass --no-source-map --style=compressed src/scss/privacy.scss dist/electro-privacy.css",
-        "build": "npm run build:webpack && npm run build:scss",
-        "prepublishOnly": "npm run build",
-        "postinstall": "npm run build"
+        "build:css": "cp src/css/privacy.css dist/electro-privacy.css",
+        "build": "npm run build:webpack && npm run build:css",
+        "prepublishOnly": "npm run build"
     },
     "dependencies": {
         "webpack-version-file": "^0.1.7"
