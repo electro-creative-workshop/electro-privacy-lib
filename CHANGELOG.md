@@ -130,3 +130,12 @@
 - **UX: Clear email on invalid submit or modal close** - When the user clicks "Save Settings" with a partially entered or invalid email address, the email field is now cleared so they can start fresh. The email field is also cleared when the user hits Escape to close the modal (existing behavior, now documented here)
 - **Development: Extracted validateEmail module** - Email validation (regex, MAX_EMAIL_LENGTH, validateEmail) was moved from ot-dns-script-2.js into a dedicated `src/js/validateEmail.js` module with no DOM or side effects. This allows the Vitest suite to run real assertions against validateEmail without loading the full script (which would hang tests due to setInterval). ot-dns-script-2.js imports and uses the shared module; runtime behavior is unchanged
 - **Maintenance: Check in dist, remove postinstall** - The `dist` folder is now committed to the repo (no longer gitignored). The postinstall script was removed so installs do not run a build; consumers get the built files from the package. Run `npm run build` before committing when you change source files.
+
+## 1.6.1
+
+- **Maintenance:** Removed `postinstall` script and related build logic; installs no longer trigger a build automatically.
+- **Maintenance:** Checked in the `dist` folder to the repository; built files are now included and no longer require postinstall.
+- **Maintenance:** Removed `sass` dependency and all related SCSS build scripts; switched to copying plain CSS for builds.
+- **Maintenance:** Cleaned up `package-lock.json` and `package.json` to remove unused dependencies and scripts.
+- **Language Support:** Updated and checked in latest English and Spanish language files in `dist/lang/`.
+- **Build:** Updated build scripts to use `build:css` (copy CSS) instead of SCSS compilation.
