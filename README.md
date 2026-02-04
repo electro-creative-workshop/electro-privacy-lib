@@ -14,7 +14,7 @@ There are two options.
 
    Load required JS & CSS from this package:
    - In `main.js`: `import 'electro-privacy'`
-   - In your main CSS file: `@import` or `@use` the package CSS, e.g. `@use '../../../node_modules/electro-privacy/dist/electro-privacy.css';`
+   - In your main CSS file: `@import '../../../node_modules/electro-privacy/dist/electro-privacy.css';`
 
 2. **npm (GitHub Packages):** Install the package from the GitHub npm registry. This gives you the published version and standard npm updates.
    ```bash
@@ -32,7 +32,7 @@ to
 
 You will probably need to reimport your css like so, but sites may vary. Be sure to do an `npm run build` to troubleshoot.
 
-`@use '~@electro-creative-workshop/electro-privacy/dist/electro-privacy.css' as *;`
+`@import '~@electro-creative-workshop/electro-privacy/dist/electro-privacy.css';`
 
 You may have to add a file in `types` called `electro-privacy.d.ts` that declares the module:
 
