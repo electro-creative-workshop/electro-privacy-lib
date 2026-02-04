@@ -10,6 +10,7 @@ module.exports = [
             globals: {
                 ...globals.browser,
                 ...globals.node,
+                ELECTRO_PRIVACY_VERSION: 'readonly',
             },
         },
         rules: {
@@ -30,6 +31,7 @@ module.exports = [
             'dist/**',
             'node_modules/**',
             '*.config.js',
+            '!eslint.config.js',
         ],
     },
 ];
