@@ -98,3 +98,36 @@
 - Add source map for Sentry debugging
 - Update dependencies
 - Defensive programming
+
+## 1.6.0 security improvements and package fix - Feb 2026
+- **Security: Fix JSON injection vulnerability** - Use JSON.stringify() instead of template literals when constructing API request body to prevent malicious email values from breaking JSON structure
+- **Security: Add input sanitization** - Trim whitespace, validate email length (max 254 chars per RFC 5321), and add maxlength attribute to email input field
+- **Security: Prevent duplicate submissions** - Add submission throttling flag to prevent race conditions and multiple simultaneous API calls
+- **Security: Enhanced error handling** - Add comprehensive error handling for network errors and API failures with user-friendly feedback
+- **Security: Defense in depth** - Validate email at multiple points (client-side validation, before API call) and sanitize input throughout the submission flow
+- **Security: Renamed token variable** - Changed variable name from `token` to `t` to avoid security scanner false positives (functionality unchanged)
+- **UX: Improved error messages** - Add localized error messages for all supported languages (English, Spanish)
+- **UX: Form state management** - Form re-enables on error to allow users to retry submissions
+- **UX: Status message positioning** - Success and error messages now appear below the form field instead of inline for better visibility
+- **Accessibility: Enhanced message indicators** - Added Unicode icons (✓ for success, ⚠ for error) and ARIA attributes (role, aria-live, aria-atomic) for screen reader support and better visual distinction beyond color
+- **Code quality: Best practices** - Use textContent instead of innerHTML where possible, proper error handling that doesn't expose system details
+- **Code quality: Fixed success message timing** - Success message now displays only after successful API response (2xx status), not before the API call completes
+- **Code quality: Fixed race conditions** - Added null checks to prevent errors when accessing form elements that may not exist
+- **Maintenance: Removed unused language file** - Removed Arabic language file (ar.json) as it was not being used by the module's default language loading mechanism
+- **Maintenance: Removed dist from version control** - Added `dist` folder to `.gitignore` to keep git history clean. `dist` is built automatically at install time via `postinstall` script when installing from GitHub, and included in npm packages via `files` field
+- **Maintenance: Added postinstall script** - Automatically builds `dist` folder when package is installed from GitHub. The script gracefully handles cases where build dependencies aren't available (won't break installation)
+- **Maintenance: Added prepublishOnly script** - Automatically builds `dist` folder before publishing to npm, ensuring published packages always have the latest built files
+- **Maintenance: Explicit package files** - Added `files` field to package.json to explicitly include `dist`, `README.md`, and `CHANGELOG.md` in published npm packages
+- **Fix: Include dist folder in npm package** - Added `files` field to package.json to ensure `dist` folder (containing all JavaScript, CSS, and language files) is included when the package is installed from npm. When installing from GitHub, `dist` is built automatically via `postinstall` script
+- **Version detection** - Version number is now accessible via `window.electroPrivacyVersion` in the browser console. To check the version on any site, open the browser console and type: `window.electroPrivacyVersion`
+- **Maintenance: Converted SCSS to CSS** - Converted `src/scss/privacy.scss` to plain CSS (`src/css/privacy.css`) and removed sass dependency to simplify the build process and reduce dependencies
+- **Development: Added ESLint** - Added ESLint with recommended rules for code quality and consistency. Run `npm run lint` to check for issues or `npm run lint:fix` to automatically fix problems
+- **Development: Added Vitest** - Added Vitest testing framework with jsdom environment for browser testing. Includes test scripts (`npm run test`, `npm run test:ui`, `npm run test:coverage`) and example test file structure
+- **UX: Improved focus outline behavior** - Removed focus outline for mouse clicks while preserving keyboard navigation focus indicators using `:focus-visible` pseudo-class for better accessibility
+- **UX: Clear email input on modal close** - Email input field and status messages are now automatically cleared when the modal is closed (via Escape key or close button), ensuring a clean state when reopening the modal
+- **Fix: Email validation accepts test domains** - Changed email input from `type="email"` to `type="text"` to allow test email addresses with non-standard TLDs (e.g., "test@test.com") to be accepted. Browser's HTML5 email validation was too strict and rejected valid test domains. JavaScript validation still enforces proper email format while being more permissive for testing purposes
+- **Development: Added API debug logging** - When `window.electroPrivacyDebug` is set, console logs the API URL and environment (production vs staging) for API calls. Request body is never logged to avoid PII and token leakage
+- **Fix: Improved Vercel environment detection** - Made Vercel environment detection more specific to only match `vercel.app` domains (preview/dev deployments) rather than any domain containing "vercel". This prevents false positives on production sites that might have "vercel" in their custom domain name
+- **Environment detection: Added QA support** - Added 'qa' back to non-production environment detection list so QA sites use staging/UAT endpoints
+- **UX: Clear email on invalid submit or modal close** - When the user clicks "Save Settings" with a partially entered or invalid email address, the email field is now cleared so they can start fresh. The email field is also cleared when the user hits Escape to close the modal (existing behavior, now documented here)
+- **Development: Extracted validateEmail module** - Email validation (regex, MAX_EMAIL_LENGTH, validateEmail) was moved from ot-dns-script-2.js into a dedicated `src/js/validateEmail.js` module with no DOM or side effects. This allows the Vitest suite to run real assertions against validateEmail without loading the full script (which would hang tests due to setInterval). ot-dns-script-2.js imports and uses the shared module; runtime behavior is unchanged

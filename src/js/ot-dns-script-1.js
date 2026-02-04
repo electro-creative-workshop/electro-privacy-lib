@@ -1,6 +1,11 @@
 // load language support & determine lang based on url
 import {getLanguageString} from "./language-support";
 
+// Version is injected by webpack DefinePlugin
+// Accessible via: window.electroPrivacyVersion in browser console
+if (typeof window !== 'undefined') {
+    window.electroPrivacyVersion = typeof ELECTRO_PRIVACY_VERSION !== 'undefined' ? ELECTRO_PRIVACY_VERSION : 'unknown';
+}
 
 let dsIdSet = false;
 async function OptanonWrapperLocal() {
@@ -27,10 +32,11 @@ async function OptanonWrapperLocal() {
                 <p>${emailBlock}</p>
                 <form id="ot-email-submit" style="padding-top: 20px;" onsubmit="return false;">
                     <label for="ot-email">${emailLabel}
-                        <input type="email" style="border: 1px solid #000 !important;" id="ot-email" name="ot-email" required>
+                        <input type="text" style="border: 1px solid #000 !important;" id="ot-email" name="ot-email" required maxlength="254" autocomplete="email" inputmode="email">
                         <input type="submit" style="border-radius: 4px; padding: 7px; border: 1px solid #000 !important;" id="ot-dns-submit" value="${submit}">
                     </label>
                 </form>
+                <div id="ot-submit-status" style="padding-top: 10px;"></div>
                 <br/>
                 <p>${emailInstructions}</p>
                  <br/><br/>

@@ -1,28 +1,26 @@
 # Clorox OneTrust "Your Privacy Choices" Integration
 
-This code is to simplify the integration of the second OneTrust modal into WordPress and NextJS sites.
+This code is to simplify the integration of the second OneTrust modal into WordPress and NextJS sites. It is published as an npm package to **GitHub Packages** under the scope `@electro-creative-workshop/electro-privacy`.
 
 ## Adding the dependency
 
 There are two options.
 
-1. Legacy Github: Pull from git directly, in which case you must add a line to your package.json.
-`"electro-privacy": "github:electro-creative-workshop/electro-privacy#semver:^x.x.x",`
-where x.x.x is the exact version desired. 
+1. **Legacy GitHub:** Pull from git directly. Add a line to your `package.json`:
+   ```json
+   "electro-privacy": "github:electro-creative-workshop/electro-privacy#semver:^x.x.x"
+   ```
+   Replace `x.x.x` with the exact version desired. To update the version, edit `package.json` by hand.
 
-To update the version, edit package.json file by hand.
+   Load required JS & CSS from this package:
+   - In `main.js`: `import 'electro-privacy'`
+   - In `scss/decoration/index.scss`: `@use '../../../node_modules/electro-privacy/dist/electro-privacy';`
 
-Load required JS & CSS from this package
-
-    - in `main.js`:
-        - `import 'electro-privacy'`
-    - in `scss/decoration/index.scss`
-        - `@use '../../../node_modules/electro-privacy/dist/electro-privacy';`
-
-2. NPM Install: Use Github's npm repo.
-`npm install @electro-creative-workshop/electro-privacy-module`
-which gives you the most recent version and will update later as new versions
-are released.
+2. **npm (GitHub Packages):** Install the package from the GitHub npm registry. This gives you the published version and standard npm updates.
+   ```bash
+   npm install @electro-creative-workshop/electro-privacy
+   ```
+   You must be logged in to GitHub Packages (see below) and have access to the `@electro-creative-workshop` scope.
 
 change your import from:
 
@@ -110,6 +108,10 @@ For more information, see [Using Private Dependendies with Vercel](https://verce
   color: #133d8d !important;
 ```
 
+## Token Configuration
+
+The OneTrust tokens are hardcoded in the module. The module automatically uses the appropriate token (production or staging) based on the environment detection. No configuration is required.
+
 ## UAT Values
 
 The current production version sends entries to the live OneTrust collection point by default. If you need to support UAT, set this variable before importing electro-privacy:
@@ -119,9 +121,18 @@ The current production version sends entries to the live OneTrust collection poi
 This will change the following values to the non-production values:
 
 -   url
--   token
+-   token (hardcoded staging token)
 -   ID
 
+Alternatively, the module automatically detects non-production environments based on the hostname (e.g., `vercel.app`, `staging`, `dev`, `qa`, `local`, `lndo.site`, `pantheonsite`).
+
+## Debug logging
+
+To log the API URL and environment (production vs staging) to the browser console when submitting, set this before loading electro-privacy:
+
+`window.electroPrivacyDebug = true;`
+
+The request body (email, token) is never logged to avoid PII and token leakage. Debug logging is off by default.
 
 ## Language Support
 
@@ -142,7 +153,7 @@ Other languages will be supported as needed, but the using site will need to loa
       /node_modules/electro-privacy/dist/lang/zz-US.json'),
     };
 
-NOE: This needs to be setup before electro-privacy is included by the client. The mapping needs to the lang value for the html tag for the site.
+**Note:** This needs to be set up before electro-privacy is included by the client. The mapping key must match the `lang` value on the site's `<html>` tag.
 
 ## Publishing a new version
 

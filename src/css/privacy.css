@@ -47,3 +47,15 @@ form#ot-email-submit {
 #onetrust-pc-sdk hr {
     border-top: 1px solid #ccc !important;
 }
+
+/* Remove focus outline for mouse clicks, but keep it for keyboard navigation */
+#onetrust-pc-sdk *:focus:not(:focus-visible) {
+    outline: none !important;
+}
+
+/* Ensure keyboard navigation still shows focus indicator */
+#onetrust-pc-sdk *:focus-visible {
+    outline: 2px solid #0066cc !important;
+    outline-offset: 2px !important;
+}
+

@@ -23,6 +23,9 @@ module.exports = {
                 return `version: ${packageJSON.version}`;
             },
         }),
+        new webpack.DefinePlugin({
+            'ELECTRO_PRIVACY_VERSION': JSON.stringify(packageJSON.version),
+        }),
         new CopyPlugin({
             patterns: [
                 { from: "src/language", to: "lang" },
