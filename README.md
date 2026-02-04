@@ -28,15 +28,30 @@ change your import from:
 
 to
 
-`import('@electro-creative-workshop/electro-privacy').catch(err => {...`
+```jsx
+'use client';
+import { useEffect } from 'react';
 
-You will probably need to reimport your css like so, but sites may vary. Be sure to do an `npm run build` to troubleshoot.
+export default function ElectroPrivacyLoader() {
+    useEffect(() => {
+        // Dynamically import electro-privacy only on the client
+        import('@electro-creative-workshop/electro-privacy');
+    }, []);
+    // This component doesn't render anything visible
+    return null;
+}
+```
 
-`@import '~@electro-creative-workshop/electro-privacy/dist/electro-privacy.css';`
+You will probably need to reimport your css like so, but sites may vary. Be sure to do an `npm run build` to troubleshoot. Note: this module no longer needs Sass: it is native CSS.
+
+`@import '@electro-creative-workshop/electro-privacy/dist/electro-privacy.css';`
 
 You may have to add a file in `types` called `electro-privacy.d.ts` that declares the module:
 
-`declare module '@electro-creative-workshop/electro-privacy';`
+```jsx
+declare module 'electro-privacy';
+declare module '@electro-creative-workshop/electro-privacy';
+```
 
 In order to use Github's repo, you must generate a token that has read:packages in scope
 [New Token](https://github.com/settings/tokens/new)
