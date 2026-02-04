@@ -28,15 +28,13 @@
         "build:webpack": "webpack --progress --config webpack.config.js",
         "build:css": "cp src/css/privacy.css dist/electro-privacy.css",
         "build": "npm run build:webpack && npm run build:css",
-        "prepublishOnly": "npm run build",
-        "postinstall": "node scripts/postinstall.js"
+        "prepublishOnly": "npm run build"
     },
     "dependencies": {
         "webpack-version-file": "^0.1.7"
     },
     "files": [
         "dist",
-        "scripts",
         "README.md",
         "CHANGELOG.md"
     ]

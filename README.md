@@ -1,6 +1,6 @@
 # Clorox OneTrust "Your Privacy Choices" Integration
 
-This code is to simplify the integration of the second OneTrust modal into WordPress and NextJS sites. It is published as an npm package to **GitHub Packages** under the scope `@electro-creative-workshop/electro-privacy`.
+This code is to simplify the integration of the second OneTrust modal into WordPress and NextJS sites. It is published as an npm package to **NPM** under the scope `@electro-creative-workshop/electro-privacy`.
 
 ## Adding the dependency
 
@@ -58,14 +58,12 @@ For more information, see [Using Private Dependendies with Vercel](https://verce
 
 1. Add this package as a project dependency in `package.json`
 
-
-
-3. Add to the footer near the "Cookie Settings" button:
+2. Add to the footer near the "Cookie Settings" button:
 
     - `<button id="do-not-share">Your Privacy Choices</button>`
     - Add the "opt out" icon here next to the text: https://oag.ca.gov/privacy/ccpa/icons-download
 
-4. In your footer styles (e.g. footer.css or footer.scss), add the `#do-not-share` to the `#ot-sdk-btn` rule to style "Your Privacy Choices" button the same way as "Cookie Settings". For example:
+3. In your footer styles (e.g. footer.css or footer.scss), add the `#do-not-share` to the `#ot-sdk-btn` rule to style "Your Privacy Choices" button the same way as "Cookie Settings". For example:
 
     ```
     #ot-sdk-btn, #do-not-share {
