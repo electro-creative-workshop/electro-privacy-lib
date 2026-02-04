@@ -99,7 +99,7 @@
 - Update dependencies
 - Defensive programming
 
-## 1.6.0 security improvements and package fix - Feb 2026
+## 1.6.1 security improvements and package fix - Feb 2026
 - **Security: Fix JSON injection vulnerability** - Use JSON.stringify() instead of template literals when constructing API request body to prevent malicious email values from breaking JSON structure
 - **Security: Add input sanitization** - Trim whitespace, validate email length (max 254 chars per RFC 5321), and add maxlength attribute to email input field
 - **Security: Prevent duplicate submissions** - Add submission throttling flag to prevent race conditions and multiple simultaneous API calls
