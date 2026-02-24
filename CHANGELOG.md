@@ -139,3 +139,7 @@
 - **Maintenance:** Cleaned up `package-lock.json` and `package.json` to remove unused dependencies and scripts.
 - **Language Support:** Updated and checked in latest English and Spanish language files in `dist/lang/`.
 - **Build:** Updated build scripts to use `build:css` (copy CSS) instead of SCSS compilation.
+
+## 1.6.2
+
+- **Fix: dataLayer guard** - Issue reported via Sentry - Ensure `window.dataLayer` exists before pushing the OneTrust groups event. Use `(window.dataLayer = window.dataLayer || []).push(...)` so the script does not throw when GTM has not initialized `dataLayer` yet (e.g. TikTok in-app browser on older Android).
