@@ -1,4 +1,4 @@
-/*! version: 1.6.1 */
+/*! version: 1.6.2 */
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
@@ -603,12 +603,12 @@ var __webpack_exports__ = {};
 // Version is injected by webpack DefinePlugin
 // Accessible via: window.electroPrivacyVersion in browser console
 if (typeof window !== 'undefined') {
-    window.electroPrivacyVersion =  true ? "1.6.1" : 0;
+    window.electroPrivacyVersion =  true ? "1.6.2" : 0;
 }
 
 let dsIdSet = false;
 async function OptanonWrapperLocal() {
-    window.dataLayer.push({
+    (window.dataLayer = window.dataLayer || []).push({
         event: 'OneTrustGroupsUpdated',
         OneTrustActiveGroups: window.OnetrustActiveGroups,
     });
