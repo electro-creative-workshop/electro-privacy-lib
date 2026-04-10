@@ -1,5 +1,16 @@
 # History
 
+## 1.6.2
+
+- **Testing:** Added unit test coverage for language mapping and fallback behavior in `src/js/__tests__/language-support.test.js`.
+- **Testing:** Added unit tests for environment detection and runtime endpoint selection in `src/js/__tests__/privacy-config.test.js`.
+- **Testing:** Added unit tests for request identifier sanitization, validation, and JSON payload construction in `src/js/__tests__/privacy-request.test.js`.
+- **Testing:** Added unit tests for form/status UI helper behavior in `src/js/__tests__/privacy-form-ui.test.js`.
+- **Refactor:** Extracted environment and request configuration logic from `ot-dns-script-2.js` into `src/js/privacy-config.js`.
+- **Refactor:** Extracted request body/identifier helpers into `src/js/privacy-request.js`.
+- **Refactor:** Extracted reusable form/status UI helpers into `src/js/privacy-form-ui.js`.
+- **Refactor:** Updated `src/js/ot-dns-script-2.js` to use extracted helper modules with behavior-preserving wiring.
+
 ## 1.1.1 Stable Version
 
 -   Version that was approved by initial QA testing.
