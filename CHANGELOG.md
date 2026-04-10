@@ -142,6 +142,4 @@
 
 ## 1.6.2 security patches
 
-- Updated webpack modules due to high severity issues
-
--- 
+- Update webpack modules due to high severity issues
