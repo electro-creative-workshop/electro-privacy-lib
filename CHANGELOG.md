@@ -139,3 +139,9 @@
 - **Maintenance:** Cleaned up `package-lock.json` and `package.json` to remove unused dependencies and scripts.
 - **Language Support:** Updated and checked in latest English and Spanish language files in `dist/lang/`.
 - **Build:** Updated build scripts to use `build:css` (copy CSS) instead of SCSS compilation.
+
+## 1.6.2 security patches
+
+- Updated webpack modules due to high severity issues
+
+-- 
