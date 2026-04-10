@@ -2,7 +2,7 @@
 //  Do Not Share script part two
 // / /////////////////////////////////////////////
 import {getLanguageString} from "./language-support";
-import { validateEmail, re } from "./validateEmail.js";
+import { re } from "./validateEmail.js";
 import { getRuntimePrivacyRequestConfig } from "./privacy-config.js";
 import { buildConsentRequestBody, isValidEmailIdentifier } from "./privacy-request.js";
 import { clearSubmitStatus, resetEmailFormState, setEmailFormDisabled } from "./privacy-form-ui.js";
@@ -13,13 +13,13 @@ let dnsUI = false;
 let isSubmitting = false; // Prevent duplicate submissions
 
 // Collection Point Information
-const { url, t, preferences, environment } = getRuntimePrivacyRequestConfig();
+const { url, token, preferences, environment } = getRuntimePrivacyRequestConfig();
 
 // Purpose Ids Assigned to Collection Point
 
 // make POST call to hit collection point
 function setPreferences(otDataSubjectId) {
-    const requestBodyResult = buildConsentRequestBody(otDataSubjectId, t, preferences);
+    const requestBodyResult = buildConsentRequestBody(otDataSubjectId, token, preferences);
 
     if (!requestBodyResult.ok && requestBodyResult.error === 'invalid-identifier') {
         console.error('Invalid email format before API call');
@@ -118,7 +118,7 @@ function inputValidation() {
     const emailValue = textInput.value.trim();
     
     // Validate email
-    if (validateEmail(emailValue)) {
+    if (isValidEmailIdentifier(emailValue)) {
         // Set submitting flag
         isSubmitting = true;
         

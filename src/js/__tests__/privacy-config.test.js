@@ -31,6 +31,7 @@ describe('privacy-config', () => {
         });
 
         expect(config.url).toBe('https://privacyportaluat.onetrust.com/request/v1/consentreceipts');
+        expect(typeof config.token).toBe('string');
         expect(config.environment).toBe('STAGING');
     });
 
@@ -41,6 +42,7 @@ describe('privacy-config', () => {
         });
 
         expect(config.url).toBe('https://privacyportal.onetrust.com/request/v1/consentreceipts');
+        expect(typeof config.token).toBe('string');
         expect(config.environment).toBe('PRODUCTION');
     });
 });
