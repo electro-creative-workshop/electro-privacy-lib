@@ -45,7 +45,7 @@ export function getPrivacyRequestConfig({ host, electroPrivacyStaging, vercelEnv
     if (useStaging) {
         return {
             url: STAGING_URL,
-            t: STAGING_TOKEN,
+            token: STAGING_TOKEN,
             preferences: STAGING_PREFERENCES,
             environment: 'STAGING',
         };
@@ -53,7 +53,7 @@ export function getPrivacyRequestConfig({ host, electroPrivacyStaging, vercelEnv
 
     return {
         url: PRODUCTION_URL,
-        t: PRODUCTION_TOKEN,
+        token: PRODUCTION_TOKEN,
         preferences: PRODUCTION_PREFERENCES,
         environment: 'PRODUCTION',
     };
