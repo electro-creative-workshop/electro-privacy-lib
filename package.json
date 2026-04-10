@@ -13,6 +13,9 @@
     },
     "author": "",
     "license": "ISC",
+    "engines": {
+        "node": ">=20.9.0"
+    },
     "bugs": {
         "url": "https://github.com/electro-creative-workshop/electro-privacy/issues"
     },
