@@ -1,9 +1,58 @@
-/*! version: 1.6.1 */
+/*! version: 1.6.2 */
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 71
+/***/ 132
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   M: () => (/* binding */ getLanguageString)
+/* harmony export */ });
+/**
+ * support for handling langs
+ *   English & Spanish by default
+ *   Others need to be setup by client in window.ElectroPrivacyLanguageMap
+ */
+
+const englishMap = __webpack_require__(286);
+const spanishMap = __webpack_require__(331);
+
+window.ElectroPrivacyLanguageMap = {
+    ...window.ElectroPrivacyLanguageMap,
+    en: englishMap,
+    es: spanishMap,
+};
+
+// console.info('languageMap keys', Object.keys(window.ElectroPrivacyLanguageMap));
+
+let stringMap = window.ElectroPrivacyLanguageMap['en'];
+
+// use html lang attribute to determine strings to use
+const languageAttribute = document.documentElement.getAttribute('lang');
+if (languageAttribute) {
+    if (window.ElectroPrivacyLanguageMap[languageAttribute]) {
+        stringMap = window.ElectroPrivacyLanguageMap[languageAttribute];
+    } else {
+        const language = languageAttribute.split('-')[0];
+        if (window.ElectroPrivacyLanguageMap[language]) {
+            stringMap = window.ElectroPrivacyLanguageMap[language];
+        }
+    }
+}
+
+function getLanguageString(strName)
+{
+    if (stringMap[strName]) {
+        return stringMap[strName];
+    }
+    return strName;
+}
+
+
+/***/ },
+
+/***/ 721
 (__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) {
 
 
@@ -29,10 +78,162 @@ function validateEmail(email) {
 
 
 
+;// ./src/js/privacy-config.js
+const PRODUCTION_URL = 'https://privacyportal.onetrust.com/request/v1/consentreceipts';
+const STAGING_URL = 'https://privacyportaluat.onetrust.com/request/v1/consentreceipts';
+
+const NON_PRODUCTION_HOST_PATTERNS = [
+    'lndo.site',
+    'pantheonsite',
+    'staging',
+    'dev',
+    'qa',
+    'local',
+];
+
+// These values are shipped in client-side JS and treated as public config, not secrets.
+// They identify the OneTrust collection point payload shape/environment only.
+
+const PRODUCTION_TOKEN =
+    '"eyJhbGciOiJSUzUxMiJ9.eyJvdEp3dFZlcnNpb24iOjEsInByb2Nlc3NJZCI6ImUxNDMwZTBkLWUzNTgtNGQ4NC1hNGViLTVmMjI3OTRmZGQwZCIsInByb2Nlc3NWZXJzaW9uIjoxLCJpYXQiOiIyMDIyLTEyLTA5VDE3OjQxOjAxLjg4IiwibW9jIjoiQVBJIiwicG9saWN5X3VyaSI6bnVsbCwic3ViIjoiRW1haWwiLCJpc3MiOm51bGwsInRlbmFudElkIjoiNjVjYTZiNDYtNzBiMS00ZWUxLTkwNzQtN2E2M2U4MDBlYTRjIiwiZGVzY3JpcHRpb24iOiJFbmRwb2ludCBmb3Igd2ViIG1vZGFscyIsImNvbnNlbnRUeXBlIjoiQ09ORElUSU9OQUxUUklHR0VSIiwiYWxsb3dOb3RHaXZlbkNvbnNlbnRzIjpmYWxzZSwiZG91YmxlT3B0SW4iOmZhbHNlLCJwdXJwb3NlcyI6W3siaWQiOiI1MjhkZTE1MC1iNWYzLTQ2N2QtYmUxMS03NTc3NTY2MDEyMjQiLCJ2ZXJzaW9uIjoxLCJwYXJlbnRJZCI6bnVsbCwidG9waWNzIjpbXSwiY3VzdG9tUHJlZmVyZW5jZXMiOltdLCJlbmFibGVHZW9sb2NhdGlvbiI6ZmFsc2V9XSwibm90aWNlcyI6W10sImRzRGF0YUVsZW1lbnRzIjpbXSwiYXV0aGVudGljYXRpb25SZXF1aXJlZCI6ZmFsc2UsInJlY29uZmlybUFjdGl2ZVB1cnBvc2UiOmZhbHNlLCJvdmVycmlkZUFjdGl2ZVB1cnBvc2UiOnRydWUsImR5bmFtaWNDb2xsZWN0aW9uUG9pbnQiOmZhbHNlLCJhZGRpdGlvbmFsSWRlbnRpZmllcnMiOltdLCJtdWx0aXBsZUlkZW50aWZpZXJUeXBlcyI6ZmFsc2UsImVuYWJsZVBhcmVudFByaW1hcnlJZGVudGlmaWVycyI6ZmFsc2UsInBhcmVudFByaW1hcnlJZGVudGlmaWVyc1R5cGUiOm51bGwsImFkZGl0aW9uYWxQYXJlbnRJZGVudGlmaWVyVHlwZXMiOltdLCJlbmFibGVHZW9sb2NhdGlvbiI6ZmFsc2V9.g2zafM0cd3qCeVZEXR1AzZfFL6n277n8xPRxGaIUi5oIRoyeDH5ESKvbXT1b4wN1pVzTXZJIl2TKXfHOxzhszfA7oX0gUoYsV6xw_GQIUkF4m8Qly_Pv8r_A0XK4QgvH5iCKcfTmNxOBXRF8vcPj8kT5Rh8G7RsuR6o1rfWBg4IaLPfG3ip7xMo8p2Z4elL3hcTi8dsEJkdSbxyugVOyqydo7Djibq5AtX4l4tI5cWRlf1eG5F1Gr9yBcCzeHl3O-mPx3j344PGgz-AYixQpWhztFUJa13NaD4gycCqNiDbeHqQ16U-696E8lM7uUJ3921qDQQoSAqV6uDnELYHuCi27VDYM8RCzaq9zloWs8G5bSRPSbHIP-YvJUKdHrzjT8_B7ZDBG1efnqMcrqMrQHErG2yDVD_DhlDBLwpokkWpmt3ryYvn9jd4Tk615J73Mxpxu2NpaXnuaothZSXRXIxL7BYUP-PS5y2edp18SKS7eXOWrU0ahEPXKKWhIfXVE7t_PSER8ZO-E-8oLtzMHfbK2bRIS44N37yUGEpmd8Th6ovZiQvTtxBkC0dJbd0FGM4su7NRXyoNY_8dHbXGc9GC1M9P54Ke4pyFfVKrcD4spavrSj2wxiqToTPFpaeFxK8XJn9xENM3_ATJhGpW19CayJm2sesiqaambsymutsk"';
+const STAGING_TOKEN =
+    '"eyJhbGciOiJSUzUxMiJ9.eyJvdEp3dFZlcnNpb24iOjEsInByb2Nlc3NJZCI6IjBkZjc2NTAwLWRmNWEtNGQzMC1hOTFhLWFjZmMyMzAyZTFhNyIsInByb2Nlc3NWZXJzaW9uIjoxLCJpYXQiOiIyMDIyLTA5LTI2VDAzOjMyOjIxLjE2NyIsIm1vYyI6IkFQSSIsInBvbGljeV91cmkiOm51bGwsInN1YiI6IkVtYWlsIiwiaXNzIjpudWxsLCJ0ZW5hbnRJZCI6ImM1NzQ2ZTQzLWQyMjItNGI3ZS04ZjRkLTJiNzkzYjViZmFjZiIsImRlc2NyaXB0aW9uIjoiTi9BIiwiY29uc2VudFR5cGUiOiJDT05ESVRJT05BTFRSSUdHRVIiLCJhbGxvd05vdEdpdmVuQ29uc2VudHMiOmZhbHNlLCJkb3VibGVPcHRJbiI6ZmFsc2UsInB1cnBvc2VzIjpbeyJpZCI6IjljYjc2Yjk0LTY3NjYtNGY1MS04ZjRiLTFmNTE4YWNkZDE2NSIsInZlcnNpb24iOjIsInBhcmVudElkIjpudWxsLCJ0b3BpY3MiOltdLCJjdXN0b21QcmVmZXJlbmNlcyI6W10sImVuYWJsZUdlb2xvY2F0aW9uIjpmYWxzZX1dLCJub3RpY2VzIjpbXSwiZHNEYXRhRWxlbWVudHMiOltdLCJhdXRoZW50aWNhdGlvblJlcXVpcmVkIjpmYWxzZSwicmVjb25maXJtQWN0aXZlUHVycG9zZSI6ZmFsc2UsIm92ZXJyaWRlQWN0aXZlUHVycG9zZSI6dHJ1ZSwiZHluYW1pY0NvbGxlY3Rpb25Qb2ludCI6ZmFsc2UsImFkZGl0aW9uYWxJZGVudGlmaWVycyI6W10sIm11bHRpcGxlSWRlbnRpZmllclR5cGVzIjpmYWxzZSwiZW5hYmxlUGFyZW50UHJpbWFyeUlkZW50aWZpZXJzIjpmYWxzZSwicGFyZW50UHJpbWFyeUlkZW50aWZpZXJzVHlwZSI6bnVsbCwiYWRkaXRpb25hbFBhcmVudElkZW50aWZpZXJUeXBlcyI6W10sImVuYWJsZUdlb2xvY2F0aW9uIjpmYWxzZX0.MsM-CdCqBswZHRwR4N_E-RxcHlu368mLb9hIMUJTZ3U5FJMtdIQGr_AmqR5ik6Bx9RedlEZ87Kq8P9-dvPprz0OlHRPZeq-I56khj-C6lvB348mdM_Zr0V-nsBiX72wv6piNWqDJ6cogQRO_92QXZgjrbZYTHKrN5g2VxXqkJrKTQP9OfbIwfnTuK8W37jeLVcWh5KFVGtSC0Wgq64B1VnzwUpn3OGDmWLPp0rjqbE57kqy6eY6fX4d8mulZUpFH8lEqZ8i-xACXmze8lMBuijN26UI2PY6CL1KKfksNIXa9I4I43NBj5AIiaWDioUaQzAZZrqkxKRJGyY7mYbEcxFji5w8kPSfbMBnoRDHF9djVQdQ-gIcFwD_xn1m6NvgmWqeo-vZABn5s7Kg24nS_2Bb7TKk-b5-mrydpE5jMt85kawRCH7tue4F94Y--84ug64FU0cHafB9Byobw-ZCDQQ7Ua8AZVHIIqxDVzK-QZQSSF3OgBoDfhu1-1cM0yTGFDAkCXC7z1aEg2dTyQkG1jF-JEE2pF-jpDSi9hN9A5BRtG8Wh42E4MEj3Xo97y-8Xdnd0V61WDWaLSgVPUclMYdOyTBp_6_QESXqwEraMP6MGubqV_-Br4lbUVkkggvBARx6k46wPke-0u3NrWwgks627GS1DoO349dlVw2YT-YA"';
+
+const PRODUCTION_PREFERENCES =
+    '"purposes": [{"Id": "528de150-b5f3-467d-be11-757756601224","TransactionType": "WITHDRAWN"}]';
+const STAGING_PREFERENCES =
+    '"purposes": [{"Id": "9cb76b94-6766-4f51-8f4b-1f518acdd165","TransactionType": "WITHDRAWN"}]';
+
+function isNonProductionEnvironment(host, vercelEnv) {
+    const normalizedHost = String(host || '').toLowerCase();
+    const normalizedVercelEnv = String(vercelEnv || '').toLowerCase();
+
+    if (NON_PRODUCTION_HOST_PATTERNS.some((testString) => normalizedHost.includes(testString))) {
+        return true;
+    }
+
+    if (normalizedHost.includes('vercel.app')) {
+        return true;
+    }
+
+    if (normalizedVercelEnv === 'preview' || normalizedVercelEnv === 'development') {
+        return true;
+    }
+
+    return false;
+}
+
+function getPrivacyRequestConfig({ host, electroPrivacyStaging, vercelEnv } = {}) {
+    const useStaging = Boolean(electroPrivacyStaging) || isNonProductionEnvironment(host, vercelEnv);
+
+    if (useStaging) {
+        return {
+            url: STAGING_URL,
+            token: STAGING_TOKEN,
+            preferences: STAGING_PREFERENCES,
+            environment: 'STAGING',
+        };
+    }
+
+    return {
+        url: PRODUCTION_URL,
+        token: PRODUCTION_TOKEN,
+        preferences: PRODUCTION_PREFERENCES,
+        environment: 'PRODUCTION',
+    };
+}
+
+function getRuntimePrivacyRequestConfig() {
+    const win = typeof window !== 'undefined' ? window : undefined;
+    const loc = typeof location !== 'undefined' ? location : undefined;
+
+    return getPrivacyRequestConfig({
+        host: loc ? loc.host : '',
+        electroPrivacyStaging: win ? win.electroPrivacyStaging : false,
+        vercelEnv: win ? win.VERCEL_ENV : undefined,
+    });
+}
+
+;// ./src/js/privacy-request.js
+
+
+function sanitizeEmailIdentifier(value) {
+    return String(value).trim();
+}
+
+function isValidEmailIdentifier(value) {
+    const sanitizedEmail = sanitizeEmailIdentifier(value);
+    return sanitizedEmail.length > 0 && validateEmail(sanitizedEmail);
+}
+
+function buildConsentRequestBody(identifier, token, preferences) {
+    const sanitizedEmail = sanitizeEmailIdentifier(identifier);
+
+    if (!isValidEmailIdentifier(sanitizedEmail)) {
+        return {
+            ok: false,
+            error: 'invalid-identifier',
+        };
+    }
+
+    const body = `{"identifier":${JSON.stringify(sanitizedEmail)},"requestInformation":${token},${preferences}}`;
+
+    try {
+        JSON.parse(body);
+    } catch (_error) {
+        return {
+            ok: false,
+            error: 'invalid-json',
+        };
+    }
+
+    return {
+        ok: true,
+        body,
+        identifier: sanitizedEmail,
+    };
+}
+
+;// ./src/js/privacy-form-ui.js
+function getEmailFormElements(doc = document) {
+    return {
+        emailField: doc.getElementById('ot-email'),
+        submitButton: doc.getElementById('ot-dns-submit'),
+    };
+}
+
+function setEmailFormDisabled(disabled, doc = document) {
+    const { emailField, submitButton } = getEmailFormElements(doc);
+    if (emailField) emailField.disabled = disabled;
+    if (submitButton) submitButton.disabled = disabled;
+}
+
+function clearSubmitStatus(doc = document) {
+    const existingError = doc.getElementById('ot-submit-error');
+    const existingSuccess = doc.getElementById('ot-submit-text');
+    if (existingError) existingError.remove();
+    if (existingSuccess) existingSuccess.remove();
+}
+
+function resetEmailFormState({ clearValue = true, enabled = true, doc = document } = {}) {
+    const { emailField } = getEmailFormElements(doc);
+
+    if (emailField && clearValue) {
+        emailField.value = '';
+    }
+
+    if (enabled) {
+        setEmailFormDisabled(false, doc);
+    }
+}
+
 ;// ./src/js/ot-dns-script-2.js
 // / /////////////////////////////////////////////
 //  Do Not Share script part two
 // / /////////////////////////////////////////////
+
+
+
 
 
 
@@ -42,100 +243,38 @@ let dnsUI = false;
 let isSubmitting = false; // Prevent duplicate submissions
 
 // Collection Point Information
-let url = 'https://privacyportal.onetrust.com/request/v1/consentreceipts';
-let t =
-    '"eyJhbGciOiJSUzUxMiJ9.eyJvdEp3dFZlcnNpb24iOjEsInByb2Nlc3NJZCI6ImUxNDMwZTBkLWUzNTgtNGQ4NC1hNGViLTVmMjI3OTRmZGQwZCIsInByb2Nlc3NWZXJzaW9uIjoxLCJpYXQiOiIyMDIyLTEyLTA5VDE3OjQxOjAxLjg4IiwibW9jIjoiQVBJIiwicG9saWN5X3VyaSI6bnVsbCwic3ViIjoiRW1haWwiLCJpc3MiOm51bGwsInRlbmFudElkIjoiNjVjYTZiNDYtNzBiMS00ZWUxLTkwNzQtN2E2M2U4MDBlYTRjIiwiZGVzY3JpcHRpb24iOiJFbmRwb2ludCBmb3Igd2ViIG1vZGFscyIsImNvbnNlbnRUeXBlIjoiQ09ORElUSU9OQUxUUklHR0VSIiwiYWxsb3dOb3RHaXZlbkNvbnNlbnRzIjpmYWxzZSwiZG91YmxlT3B0SW4iOmZhbHNlLCJwdXJwb3NlcyI6W3siaWQiOiI1MjhkZTE1MC1iNWYzLTQ2N2QtYmUxMS03NTc3NTY2MDEyMjQiLCJ2ZXJzaW9uIjoxLCJwYXJlbnRJZCI6bnVsbCwidG9waWNzIjpbXSwiY3VzdG9tUHJlZmVyZW5jZXMiOltdLCJlbmFibGVHZW9sb2NhdGlvbiI6ZmFsc2V9XSwibm90aWNlcyI6W10sImRzRGF0YUVsZW1lbnRzIjpbXSwiYXV0aGVudGljYXRpb25SZXF1aXJlZCI6ZmFsc2UsInJlY29uZmlybUFjdGl2ZVB1cnBvc2UiOmZhbHNlLCJvdmVycmlkZUFjdGl2ZVB1cnBvc2UiOnRydWUsImR5bmFtaWNDb2xsZWN0aW9uUG9pbnQiOmZhbHNlLCJhZGRpdGlvbmFsSWRlbnRpZmllcnMiOltdLCJtdWx0aXBsZUlkZW50aWZpZXJUeXBlcyI6ZmFsc2UsImVuYWJsZVBhcmVudFByaW1hcnlJZGVudGlmaWVycyI6ZmFsc2UsInBhcmVudFByaW1hcnlJZGVudGlmaWVyc1R5cGUiOm51bGwsImFkZGl0aW9uYWxQYXJlbnRJZGVudGlmaWVyVHlwZXMiOltdLCJlbmFibGVHZW9sb2NhdGlvbiI6ZmFsc2V9.g2zafM0cd3qCeVZEXR1AzZfFL6n277n8xPRxGaIUi5oIRoyeDH5ESKvbXT1b4wN1pVzTXZJIl2TKXfHOxzhszfA7oX0gUoYsV6xw_GQIUkF4m8Qly_Pv8r_A0XK4QgvH5iCKcfTmNxOBXRF8vcPj8kT5Rh8G7RsuR6o1rfWBg4IaLPfG3ip7xMo8p2Z4elL3hcTi8dsEJkdSbxyugVOyqydo7Djibq5AtX4l4tI5cWRlf1eG5F1Gr9yBcCzeHl3O-mPx3j344PGgz-AYixQpWhztFUJa13NaD4gycCqNiDbeHqQ16U-696E8lM7uUJ3921qDQQoSAqV6uDnELYHuCi27VDYM8RCzaq9zloWs8G5bSRPSbHIP-YvJUKdHrzjT8_B7ZDBG1efnqMcrqMrQHErG2yDVD_DhlDBLwpokkWpmt3ryYvn9jd4Tk615J73Mxpxu2NpaXnuaothZSXRXIxL7BYUP-PS5y2edp18SKS7eXOWrU0ahEPXKKWhIfXVE7t_PSER8ZO-E-8oLtzMHfbK2bRIS44N37yUGEpmd8Th6ovZiQvTtxBkC0dJbd0FGM4su7NRXyoNY_8dHbXGc9GC1M9P54Ke4pyFfVKrcD4spavrSj2wxiqToTPFpaeFxK8XJn9xENM3_ATJhGpW19CayJm2sesiqaambsymutsk"';
-let preferences = '"purposes": [{"Id": "528de150-b5f3-467d-be11-757756601224","TransactionType": "WITHDRAWN"}]';
-
-// Use staging/UAT when testing; production endpoint only on production
-if (window.electroPrivacyStaging || isNonProduction()) {
-    url = 'https://privacyportaluat.onetrust.com/request/v1/consentreceipts';
-    t =
-        '"eyJhbGciOiJSUzUxMiJ9.eyJvdEp3dFZlcnNpb24iOjEsInByb2Nlc3NJZCI6IjBkZjc2NTAwLWRmNWEtNGQzMC1hOTFhLWFjZmMyMzAyZTFhNyIsInByb2Nlc3NWZXJzaW9uIjoxLCJpYXQiOiIyMDIyLTA5LTI2VDAzOjMyOjIxLjE2NyIsIm1vYyI6IkFQSSIsInBvbGljeV91cmkiOm51bGwsInN1YiI6IkVtYWlsIiwiaXNzIjpudWxsLCJ0ZW5hbnRJZCI6ImM1NzQ2ZTQzLWQyMjItNGI3ZS04ZjRkLTJiNzkzYjViZmFjZiIsImRlc2NyaXB0aW9uIjoiTi9BIiwiY29uc2VudFR5cGUiOiJDT05ESVRJT05BTFRSSUdHRVIiLCJhbGxvd05vdEdpdmVuQ29uc2VudHMiOmZhbHNlLCJkb3VibGVPcHRJbiI6ZmFsc2UsInB1cnBvc2VzIjpbeyJpZCI6IjljYjc2Yjk0LTY3NjYtNGY1MS04ZjRiLTFmNTE4YWNkZDE2NSIsInZlcnNpb24iOjIsInBhcmVudElkIjpudWxsLCJ0b3BpY3MiOltdLCJjdXN0b21QcmVmZXJlbmNlcyI6W10sImVuYWJsZUdlb2xvY2F0aW9uIjpmYWxzZX1dLCJub3RpY2VzIjpbXSwiZHNEYXRhRWxlbWVudHMiOltdLCJhdXRoZW50aWNhdGlvblJlcXVpcmVkIjpmYWxzZSwicmVjb25maXJtQWN0aXZlUHVycG9zZSI6ZmFsc2UsIm92ZXJyaWRlQWN0aXZlUHVycG9zZSI6dHJ1ZSwiZHluYW1pY0NvbGxlY3Rpb25Qb2ludCI6ZmFsc2UsImFkZGl0aW9uYWxJZGVudGlmaWVycyI6W10sIm11bHRpcGxlSWRlbnRpZmllclR5cGVzIjpmYWxzZSwiZW5hYmxlUGFyZW50UHJpbWFyeUlkZW50aWZpZXJzIjpmYWxzZSwicGFyZW50UHJpbWFyeUlkZW50aWZpZXJzVHlwZSI6bnVsbCwiYWRkaXRpb25hbFBhcmVudElkZW50aWZpZXJUeXBlcyI6W10sImVuYWJsZUdlb2xvY2F0aW9uIjpmYWxzZX0.MsM-CdCqBswZHRwR4N_E-RxcHlu368mLb9hIMUJTZ3U5FJMtdIQGr_AmqR5ik6Bx9RedlEZ87Kq8P9-dvPprz0OlHRPZeq-I56khj-C6lvB348mdM_Zr0V-nsBiX72wv6piNWqDJ6cogQRO_92QXZgjrbZYTHKrN5g2VxXqkJrKTQP9OfbIwfnTuK8W37jeLVcWh5KFVGtSC0Wgq64B1VnzwUpn3OGDmWLPp0rjqbE57kqy6eY6fX4d8mulZUpFH8lEqZ8i-xACXmze8lMBuijN26UI2PY6CL1KKfksNIXa9I4I43NBj5AIiaWDioUaQzAZZrqkxKRJGyY7mYbEcxFji5w8kPSfbMBnoRDHF9djVQdQ-gIcFwD_xn1m6NvgmWqeo-vZABn5s7Kg24nS_2Bb7TKk-b5-mrydpE5jMt85kawRCH7tue4F94Y--84ug64FU0cHafB9Byobw-ZCDQQ7Ua8AZVHIIqxDVzK-QZQSSF3OgBoDfhu1-1cM0yTGFDAkCXC7z1aEg2dTyQkG1jF-JEE2pF-jpDSi9hN9A5BRtG8Wh42E4MEj3Xo97y-8Xdnd0V61WDWaLSgVPUclMYdOyTBp_6_QESXqwEraMP6MGubqV_-Br4lbUVkkggvBARx6k46wPke-0u3NrWwgks627GS1DoO349dlVw2YT-YA"';
-    preferences = '"purposes": [{"Id": "9cb76b94-6766-4f51-8f4b-1f518acdd165","TransactionType": "WITHDRAWN"}]';
-}
-
-// check url against known list of non-production environments
-function isNonProduction()
-{
-    const testList = [
-        'lndo.site',
-        'pantheonsite',
-        'staging',
-        'dev',
-        'qa',
-        'local',
-    ];
-    const serverName = location.host;
-    
-    // Check if hostname matches any non-production patterns
-    if (testList.some(testString => serverName.includes(testString))) {
-        return true;
-    }
-    
-    // Check specifically for Vercel preview/dev domains (vercel.app)
-    // Production Vercel sites use custom domains, not vercel.app subdomains
-    if (serverName.includes('vercel.app')) {
-        return true;
-    }
-    
-    // Check for Vercel environment variable if available (set by Next.js)
-    // Handles cases where hostname is not vercel.app (e.g. custom domain) but we're still in preview/dev
-    if (typeof window !== 'undefined' && window.VERCEL_ENV) {
-        // Vercel sets this to 'preview' or 'development' for non-production
-        if (window.VERCEL_ENV === 'preview' || window.VERCEL_ENV === 'development') {
-            return true;
-        }
-    }
-    
-    return false;
-}
+const { url, token, preferences, environment } = getRuntimePrivacyRequestConfig();
 
 // Purpose Ids Assigned to Collection Point
 
 // make POST call to hit collection point
 function setPreferences(otDataSubjectId) {
-    // Sanitize email input - trim whitespace and ensure it's a string
-    const sanitizedEmail = String(otDataSubjectId).trim();
-    
-    // Validate email again before sending (defense in depth)
-    if (!sanitizedEmail || !validateEmail(sanitizedEmail)) {
+    const requestBodyResult = buildConsentRequestBody(otDataSubjectId, token, preferences);
+
+    if (!requestBodyResult.ok && requestBodyResult.error === 'invalid-identifier') {
         console.error('Invalid email format before API call');
-        const emailField = document.getElementById('ot-email');
-        if (emailField) {
-            emailField.value = '';
-            emailField.disabled = false;
-        }
-        const submitBtn = document.getElementById('ot-dns-submit');
-        if (submitBtn) submitBtn.disabled = false;
+        resetEmailFormState();
         showErrorMessage();
         isSubmitting = false;
         return;
     }
 
-    // Build the request body safely to prevent JSON injection attacks
-    // Token and preferences are pre-formatted partial JSON strings that need to be concatenated
-    // Use JSON.stringify only on the user-provided email to safely escape it
-    // Token is stored as '"eyJ..."' (a quoted JSON string value)
-    // Preferences is stored as '"purposes": [...]' (a partial JSON property)
-    const body = `{"identifier":${JSON.stringify(sanitizedEmail)},"requestInformation":${t},${preferences}}`;
-    
-    // Validate the constructed JSON is valid before sending
-    try {
-        JSON.parse(body);
-    } catch (e) {
-        console.error('Error: Constructed JSON is invalid:', e);
+    if (!requestBodyResult.ok) {
+        console.error('Error: Constructed JSON is invalid');
         showErrorMessage();
         isSubmitting = false;
+        setEmailFormDisabled(false);
         return;
     }
+
+    const body = requestBodyResult.body;
 
     // Debug logging (opt-in via window.electroPrivacyDebug; never logs request body to avoid PII/token leakage)
     if (typeof window !== 'undefined' && window.electroPrivacyDebug) {
         // eslint-disable-next-line no-console -- allowed when debug flag is set
-        console.log('electro-privacy: Submitting to URL:', url);
+        console.info('electro-privacy: Submitting to URL:', url);
         // eslint-disable-next-line no-console -- allowed when debug flag is set
-        console.log('electro-privacy: Environment:', window.electroPrivacyStaging || isNonProduction() ? 'STAGING' : 'PRODUCTION');
+        console.info('electro-privacy: Environment:', environment);
     }
 
     const xhr = new XMLHttpRequest();
@@ -147,32 +286,21 @@ function setPreferences(otDataSubjectId) {
         console.error('Network error occurred during API call');
         showErrorMessage();
         isSubmitting = false;
-        // Re-enable form on error
-        const textInput = document.getElementById('ot-email');
-        const submitBtn = document.getElementById('ot-dns-submit');
-        if (textInput) textInput.disabled = false;
-        if (submitBtn) submitBtn.disabled = false;
+        setEmailFormDisabled(false);
     };
     
     xhr.onload = function() {
         if (xhr.status >= 200 && xhr.status < 300) {
             // Success - show success message and allow follow-up submissions
             isSubmitting = false;
-            const textInput = document.getElementById('ot-email');
-            const submitBtn = document.getElementById('ot-dns-submit');
-            if (textInput) textInput.disabled = false;
-            if (submitBtn) submitBtn.disabled = false;
+            setEmailFormDisabled(false);
 
             showStatusMessage('success', (0,language_support/* getLanguageString */.M)('Successfully Submitted!'));
         } else {
             console.error('API call failed with status:', xhr.status);
             showErrorMessage();
             isSubmitting = false;
-            // Re-enable form on error
-            const textInput = document.getElementById('ot-email');
-            const submitBtn = document.getElementById('ot-dns-submit');
-            if (textInput) textInput.disabled = false;
-            if (submitBtn) submitBtn.disabled = false;
+            setEmailFormDisabled(false);
         }
     };
     
@@ -181,10 +309,7 @@ function setPreferences(otDataSubjectId) {
 
 // Show status message in the form area (success or error). Reusable to avoid duplication.
 function showStatusMessage(type, message) {
-    const existingError = document.getElementById('ot-submit-error');
-    const existingSuccess = document.getElementById('ot-submit-text');
-    if (existingError) existingError.remove();
-    if (existingSuccess) existingSuccess.remove();
+    clearSubmitStatus();
 
     const isSuccess = type === 'success';
     const div = document.createElement('div');
@@ -224,19 +349,15 @@ function inputValidation() {
     const emailValue = textInput.value.trim();
     
     // Validate email
-    if (validateEmail(emailValue)) {
+    if (isValidEmailIdentifier(emailValue)) {
         // Set submitting flag
         isSubmitting = true;
         
         // Disable form to prevent duplicate submissions
-        textInput.disabled = true;
-        submitBtn.disabled = true;
+        setEmailFormDisabled(true);
         
         // Remove any existing messages
-        const existingError = document.getElementById('ot-submit-error');
-        const existingSuccess = document.getElementById('ot-submit-text');
-        if (existingError) existingError.remove();
-        if (existingSuccess) existingSuccess.remove();
+        clearSubmitStatus();
         
         // Submit with sanitized email
         // Success message will be shown after API call succeeds
@@ -257,24 +378,16 @@ function submitPreferences() {
     if (!textInput || textInput.value === '') {
         console.error('Identifier Not Set');
         isSubmitting = false;
-        // Re-enable form if elements exist
-        if (textInput) textInput.disabled = false;
-        const submitBtn = document.getElementById('ot-dns-submit');
-        if (submitBtn) submitBtn.disabled = false;
+        setEmailFormDisabled(false);
         return;
     }
     
     // Sanitize and validate email before sending
     const emailValue = textInput.value.trim();
-    if (!validateEmail(emailValue)) {
+    if (!isValidEmailIdentifier(emailValue)) {
         console.error('Invalid email format in submitPreferences');
         isSubmitting = false;
-        if (textInput) {
-            textInput.value = '';
-            textInput.disabled = false;
-        }
-        const submitBtn = document.getElementById('ot-dns-submit');
-        if (submitBtn) submitBtn.disabled = false;
+        resetEmailFormState();
         return;
     }
     
@@ -331,21 +444,8 @@ function doNotShareUI() {
     checkboxStatus.style.display = 'position: relative; top: -5px; display: inline-block; margin-left: 5px;';
 
     // Ensure email input and submit button are enabled when modal opens, and clear email so each open starts fresh
-    const emailField = document.getElementById('ot-email');
-    const submitBtn = document.getElementById('ot-dns-submit');
-    if (emailField) {
-        emailField.value = '';
-        emailField.disabled = false;
-    }
-    if (submitBtn) {
-        submitBtn.disabled = false;
-    }
-    
-    // Clear any existing status messages
-    const existingError = document.getElementById('ot-submit-error');
-    const existingSuccess = document.getElementById('ot-submit-text');
-    if (existingError) existingError.remove();
-    if (existingSuccess) existingSuccess.remove();
+    resetEmailFormState();
+    clearSubmitStatus();
 
     dnsUI = true;
 }
@@ -393,19 +493,8 @@ function hideDnsUI() {
         catDescription.style.display = 'block';
         
         // Clear email input and status messages when modal closes
-        const emailField = document.getElementById('ot-email');
-        if (emailField) {
-            emailField.value = '';
-            emailField.disabled = false;
-        }
-        const submitBtn = document.getElementById('ot-dns-submit');
-        if (submitBtn) {
-            submitBtn.disabled = false;
-        }
-        const existingError = document.getElementById('ot-submit-error');
-        const existingSuccess = document.getElementById('ot-submit-text');
-        if (existingError) existingError.remove();
-        if (existingSuccess) existingSuccess.remove();
+        resetEmailFormState();
+        clearSubmitStatus();
     }
 
     dnsUI = false;
@@ -452,14 +541,8 @@ function dnsCheck() {
             document.addEventListener('keydown', function (e) {
                 if ('Escape' === e.code) {
                     // Clear email input and status messages before closing
-                    const emailInput = document.getElementById('ot-email');
-                    if (emailInput) {
-                        emailInput.value = '';
-                    }
-                    const existingError = document.getElementById('ot-submit-error');
-                    const existingSuccess = document.getElementById('ot-submit-text');
-                    if (existingError) existingError.remove();
-                    if (existingSuccess) existingSuccess.remove();
+                    resetEmailFormState({ clearValue: true, enabled: false });
+                    clearSubmitStatus();
                     
                     // click dialog close button
                     const close = document.getElementById('close-pc-btn-handler');
@@ -482,55 +565,6 @@ function dnsCheck() {
         clearInterval(domCheckInterval);
         domCheckInterval = null;
     }
-}
-
-
-/***/ },
-
-/***/ 132
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   M: () => (/* binding */ getLanguageString)
-/* harmony export */ });
-/**
- * support for handling langs
- *   English & Spanish by default
- *   Others need to be setup by client in window.ElectroPrivacyLanguageMap
- */
-
-const englishMap = __webpack_require__(286);
-const spanishMap = __webpack_require__(331);
-
-window.ElectroPrivacyLanguageMap = {
-    ...window.ElectroPrivacyLanguageMap,
-    en: englishMap,
-    es: spanishMap,
-};
-
-// console.log('languageMap keys', Object.keys(window.ElectroPrivacyLanguageMap));
-
-let stringMap = window.ElectroPrivacyLanguageMap['en'];
-
-// use html lang attribute to determine strings to use
-const languageAttribute = document.documentElement.getAttribute('lang');
-if (languageAttribute) {
-    if (window.ElectroPrivacyLanguageMap[languageAttribute]) {
-        stringMap = window.ElectroPrivacyLanguageMap[languageAttribute];
-    } else {
-        const language = languageAttribute.split('-')[0];
-        if (window.ElectroPrivacyLanguageMap[language]) {
-            stringMap = window.ElectroPrivacyLanguageMap[language];
-        }
-    }
-}
-
-function getLanguageString(strName)
-{
-    if (stringMap[strName]) {
-        return stringMap[strName];
-    }
-    return strName;
 }
 
 
@@ -603,7 +637,7 @@ var __webpack_exports__ = {};
 // Version is injected by webpack DefinePlugin
 // Accessible via: window.electroPrivacyVersion in browser console
 if (typeof window !== 'undefined') {
-    window.electroPrivacyVersion =  true ? "1.6.1" : 0;
+    window.electroPrivacyVersion =  true ? "1.6.2" : 0;
 }
 
 let dsIdSet = false;
@@ -676,7 +710,7 @@ async function OptanonWrapperLocal() {
         dsIdSet = true;
 
         // import 2nd js file
-        await Promise.resolve(/* import() eager */).then(__webpack_require__.bind(__webpack_require__, 71));
+        await Promise.resolve(/* import() eager */).then(__webpack_require__.bind(__webpack_require__, 721));
     }
 }
 
