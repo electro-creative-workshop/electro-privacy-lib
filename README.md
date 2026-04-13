@@ -147,6 +147,16 @@ To log the API URL and environment (production vs staging) to the browser consol
 
 The request body (email, token) is never logged to avoid PII and token leakage. Debug logging is off by default.
 
+## QA Criteria
+
+- Run `window.electroPrivacyVersion` in the console to ensure the latest version `1.x.x` shows.
+- Test endpoint submissions to ensure OneTrust is sending through the submitted email address.
+- Log in to the OneTrust testing portal to ensure that your submission is received.
+- https://uat.onetrust.com/consent/data-subjects
+- Ensure that your test does not show on the production OneTrust site unless you are on production.
+- Ensure that the “Cookie Settings” link properly loads the OneTrust category modal.
+- Once this has gone live, please check https://app.onetrust.com/consent/data-subjects
+
 ## Language Support
 
 The default implementation supports English & Spanish based on the lang attribute in the html tag:
