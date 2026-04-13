@@ -33,6 +33,7 @@ function setPreferences(otDataSubjectId) {
         console.error('Error: Constructed JSON is invalid');
         showErrorMessage();
         isSubmitting = false;
+        setEmailFormDisabled(false);
         return;
     }
 
