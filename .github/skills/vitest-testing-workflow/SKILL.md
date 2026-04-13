@@ -15,7 +15,7 @@ Use this workflow to add or update tests in this repository while keeping test c
 
 - Language: JavaScript (ES modules in `src/js/`)
 - Test runner: Vitest with `jsdom`
-- Test location: `src/js/__tests__/`
+- Test location: `test/`
 - Main commands:
   - `npm test`
   - `npm run test:watch`
@@ -32,10 +32,10 @@ Use this workflow to add or update tests in this repository while keeping test c
 ## Workflow (5 Steps)
 
 1. **Create or Update Test File**
-   - Add tests in `src/js/__tests__/` using `*.test.js`.
+  - Add tests in `test/` using `*.test.js`.
    - Prefer explicit imports from Vitest:
-     - `import { describe, it, expect } from 'vitest';`
-   - Match existing style in this repository (`it()` is currently used).
+     - `import { describe, test, expect } from 'vitest';`
+   - Match existing style in this repository (`test()` is preferred).
 
 2. **Run Focused Tests First**
    - Run targeted tests while iterating:
@@ -66,7 +66,7 @@ Use this workflow to add or update tests in this repository while keeping test c
 
 ## Completion Checklist
 
-- New or updated tests are in `src/js/__tests__/`.
+- New or updated tests are in `test/`.
 - `npm test` passes.
 - Any lint issues introduced by the change are fixed.
 - Formatting has been applied.

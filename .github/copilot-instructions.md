@@ -12,7 +12,7 @@
   - `src/js/` for runtime scripts and helper modules
   - `src/css/` for stylesheet source
   - `src/language/` for language JSON files
-- Tests live in `src/js/__tests__/`.
+- Tests live in `test/`.
 - Build output goes to `dist/`.
 - Main runtime entry for consumers is `dist/otDnsScript1.js`.
 
@@ -24,7 +24,7 @@
 - Run all tests: `npm test`
 - Watch mode: `npm run test:watch`
 - Target a specific test name: `npm test -- -t "test name"`
-- Write tests in `src/js/__tests__/` using `*.test.js`.
+- Write tests in `test/` using `*.test.js`.
 - Prefer unit tests around pure helper modules first, then light DOM tests for UI behavior.
 - Keep tests deterministic and fast; mock browser globals only when needed.
 

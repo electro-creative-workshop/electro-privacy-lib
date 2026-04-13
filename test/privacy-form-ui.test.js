@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, test, expect, beforeEach } from 'vitest';
 import {
     setEmailFormDisabled,
     clearSubmitStatus,
     resetEmailFormState,
-} from '../privacy-form-ui.js';
+} from '../src/js/privacy-form-ui.js';
 
 describe('privacy-form-ui', () => {
     beforeEach(() => {
@@ -15,7 +15,7 @@ describe('privacy-form-ui', () => {
         `;
     });
 
-    it('sets disabled state for email and submit controls', () => {
+    test('sets disabled state for email and submit controls', () => {
         setEmailFormDisabled(true);
 
         expect(document.getElementById('ot-email').disabled).toBe(true);
@@ -27,14 +27,14 @@ describe('privacy-form-ui', () => {
         expect(document.getElementById('ot-dns-submit').disabled).toBe(false);
     });
 
-    it('clears status elements when present', () => {
+    test('clears status elements when present', () => {
         clearSubmitStatus();
 
         expect(document.getElementById('ot-submit-error')).toBeNull();
         expect(document.getElementById('ot-submit-text')).toBeNull();
     });
 
-    it('resets form value and enables controls by default', () => {
+    test('resets form value and enables controls by default', () => {
         const email = document.getElementById('ot-email');
         const submit = document.getElementById('ot-dns-submit');
         email.disabled = true;
@@ -47,7 +47,7 @@ describe('privacy-form-ui', () => {
         expect(submit.disabled).toBe(false);
     });
 
-    it('can preserve email value while enabling controls', () => {
+    test('can preserve email value while enabling controls', () => {
         const email = document.getElementById('ot-email');
         const submit = document.getElementById('ot-dns-submit');
         email.disabled = true;

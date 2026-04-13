@@ -13,7 +13,7 @@ window.ElectroPrivacyLanguageMap = {
     es: spanishMap,
 };
 
-// console.log('languageMap keys', Object.keys(window.ElectroPrivacyLanguageMap));
+// console.info('languageMap keys', Object.keys(window.ElectroPrivacyLanguageMap));
 
 let stringMap = window.ElectroPrivacyLanguageMap['en'];
 
