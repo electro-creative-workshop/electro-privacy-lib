@@ -211,7 +211,10 @@ function doNotShareUI() {
 
     // make sure On/Off text is displayed properly
     trackingCat.dispatchEvent(new Event('change'))
-    checkboxStatus.style.display = 'position: relative; top: -5px; display: inline-block; margin-left: 5px;';
+    checkboxStatus.style.position = 'relative';
+    checkboxStatus.style.top = '-5px';
+    checkboxStatus.style.display = 'inline-block';
+    checkboxStatus.style.marginLeft = '5px';
 
     // Ensure email input and submit button are enabled when modal opens, and clear email so each open starts fresh
     resetEmailFormState();
