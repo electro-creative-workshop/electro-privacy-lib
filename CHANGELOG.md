@@ -1,16 +1,5 @@
 # History
 
-## 1.6.2
-
-- **Testing:** Added unit test coverage for language mapping and fallback behavior in `src/js/__tests__/language-support.test.js`.
-- **Testing:** Added unit tests for environment detection and runtime endpoint selection in `src/js/__tests__/privacy-config.test.js`.
-- **Testing:** Added unit tests for request identifier sanitization, validation, and JSON payload construction in `src/js/__tests__/privacy-request.test.js`.
-- **Testing:** Added unit tests for form/status UI helper behavior in `src/js/__tests__/privacy-form-ui.test.js`.
-- **Refactor:** Extracted environment and request configuration logic from `ot-dns-script-2.js` into `src/js/privacy-config.js`.
-- **Refactor:** Extracted request body/identifier helpers into `src/js/privacy-request.js`.
-- **Refactor:** Extracted reusable form/status UI helpers into `src/js/privacy-form-ui.js`.
-- **Refactor:** Updated `src/js/ot-dns-script-2.js` to use extracted helper modules with behavior-preserving wiring.
-
 ## 1.1.1 Stable Version
 
 -   Version that was approved by initial QA testing.
@@ -27,30 +16,30 @@
 
 -   Changed to production token/url/id (removing UAT information).
 
-## 1.1.5 Form submit button conflict
+## 1.1.5 Form Submit Button Conflict
 
 -   Changed id from submit to ot-dns-submit
 
-## 1.1.6 remove console.log
+## 1.1.6 Remove console.log
 
 -   console.log(`email returned valid; emailInputValue = ${emailInputValue}`);
 
-## 1.1.7 remove more console.log
+## 1.1.7 Remove More console.log
 
 -   console.log(`function returned false; emailInputValue = ${emailInputValue}`);
 -   console.log('invalid email');
 
-## 1.1.8 Updated language
+## 1.1.8 Updated Language
 
 -   in DNS popup
 
-## 1.1.9 Support parameter on import path to use staging server
+## 1.1.9 Support Parameter on Import Path to Use Staging Server
 
 -   if `window.electroPrivacyStaging` set to `true` before electro-privacy js is imported, the library will use staging parameters for backend submissions.
 
 ## 1.2.0 Changed setTimeout to setInterval
 
-## 1.2.1 Legal requested copy changes
+## 1.2.1 Legal Requested Copy Changes
 
 ## 1.2.2 Bug Fixes
  - Fix for Escape key not closing DNS popup (caused by onetrust-banner-sdk changes) - add our own keydown handler
@@ -62,55 +51,55 @@
 ## 1.2.4 Bug Fixes
 - Add display=flex when showing on/off text
 
-## 1.2.5 Remove optional chaining operator (.?)
+## 1.2.5 Remove Optional Chaining Operator (.?)
 - Not all sites support it
 
-## 1.2.6 Detect non production systems for testing
+## 1.2.6 Detect Non-Production Systems for Testing
 - Use UAT backend for urls that match non-production
 
-## 1.2.7 Fix regex pattern console error
+## 1.2.7 Fix Regex Pattern Console Error
 - HTML pattern attribute change to use regex v flag (needs more chars escaped in character classes)
 - https://groups.google.com/a/chromium.org/g/blink-dev/c/gIyvMw0n2qw
 
-## 1.3.0 Add support for Translation
+## 1.3.0 Add Support for Translation
 - add Spanish (US) language file
 - add Arabic language file
 
 ## 1.3.1 Bug Fix
 - Remove stray ';
 
-## 1.4.0 Handle dynamic buttons for cookies & DNS
+## 1.4.0 Handle Dynamic Buttons for Cookies & DNS
 - use document level capture event handlers to handle dynamic buttons being recreated (dtc shops)
 
-## 1.4.1 bug fix
+## 1.4.1 Bug Fix
 - look for buttons as event targets or a child of button
 
-## 1.4.2 bug fix
+## 1.4.2 Bug Fix
 - legal text change
 
-## 1.4.4 bug fix - Dec 6, 2024
+## 1.4.4 Bug Fix - Dec 6, 2024
 - Move "on"/"off" text to be closer the slider
 - Legal requested copy changes
 
-## 1.4.6 bug fix - Dec 16, 2024
+## 1.4.6 Bug Fix - Dec 16, 2024
 - CSS fixes: moved most styles to be inline instead of competing with OneTrust styles
 - Spanish updates
 - Markup changes to target text size
 
-## 1.4.7 bug fix - Dec 16, 2024
+## 1.4.7 Bug Fix - Dec 16, 2024
 - Minor HR spacing fix
 
-## 1.4.8 bug fix - Feb 11, 2025
+## 1.4.8 Bug Fix - Feb 11, 2025
 - Fix JS error "document.getElementById('ot-email') is null"
 - Fix race condition with adding dns ui & js manipulating controls
 - Fix endless interval loop when dnsCheck fn has error
 
-## 1.4.9 bug fix - Feb 25, 2025
+## 1.4.9 Bug Fix - Feb 25, 2025
 - Add source map for Sentry debugging
 - Update dependencies
 - Defensive programming
 
-## 1.6.1 security improvements and package fix - Feb 2026
+## 1.6.1 Security Improvements and Package Fix - Feb 2026
 - **Security: Fix JSON injection vulnerability** - Use JSON.stringify() instead of template literals when constructing API request body to prevent malicious email values from breaking JSON structure
 - **Security: Add input sanitization** - Trim whitespace, validate email length (max 254 chars per RFC 5321), and add maxlength attribute to email input field
 - **Security: Prevent duplicate submissions** - Add submission throttling flag to prevent race conditions and multiple simultaneous API calls
@@ -142,11 +131,14 @@
 - **Development: Extracted validateEmail module** - Email validation (regex, MAX_EMAIL_LENGTH, validateEmail) was moved from ot-dns-script-2.js into a dedicated `src/js/validateEmail.js` module with no DOM or side effects. This allows the Vitest suite to run real assertions against validateEmail without loading the full script (which would hang tests due to setInterval). ot-dns-script-2.js imports and uses the shared module; runtime behavior is unchanged
 - **Maintenance: Check in dist, remove postinstall** - The `dist` folder is now committed to the repo (no longer gitignored). The postinstall script was removed so installs do not run a build; consumers get the built files from the package. Run `npm run build` before committing when you change source files.
 
-## 1.6.1
+## 1.6.2
 
-- **Maintenance:** Removed `postinstall` script and related build logic; installs no longer trigger a build automatically.
-- **Maintenance:** Checked in the `dist` folder to the repository; built files are now included and no longer require postinstall.
-- **Maintenance:** Removed `sass` dependency and all related SCSS build scripts; switched to copying plain CSS for builds.
-- **Maintenance:** Cleaned up `package-lock.json` and `package.json` to remove unused dependencies and scripts.
-- **Language Support:** Updated and checked in latest English and Spanish language files in `dist/lang/`.
-- **Build:** Updated build scripts to use `build:css` (copy CSS) instead of SCSS compilation.
+- **Testing:** Added and expanded Vitest coverage for language support, configuration routing, request payload construction, form/UI helpers, and email validation.
+- **Testing:** Moved test suites to the root `test/` folder and standardized on `test()` syntax for readability.
+- **Testing:** Added V8 coverage provider support with `@vitest/coverage-v8` for `npm test -- --coverage` runs.
+- **Refactor:** Extracted environment/config selection into `src/js/privacy-config.js`.
+- **Refactor:** Extracted request/identifier helpers into `src/js/privacy-request.js`.
+- **Refactor:** Extracted reusable form/status helpers into `src/js/privacy-form-ui.js`.
+- **Refactor:** Updated `src/js/ot-dns-script-2.js` to use the extracted modules and centralized validation helpers.
+- **Maintenance:** Updated helper docs/instructions to reflect the root `test/` location.
+- **Logging:** Updated debug-only console output to use `console.info()`.

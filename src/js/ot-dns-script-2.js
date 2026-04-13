@@ -41,9 +41,9 @@ function setPreferences(otDataSubjectId) {
     // Debug logging (opt-in via window.electroPrivacyDebug; never logs request body to avoid PII/token leakage)
     if (typeof window !== 'undefined' && window.electroPrivacyDebug) {
         // eslint-disable-next-line no-console -- allowed when debug flag is set
-        console.log('electro-privacy: Submitting to URL:', url);
+        console.info('electro-privacy: Submitting to URL:', url);
         // eslint-disable-next-line no-console -- allowed when debug flag is set
-        console.log('electro-privacy: Environment:', environment);
+        console.info('electro-privacy: Environment:', environment);
     }
 
     const xhr = new XMLHttpRequest();
