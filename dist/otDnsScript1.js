@@ -3,6 +3,55 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 132
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   M: () => (/* binding */ getLanguageString)
+/* harmony export */ });
+/**
+ * support for handling langs
+ *   English & Spanish by default
+ *   Others need to be setup by client in window.ElectroPrivacyLanguageMap
+ */
+
+const englishMap = __webpack_require__(286);
+const spanishMap = __webpack_require__(331);
+
+window.ElectroPrivacyLanguageMap = {
+    ...window.ElectroPrivacyLanguageMap,
+    en: englishMap,
+    es: spanishMap,
+};
+
+// console.log('languageMap keys', Object.keys(window.ElectroPrivacyLanguageMap));
+
+let stringMap = window.ElectroPrivacyLanguageMap['en'];
+
+// use html lang attribute to determine strings to use
+const languageAttribute = document.documentElement.getAttribute('lang');
+if (languageAttribute) {
+    if (window.ElectroPrivacyLanguageMap[languageAttribute]) {
+        stringMap = window.ElectroPrivacyLanguageMap[languageAttribute];
+    } else {
+        const language = languageAttribute.split('-')[0];
+        if (window.ElectroPrivacyLanguageMap[language]) {
+            stringMap = window.ElectroPrivacyLanguageMap[language];
+        }
+    }
+}
+
+function getLanguageString(strName)
+{
+    if (stringMap[strName]) {
+        return stringMap[strName];
+    }
+    return strName;
+}
+
+
+/***/ },
+
 /***/ 71
 (__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) {
 
@@ -482,55 +531,6 @@ function dnsCheck() {
         clearInterval(domCheckInterval);
         domCheckInterval = null;
     }
-}
-
-
-/***/ },
-
-/***/ 132
-(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   M: () => (/* binding */ getLanguageString)
-/* harmony export */ });
-/**
- * support for handling langs
- *   English & Spanish by default
- *   Others need to be setup by client in window.ElectroPrivacyLanguageMap
- */
-
-const englishMap = __webpack_require__(286);
-const spanishMap = __webpack_require__(331);
-
-window.ElectroPrivacyLanguageMap = {
-    ...window.ElectroPrivacyLanguageMap,
-    en: englishMap,
-    es: spanishMap,
-};
-
-// console.log('languageMap keys', Object.keys(window.ElectroPrivacyLanguageMap));
-
-let stringMap = window.ElectroPrivacyLanguageMap['en'];
-
-// use html lang attribute to determine strings to use
-const languageAttribute = document.documentElement.getAttribute('lang');
-if (languageAttribute) {
-    if (window.ElectroPrivacyLanguageMap[languageAttribute]) {
-        stringMap = window.ElectroPrivacyLanguageMap[languageAttribute];
-    } else {
-        const language = languageAttribute.split('-')[0];
-        if (window.ElectroPrivacyLanguageMap[language]) {
-            stringMap = window.ElectroPrivacyLanguageMap[language];
-        }
-    }
-}
-
-function getLanguageString(strName)
-{
-    if (stringMap[strName]) {
-        return stringMap[strName];
-    }
-    return strName;
 }
 
 
