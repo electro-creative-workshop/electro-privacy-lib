@@ -194,3 +194,21 @@ Other languages will be supported as needed, but the using site will need to loa
 npm run build
 npm publish
 ```
+
+## Publishing a new version
+
+**What’s the difference between a tag and a published version?**
+
+- **Git tag** – A label in your Git repo that points at one specific commit (e.g. `v1.0.5`). It’s a bookmark: “this commit is what we shipped as 1.0.5.” Tags live in the repo and are used for release history, comparing versions, and linking “what’s on the registry” back to a commit.
+- **Published version** – The package that gets uploaded to the registry (GitHub Packages) when you run `npm publish`. That’s what people get when they run `npm install`. The version number comes from `package.json` (which `npm version` updates).
+
+So you have one version number (e.g. `1.0.5`) in two places: a **tag** in Git marking the commit, and the **published package** on the registry that consumers install. Pushing the tag keeps the repo and the registry release in sync.
+
+1. `npm run build`
+2. Commit changes
+3. Bump version and create a tag: `npm version patch`, `npm version minor`, or `npm version major`
+   - **patch** – bug fixes (e.g. `1.0.4` → `1.0.5`)
+   - **minor** – new features, backward compatible (e.g. `1.0.4` → `1.1.0`)
+   - **major** – breaking changes (e.g. `1.0.4` → `2.0.0`)
+4. Push changes and tags: `git push --follow-tags`
+5. `npm publish`
