@@ -66,6 +66,29 @@ describe('GtmConsentGate', () => {
     expect((window as Window & Record<string, unknown>)[gaDisableKey]).toBe(true);
   });
 
+  test('does not reload on OTConsentApplied when a saved analytics opt-out already exists on initialization', async () => {
+    setSavedAnalytics(false);
+
+    render(<GtmConsentGate gtmId="GTM-TEST" gaMeasurementIds={[defaultMeasurementId]} GoogleTagManager={GoogleTagManager} />);
+
+    expect(screen.queryByTestId('gtm')).toBeNull();
+    expect((window as Window & Record<string, unknown>)[gaDisableKey]).toBe(true);
+
+    vi.useFakeTimers();
+    act(() => {
+      window.dispatchEvent(new Event('OTConsentApplied'));
+      window.dispatchEvent(new Event('OneTrustGroupsUpdated'));
+    });
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(2000);
+    });
+
+    expect(reloadSpy).not.toHaveBeenCalled();
+    expect(screen.queryByTestId('gtm')).toBeNull();
+    expect((window as Window & Record<string, unknown>)[gaDisableKey]).toBe(true);
+  });
+
   test('suppresses GTM immediately for a pending analytics opt-out', async () => {
     setSavedAnalytics(true);
     const toggle = setPreferenceCenter(true, true);

@@ -187,6 +187,7 @@ export function GtmConsentGate({ gtmId, gaMeasurementIds = [], performanceCode =
     const [hasLoadedGtm, setHasLoadedGtm] = useState(false);
     const pendingConsentChecksRef = useRef([]);
     const hasTriggeredReloadRef = useRef(false);
+    const previousSavedAllowedRef = useRef(null);
     const analyticsAllowed = preferenceCenterOpen
         ? (pendingAnalyticsAllowed !== null && pendingAnalyticsAllowed !== void 0 ? pendingAnalyticsAllowed : savedAnalyticsAllowed)
         : savedAnalyticsAllowed;
@@ -208,6 +209,9 @@ export function GtmConsentGate({ gtmId, gaMeasurementIds = [], performanceCode =
             const isOpen = isPreferenceCenterOpen(preferenceCenter);
             const pendingAllowed = isOpen ? readPendingAnalyticsAllowed(preferenceCenter, performanceCode) : null;
             const effectiveAllowed = isOpen ? (pendingAllowed !== null && pendingAllowed !== void 0 ? pendingAllowed : savedAllowed) : savedAllowed;
+            const previousSavedAllowed = previousSavedAllowedRef.current;
+            const savedBecameDenied = previousSavedAllowed === true && savedAllowed === false;
+            previousSavedAllowedRef.current = savedAllowed;
             setSavedAnalyticsAllowed(savedAllowed);
             setPreferenceCenterOpen(isOpen);
             setPendingAnalyticsAllowed(pendingAllowed);
@@ -215,7 +219,10 @@ export function GtmConsentGate({ gtmId, gaMeasurementIds = [], performanceCode =
             if (!effectiveAllowed && hasLoadedGtm) {
                 teardownGtm(gtmId);
             }
-            return effectiveAllowed;
+            return {
+                effectiveAllowed,
+                savedBecameDenied,
+            };
         }
         function revokeSavedConsent() {
             if (hasTriggeredReloadRef.current)
@@ -227,11 +234,20 @@ export function GtmConsentGate({ gtmId, gaMeasurementIds = [], performanceCode =
         }
         function handleConsentApplied() {
             clearPendingConsentChecks();
-            checkConsent();
+            const immediateResult = checkConsent();
+            if (!immediateResult.effectiveAllowed &&
+                immediateResult.savedBecameDenied &&
+                !isPreferenceCenterOpen(preferenceCenter) &&
+                hasLoadedGtm) {
+                revokeSavedConsent();
+            }
             for (const delay of CONSENT_RECHECK_DELAYS_MS) {
                 const timerId = window.setTimeout(() => {
-                    const effectiveAllowed = checkConsent();
-                    if (!effectiveAllowed && !isPreferenceCenterOpen(preferenceCenter) && hasLoadedGtm) {
+                    const { effectiveAllowed, savedBecameDenied } = checkConsent();
+                    if (!effectiveAllowed &&
+                        savedBecameDenied &&
+                        !isPreferenceCenterOpen(preferenceCenter) &&
+                        hasLoadedGtm) {
                         revokeSavedConsent();
                     }
                 }, delay);

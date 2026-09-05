@@ -22,6 +22,11 @@ export type GtmConsentGateProps = {
   GoogleTagManager: React.ComponentType<GtmComponentProps>;
 };
 
+type ConsentCheckResult = {
+  effectiveAllowed: boolean;
+  savedBecameDenied: boolean;
+};
+
 function getCookieValue(name: string): string | null {
   const match = document.cookie
     .split(';')
@@ -240,6 +245,7 @@ export function GtmConsentGate({
   const [hasLoadedGtm, setHasLoadedGtm] = useState(false);
   const pendingConsentChecksRef = useRef<number[]>([]);
   const hasTriggeredReloadRef = useRef(false);
+  const previousSavedAllowedRef = useRef<boolean | null>(null);
 
   const analyticsAllowed = preferenceCenterOpen
     ? (pendingAnalyticsAllowed ?? savedAnalyticsAllowed)
@@ -259,12 +265,16 @@ export function GtmConsentGate({
       pendingConsentChecksRef.current = [];
     }
 
-    function checkConsent(): boolean {
+    function checkConsent(): ConsentCheckResult {
       const resolvedMeasurementIds = resolveGaMeasurementIds(gaMeasurementIds);
       const savedAllowed = readSavedAnalyticsAllowed(performanceCode);
       const isOpen = isPreferenceCenterOpen(preferenceCenter);
       const pendingAllowed = isOpen ? readPendingAnalyticsAllowed(preferenceCenter, performanceCode) : null;
       const effectiveAllowed = isOpen ? (pendingAllowed ?? savedAllowed) : savedAllowed;
+      const previousSavedAllowed = previousSavedAllowedRef.current;
+      const savedBecameDenied = previousSavedAllowed === true && savedAllowed === false;
+
+      previousSavedAllowedRef.current = savedAllowed;
 
       setSavedAnalyticsAllowed(savedAllowed);
       setPreferenceCenterOpen(isOpen);
@@ -275,7 +285,10 @@ export function GtmConsentGate({
         teardownGtm(gtmId);
       }
 
-      return effectiveAllowed;
+      return {
+        effectiveAllowed,
+        savedBecameDenied,
+      };
     }
 
     function revokeSavedConsent(): void {
@@ -288,12 +301,26 @@ export function GtmConsentGate({
 
     function handleConsentApplied(): void {
       clearPendingConsentChecks();
-      checkConsent();
+
+      const immediateResult = checkConsent();
+      if (
+        !immediateResult.effectiveAllowed &&
+        immediateResult.savedBecameDenied &&
+        !isPreferenceCenterOpen(preferenceCenter) &&
+        hasLoadedGtm
+      ) {
+        revokeSavedConsent();
+      }
 
       for (const delay of CONSENT_RECHECK_DELAYS_MS) {
         const timerId = window.setTimeout(() => {
-          const effectiveAllowed = checkConsent();
-          if (!effectiveAllowed && !isPreferenceCenterOpen(preferenceCenter) && hasLoadedGtm) {
+          const { effectiveAllowed, savedBecameDenied } = checkConsent();
+          if (
+            !effectiveAllowed &&
+            savedBecameDenied &&
+            !isPreferenceCenterOpen(preferenceCenter) &&
+            hasLoadedGtm
+          ) {
             revokeSavedConsent();
           }
         }, delay);
