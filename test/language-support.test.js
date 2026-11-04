@@ -33,6 +33,7 @@ describe('language-support', () => {
     test('uses Spanish map for es-US locale', async () => {
         const { getLanguageString } = await loadLanguageSupport({ lang: 'es-US' });
         expect(getLanguageString('Submit')).toBe('Enviar');
+        expect(getLanguageString('Your Privacy Choices - Manage your data preferences')).toBe('Opciones de privacidad - Administre sus preferencias de datos');
     });
 
     test('falls back to base language when full locale key does not exist', async () => {
