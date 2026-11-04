@@ -219,3 +219,4 @@
 ## Unreleased 
 
 - **Fix: dataLayer guard** - Ensure `window.dataLayer` exists before pushing the OneTrust groups event, preventing an error when GTM has not initialized it.
+- **Fix: a11y** - Spanish aria-label update
