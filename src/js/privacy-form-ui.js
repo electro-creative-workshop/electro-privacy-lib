@@ -1,3 +1,9 @@
+export function localizePrivacyChoicesButton(button, localizedLabel) {
+    const englishLabel = 'Your Privacy Choices - Manage your data preferences';
+    if (button && button.getAttribute('aria-label') === englishLabel && localizedLabel !== englishLabel) {
+        button.setAttribute('aria-label', localizedLabel);
+    }
+}
 export function getEmailFormElements(doc = document) {
     return {
         emailField: doc.getElementById('ot-email'),

@@ -5,7 +5,7 @@ import {getLanguageString} from "./language-support";
 import { re } from "./validateEmail.js";
 import { getRuntimePrivacyRequestConfig } from "./privacy-config.js";
 import { buildConsentRequestBody, isValidEmailIdentifier } from "./privacy-request.js";
-import { clearSubmitStatus, resetEmailFormState, setEmailFormDisabled } from "./privacy-form-ui.js";
+import { clearSubmitStatus, localizePrivacyChoicesButton, resetEmailFormState, setEmailFormDisabled } from "./privacy-form-ui.js";
 
 // Define variables
 let dnsUI = false;
@@ -274,6 +274,7 @@ function dnsCheck() {
     try {
         // verify UI has been added to document
         if (document.getElementById('do-not-share') && document.getElementById('ot-email') && document.getElementById('ot-dns-submit')) {
+            localizePrivacyChoicesButton(document.getElementById('do-not-share'), getLanguageString('Your Privacy Choices - Manage your data preferences'));
             // add pattern to email input
             document.getElementById('ot-email').pattern = re;
             document.getElementById('ot-email').setCustomValidity(getLanguageString('Please enter a valid email.'));
@@ -284,6 +285,7 @@ function dnsCheck() {
             document.addEventListener('click', function (e) {
                 const sdkButton = document.getElementById('ot-sdk-btn');
                 const dnsButton = document.getElementById('do-not-share');
+                localizePrivacyChoicesButton(dnsButton, getLanguageString('Your Privacy Choices - Manage your data preferences'));
                 if (e.target && e.target.id === 'ot-sdk-btn' || sdkButton?.contains(e.target)) {
                     hideDnsUI();
                 } else if (e.target && e.target.id === 'do-not-share' || dnsButton?.contains(e.target)) {
