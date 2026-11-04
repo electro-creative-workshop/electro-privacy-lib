@@ -216,7 +216,7 @@
 - **Maintenance:** Updated development dependencies, including ESLint `^10.8.0`.
 - **Maintenance:** Updated dependency-maintenance guidance to support normal ESLint 10 upgrades.
 
-## Unreleased 
+## 1.8.0
 
 - **Fix: dataLayer guard** - Ensure `window.dataLayer` exists before pushing the OneTrust groups event, preventing an error when GTM has not initialized it.
 - **Fix: a11y** - Spanish aria-label update
