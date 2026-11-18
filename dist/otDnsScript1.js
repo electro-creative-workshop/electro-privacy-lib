@@ -1,4 +1,4 @@
-/*! version: 1.8.0 */
+/*! version: 1.8.1-beta */
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
@@ -886,7 +886,7 @@ let __webpack_exports__ = {};
 // Version is injected by webpack DefinePlugin
 // Accessible via: window.electroPrivacyVersion in browser console
 if (typeof window !== 'undefined') {
-    window.electroPrivacyVersion =  true ? "1.8.0" : 0;
+    window.electroPrivacyVersion =  true ? "1.8.1-beta" : 0;
 }
 
 let dsIdSet = false;
@@ -902,7 +902,9 @@ async function OptanonWrapperLocal() {
         const emailBlock = (0,_language_support__WEBPACK_IMPORTED_MODULE_0__/* .getLanguageString */ .M)('emailTextBlock');
         const emailLabel = (0,_language_support__WEBPACK_IMPORTED_MODULE_0__/* .getLanguageString */ .M)('Email:');
         const submit = (0,_language_support__WEBPACK_IMPORTED_MODULE_0__/* .getLanguageString */ .M)('Submit');
-        const emailInstructions = (0,_language_support__WEBPACK_IMPORTED_MODULE_0__/* .getLanguageString */ .M)('Once you have made all of your elections, click “Save Settings” to save your settings and close the window.');
+        const emailInstructions = (0,_language_support__WEBPACK_IMPORTED_MODULE_0__/* .getLanguageString */ .M)(
+            'Once you have made all of your elections, click “Save Settings” to save your settings and close the window.'
+        );
         const deletionRequests = (0,_language_support__WEBPACK_IMPORTED_MODULE_0__/* .getLanguageString */ .M)('Deletion, Access, Or Correction Requests');
         const deletionTextBlock1 = (0,_language_support__WEBPACK_IMPORTED_MODULE_0__/* .getLanguageString */ .M)('deletionTextBlock1');
         const deletionTextBlock2 = (0,_language_support__WEBPACK_IMPORTED_MODULE_0__/* .getLanguageString */ .M)('deletionTextBlock2');
@@ -913,7 +915,7 @@ async function OptanonWrapperLocal() {
                 <h3 style="font-size: 15px !important;">${emailTitle}</h3>
                 <br/>
                 <p>${emailBlock}</p>
-                <form id="ot-email-submit" style="padding-top: 20px;" onsubmit="return false;">
+                <form id="ot-email-submit" style="padding-top: 20px;">
                     <label for="ot-email">${emailLabel}
                         <input type="text" style="border: 1px solid #000 !important;" id="ot-email" name="ot-email" required maxlength="254" autocomplete="email" inputmode="email">
                         <input type="submit" style="border-radius: 4px; padding: 7px; border: 1px solid #000 !important;" id="ot-dns-submit" value="${submit}">
@@ -945,6 +947,9 @@ async function OptanonWrapperLocal() {
 
         const otEmailForm = document.querySelectorAll('.ot-sdk-row.ot-cat-grp')[0];
         otEmailForm.insertAdjacentHTML('afterend', otEmailHTML);
+        document.getElementById('ot-email-submit').addEventListener('submit', (event) => {
+            event.preventDefault();
+        });
 
         const otDnsText = document.getElementById('ot-pc-desc');
         otDnsText.insertAdjacentHTML('afterend', dnsCustomText);
@@ -952,7 +957,10 @@ async function OptanonWrapperLocal() {
         // show "on/off" text near the toggle
         const toggleTextContainer = document.createElement('div');
         toggleTextContainer.setAttribute('id', 'ot-checkbox-status');
-        toggleTextContainer.setAttribute('style', 'position: relative; top: -5px; display: inline-block; margin-left: 5px;');
+        toggleTextContainer.setAttribute(
+            'style',
+            'position: relative; top: -5px; display: inline-block; margin-left: 5px;'
+        );
         const insertAfterThis = document.querySelectorAll('[data-optanongroupid="C0004"]')[0];
         const toggleContainer = insertAfterThis.querySelector('.ot-tgl');
         toggleContainer.appendChild(toggleTextContainer);
@@ -963,9 +971,6 @@ async function OptanonWrapperLocal() {
         await Promise.resolve(/* import() eager */).then(() => (__webpack_require__(721)));
     }
 }
-
-
-
 
 // removed global callback from ot library
 
