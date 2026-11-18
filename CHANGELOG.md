@@ -221,6 +221,7 @@
 - **Fix: dataLayer guard** - Ensure `window.dataLayer` exists before pushing the OneTrust groups event, preventing an error when GTM has not initialized it.
 - **Fix: a11y** - Spanish aria-label update
 
-## 1.8.1-beta
+## 1.8.1
 
 - Replace inline privacy form submit handler.
+- **Maintenance:** Update npm dependencies.

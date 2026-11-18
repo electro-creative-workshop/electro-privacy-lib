@@ -1,4 +1,4 @@
-/*! version: 1.8.1-beta */
+/*! version: 1.8.1 */
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
@@ -886,7 +886,7 @@ let __webpack_exports__ = {};
 // Version is injected by webpack DefinePlugin
 // Accessible via: window.electroPrivacyVersion in browser console
 if (typeof window !== 'undefined') {
-    window.electroPrivacyVersion =  true ? "1.8.1-beta" : 0;
+    window.electroPrivacyVersion =  true ? "1.8.1" : 0;
 }
 
 let dsIdSet = false;
