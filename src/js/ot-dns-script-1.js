@@ -1,5 +1,5 @@
 // load language support & determine lang based on url
-import {getLanguageString} from "./language-support";
+import { getLanguageString } from './language-support';
 
 // Version is injected by webpack DefinePlugin
 // Accessible via: window.electroPrivacyVersion in browser console
@@ -20,7 +20,9 @@ async function OptanonWrapperLocal() {
         const emailBlock = getLanguageString('emailTextBlock');
         const emailLabel = getLanguageString('Email:');
         const submit = getLanguageString('Submit');
-        const emailInstructions = getLanguageString('Once you have made all of your elections, click “Save Settings” to save your settings and close the window.');
+        const emailInstructions = getLanguageString(
+            'Once you have made all of your elections, click “Save Settings” to save your settings and close the window.'
+        );
         const deletionRequests = getLanguageString('Deletion, Access, Or Correction Requests');
         const deletionTextBlock1 = getLanguageString('deletionTextBlock1');
         const deletionTextBlock2 = getLanguageString('deletionTextBlock2');
@@ -31,7 +33,7 @@ async function OptanonWrapperLocal() {
                 <h3 style="font-size: 15px !important;">${emailTitle}</h3>
                 <br/>
                 <p>${emailBlock}</p>
-                <form id="ot-email-submit" style="padding-top: 20px;" onsubmit="return false;">
+                <form id="ot-email-submit" style="padding-top: 20px;">
                     <label for="ot-email">${emailLabel}
                         <input type="text" style="border: 1px solid #000 !important;" id="ot-email" name="ot-email" required maxlength="254" autocomplete="email" inputmode="email">
                         <input type="submit" style="border-radius: 4px; padding: 7px; border: 1px solid #000 !important;" id="ot-dns-submit" value="${submit}">
@@ -63,6 +65,9 @@ async function OptanonWrapperLocal() {
 
         const otEmailForm = document.querySelectorAll('.ot-sdk-row.ot-cat-grp')[0];
         otEmailForm.insertAdjacentHTML('afterend', otEmailHTML);
+        document.getElementById('ot-email-submit').addEventListener('submit', (event) => {
+            event.preventDefault();
+        });
 
         const otDnsText = document.getElementById('ot-pc-desc');
         otDnsText.insertAdjacentHTML('afterend', dnsCustomText);
@@ -70,7 +75,10 @@ async function OptanonWrapperLocal() {
         // show "on/off" text near the toggle
         const toggleTextContainer = document.createElement('div');
         toggleTextContainer.setAttribute('id', 'ot-checkbox-status');
-        toggleTextContainer.setAttribute('style', 'position: relative; top: -5px; display: inline-block; margin-left: 5px;');
+        toggleTextContainer.setAttribute(
+            'style',
+            'position: relative; top: -5px; display: inline-block; margin-left: 5px;'
+        );
         const insertAfterThis = document.querySelectorAll('[data-optanongroupid="C0004"]')[0];
         const toggleContainer = insertAfterThis.querySelector('.ot-tgl');
         toggleContainer.appendChild(toggleTextContainer);
@@ -81,9 +89,6 @@ async function OptanonWrapperLocal() {
         await import(/* webpackMode: "eager" */ './ot-dns-script-2');
     }
 }
-
-
-
 
 // removed global callback from ot library
 
